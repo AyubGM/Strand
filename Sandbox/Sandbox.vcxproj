@@ -65,7 +65,9 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GM_PLATFORM_WINDOWS;</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)GMCore\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)GMCore\src;$(SolutionDir)vendor\spdlog\include</AdditionalIncludeDirectories>
+      <AdditionalOptions>   /utf-8
+   %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -80,7 +82,9 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GM_PLATFORM_WINDOWS;</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)GMCore\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)GMCore\src;$(SolutionDir)vendor\spdlog\include</AdditionalIncludeDirectories>
+      <AdditionalOptions>   /utf-8
+   %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

@@ -27,9 +27,15 @@
     <ClInclude Include="src\GMCore\EntryPoint.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\GMCore\Log.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\GMCore\Application.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GMCore\Log.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
