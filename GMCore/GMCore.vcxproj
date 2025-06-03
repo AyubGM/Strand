@@ -71,6 +71,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir)GMCore\vendor\spdlog\include;</AdditionalIncludeDirectories>
       <AdditionalOptions>   /utf-8
    %(AdditionalOptions)</AdditionalOptions>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -88,6 +89,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir)GMCore\vendor\spdlog\include;</AdditionalIncludeDirectories>
       <AdditionalOptions>   /utf-8
    %(AdditionalOptions)</AdditionalOptions>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
