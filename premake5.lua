@@ -1,5 +1,6 @@
 workspace "GMCore"
 	architecture "x64"
+	startproject "Sandbox"
 
 	configurations
 	{
@@ -8,7 +9,7 @@ workspace "GMCore"
 		"Dist"
 	}
 
-outputdir = "&{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
+outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 project "GMCore"
 	location "GMCore"
@@ -33,17 +34,19 @@ project "GMCore"
 		cppdialect "C++20"
 		staticruntime "On"
 		systemversion "latest"
+		buildoptions { "/utf-8" }
 
 		defines
 		{
 			"GM_PLATFORM_WINDOWS",
-			"GM_BUILD_DLL;"
+			"GM_BUILD_DLL;" 
 		}
 
 		postbuildcommands
 		{
-			("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox")
+			 ("{COPY} %{cfg.buildtarget.abspath} ../bin/" .. outputdir .. "/Sandbox")
 		}
+
 
 		filter "configurations:Debug"
 			defines "GM_DEBUG"
@@ -76,7 +79,7 @@ project "Sandbox"
 
 	includedirs
 	{
-		"%{prj.name}/vendor/spdlog/include",
+		"GMCore/vendor/spdlog/include",
 		"GMCore/src"
 	}
 
@@ -84,6 +87,7 @@ project "Sandbox"
 		cppdialect "C++20"
 		staticruntime "On"
 		systemversion "latest"
+		buildoptions { "/utf-8" }
 
 		defines
 		{
