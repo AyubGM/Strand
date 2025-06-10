@@ -19,6 +19,10 @@
     <ClInclude Include="src\GMCore\Log.h">
       <Filter>GMCore</Filter>
     </ClInclude>
+    <ClInclude Include="src\GMCore\Events\ApplicationEvent.h" />
+    <ClInclude Include="src\GMCore\Events\Event.h" />
+    <ClInclude Include="src\GMCore\Events\KeyEvent.h" />
+    <ClInclude Include="src\GMCore\Events\MouseEvent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\GMCore\Application.cpp">

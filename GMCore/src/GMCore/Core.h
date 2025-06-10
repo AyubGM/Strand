@@ -11,3 +11,4 @@
 #error GM only support Windows!
 #endif // GM_PLATFORM_WINDOWS
 
+#define BIT(x) (1 << x)
