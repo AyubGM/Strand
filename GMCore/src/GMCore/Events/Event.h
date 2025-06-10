@@ -80,5 +80,10 @@ namespace GMCore {
 		Event& m_Event; // Reference to the event being dispatched
 	};
 
+	inline std::ostream& operator<<(std::ostream& os, const Event& e)
+	{
+		return os << e.ToString();
+	}
+
 	
 }
