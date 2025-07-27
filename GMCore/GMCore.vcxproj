@@ -164,6 +164,7 @@
     <ClInclude Include="src\GMCore\Events\KeyEvent.h" />
     <ClInclude Include="src\GMCore\Events\MouseEvent.h" />
     <ClInclude Include="src\GMCore\Log.h" />
+    <ClInclude Include="src\GMCore\Window.h" />
     <ClInclude Include="src\gmcpch.h" />
   </ItemGroup>
   <ItemGroup>
