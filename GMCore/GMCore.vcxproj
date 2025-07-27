@@ -164,12 +164,14 @@
     <ClInclude Include="src\GMCore\Events\KeyEvent.h" />
     <ClInclude Include="src\GMCore\Events\MouseEvent.h" />
     <ClInclude Include="src\GMCore\Log.h" />
+    <ClInclude Include="src\GMCore\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="src\GMCore\Window.h" />
     <ClInclude Include="src\gmcpch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\GMCore\Application.cpp" />
     <ClCompile Include="src\GMCore\Log.cpp" />
+    <ClCompile Include="src\GMCore\Platform\Windows\WindowsWindow.cpp" />
     <ClCompile Include="src\gmcpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>

@@ -36,6 +36,7 @@
     </ClInclude>
     <ClInclude Include="src\gmcpch.h" />
     <ClInclude Include="src\GMCore\Window.h" />
+    <ClInclude Include="src\GMCore\Platform\Windows\WindowsWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\GMCore\Application.cpp">
@@ -45,5 +46,6 @@
       <Filter>GMCore</Filter>
     </ClCompile>
     <ClCompile Include="src\gmcpch.cpp" />
+    <ClCompile Include="src\GMCore\Platform\Windows\WindowsWindow.cpp" />
   </ItemGroup>
 </Project>
