@@ -11,6 +11,12 @@ workspace "GMCore"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
+-- Include directories relative to root folder (solution directory)
+IncludeDir = {}
+IncludeDir["GLFW"] = "GMCore/vendor/GLFW/include"
+
+include "GMCore/vendor/GLFW"
+
 project "GMCore"
 	location "GMCore"
 	kind "SharedLib"
@@ -31,7 +37,14 @@ project "GMCore"
 	includedirs
 	{
 		"%{prj.name}/src",
-		"%{prj.name}/vendor/spdlog/include"
+		"%{prj.name}/vendor/spdlog/include",
+		"%{IncludeDir.GLFW}"
+	}
+
+	links 
+	{ 
+		"GLFW",
+		"opengl32.lib"
 	}
 
 	filter "system:windows"
