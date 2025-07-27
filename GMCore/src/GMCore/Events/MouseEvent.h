@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Event.h"
-#include <sstream>
 
 
 // This file defines mouse events for the GMCore framework.

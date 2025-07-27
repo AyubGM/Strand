@@ -19,6 +19,9 @@ project "GMCore"
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
+	pchheader "gmcpch.h"
+	pchsource "GMCore/src/gmcpch.cpp"
+
 	files
 	{
 		"%{prj.name}/src/**.h",

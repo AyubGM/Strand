@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Event.h"
-#include <sstream>
 
 namespace GMCore {
 	class GMCORE_API WindowResizeEvent : public Event

@@ -4,6 +4,9 @@
     <Filter Include="GMCore">
       <UniqueIdentifier>{E24C15B3-CEEE-3F89-B7A9-53DDA3EAC6D9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GMCore\Events">
+      <UniqueIdentifier>{86663BB2-F226-B7E8-BB61-006627E1FBC4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\GMCore.h" />
@@ -16,13 +19,22 @@
     <ClInclude Include="src\GMCore\EntryPoint.h">
       <Filter>GMCore</Filter>
     </ClInclude>
+    <ClInclude Include="src\GMCore\Events\ApplicationEvent.h">
+      <Filter>GMCore\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GMCore\Events\Event.h">
+      <Filter>GMCore\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GMCore\Events\KeyEvent.h">
+      <Filter>GMCore\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GMCore\Events\MouseEvent.h">
+      <Filter>GMCore\Events</Filter>
+    </ClInclude>
     <ClInclude Include="src\GMCore\Log.h">
       <Filter>GMCore</Filter>
     </ClInclude>
-    <ClInclude Include="src\GMCore\Events\ApplicationEvent.h" />
-    <ClInclude Include="src\GMCore\Events\Event.h" />
-    <ClInclude Include="src\GMCore\Events\KeyEvent.h" />
-    <ClInclude Include="src\GMCore\Events\MouseEvent.h" />
+    <ClInclude Include="src\gmcpch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\GMCore\Application.cpp">
@@ -31,5 +43,6 @@
     <ClCompile Include="src\GMCore\Log.cpp">
       <Filter>GMCore</Filter>
     </ClCompile>
+    <ClCompile Include="src\gmcpch.cpp" />
   </ItemGroup>
 </Project>
