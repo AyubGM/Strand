@@ -7,6 +7,12 @@
     <Filter Include="GMCore\Events">
       <UniqueIdentifier>{86663BB2-F226-B7E8-BB61-006627E1FBC4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GMCore\Platform">
+      <UniqueIdentifier>{7627CD4A-E2B2-3A0F-EBC3-BD0357CE960F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GMCore\Platform\Windows">
+      <UniqueIdentifier>{B0E76DF4-1C1F-B68B-2529-1AAF91DFDC84}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\GMCore.h" />
@@ -34,9 +40,13 @@
     <ClInclude Include="src\GMCore\Log.h">
       <Filter>GMCore</Filter>
     </ClInclude>
+    <ClInclude Include="src\GMCore\Platform\Windows\WindowsWindow.h">
+      <Filter>GMCore\Platform\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GMCore\Window.h">
+      <Filter>GMCore</Filter>
+    </ClInclude>
     <ClInclude Include="src\gmcpch.h" />
-    <ClInclude Include="src\GMCore\Window.h" />
-    <ClInclude Include="src\GMCore\Platform\Windows\WindowsWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\GMCore\Application.cpp">
@@ -45,7 +55,9 @@
     <ClCompile Include="src\GMCore\Log.cpp">
       <Filter>GMCore</Filter>
     </ClCompile>
+    <ClCompile Include="src\GMCore\Platform\Windows\WindowsWindow.cpp">
+      <Filter>GMCore\Platform\Windows</Filter>
+    </ClCompile>
     <ClCompile Include="src\gmcpch.cpp" />
-    <ClCompile Include="src\GMCore\Platform\Windows\WindowsWindow.cpp" />
   </ItemGroup>
 </Project>

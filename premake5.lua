@@ -44,7 +44,8 @@ project "GMCore"
 	links 
 	{ 
 		"GLFW",
-		"opengl32.lib"
+		"opengl32.lib",
+		"dwmapi.lib"
 	}
 
 	filter "system:windows"
@@ -56,7 +57,7 @@ project "GMCore"
 		defines
 		{
 			"GM_PLATFORM_WINDOWS",
-			"GM_BUILD_DLL;" 
+			"GM_BUILD_DLL" 
 		}
 
 		postbuildcommands
@@ -100,6 +101,11 @@ project "Sandbox"
 		"GMCore/src"
 	}
 
+	links
+	{
+		"GMCore"
+	}
+
 	filter "system:windows"
 		cppdialect "C++20"
 		staticruntime "On"
@@ -111,10 +117,7 @@ project "Sandbox"
 			"GM_PLATFORM_WINDOWS",
 		}
 
-		links
-		{
-			"GMCore"
-		}
+	
 
 		filter "configurations:Debug"
 			defines "GM_DEBUG"
