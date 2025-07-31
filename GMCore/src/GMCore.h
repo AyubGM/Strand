@@ -5,6 +5,8 @@
 #include "GMCore/Layer.h"
 #include "GMCore/Log.h"
 
+#include "GMCore/ImGui/ImGuiLayer.h"
+
 // ---Entry Point--------------------
 #include "GMCore/EntryPoint.h"
 // ----------------------------------

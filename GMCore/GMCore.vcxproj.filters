@@ -7,11 +7,17 @@
     <Filter Include="GMCore\Events">
       <UniqueIdentifier>{86663BB2-F226-B7E8-BB61-006627E1FBC4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GMCore\Platform">
-      <UniqueIdentifier>{7627CD4A-E2B2-3A0F-EBC3-BD0357CE960F}</UniqueIdentifier>
+    <Filter Include="GMCore\ImGui">
+      <UniqueIdentifier>{8C63D0A0-78C6-5F45-214C-98FB0D8E2BC8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GMCore\Platform\Windows">
-      <UniqueIdentifier>{B0E76DF4-1C1F-B68B-2529-1AAF91DFDC84}</UniqueIdentifier>
+    <Filter Include="Platform">
+      <UniqueIdentifier>{2AC788B4-1694-E3BF-3FAD-D1672BD9184E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platform\OpenGL">
+      <UniqueIdentifier>{1E7D2C1D-8A08-9AE1-9319-1DD6FF23F6E1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platform\Windows">
+      <UniqueIdentifier>{64FBD71A-50F4-F66C-7926-DCF1657ED678}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -37,6 +43,9 @@
     <ClInclude Include="src\GMCore\Events\MouseEvent.h">
       <Filter>GMCore\Events</Filter>
     </ClInclude>
+    <ClInclude Include="src\GMCore\ImGui\ImGuiLayer.h">
+      <Filter>GMCore\ImGui</Filter>
+    </ClInclude>
     <ClInclude Include="src\GMCore\Layer.h">
       <Filter>GMCore</Filter>
     </ClInclude>
@@ -46,17 +55,23 @@
     <ClInclude Include="src\GMCore\Log.h">
       <Filter>GMCore</Filter>
     </ClInclude>
-    <ClInclude Include="src\GMCore\Platform\Windows\WindowsWindow.h">
-      <Filter>GMCore\Platform\Windows</Filter>
-    </ClInclude>
     <ClInclude Include="src\GMCore\Window.h">
       <Filter>GMCore</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\ImGuiOpenGLRenderer.h">
+      <Filter>Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\Windows\WindowsWindow.h">
+      <Filter>Platform\Windows</Filter>
     </ClInclude>
     <ClInclude Include="src\gmcpch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\GMCore\Application.cpp">
       <Filter>GMCore</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GMCore\ImGui\ImGuiLayer.cpp">
+      <Filter>GMCore\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="src\GMCore\Layer.cpp">
       <Filter>GMCore</Filter>
@@ -67,8 +82,11 @@
     <ClCompile Include="src\GMCore\Log.cpp">
       <Filter>GMCore</Filter>
     </ClCompile>
-    <ClCompile Include="src\GMCore\Platform\Windows\WindowsWindow.cpp">
-      <Filter>GMCore\Platform\Windows</Filter>
+    <ClCompile Include="src\Platform\OpenGL\ImGuiOpenGLRenderer.cpp">
+      <Filter>Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">
+      <Filter>Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="src\gmcpch.cpp" />
   </ItemGroup>
