@@ -14,8 +14,10 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 -- Include directories relative to root folder (solution directory)
 IncludeDir = {}
 IncludeDir["GLFW"] = "GMCore/vendor/GLFW/include"
+IncludeDir["Glad"] = "GMCore/vendor/Glad/include"
 
 include "GMCore/vendor/GLFW"
+include "GMCore/vendor/Glad"
 
 project "GMCore"
 	location "GMCore"
@@ -38,12 +40,14 @@ project "GMCore"
 	{
 		"%{prj.name}/src",
 		"%{prj.name}/vendor/spdlog/include",
-		"%{IncludeDir.GLFW}"
+		"%{IncludeDir.GLFW}",
+		"%{IncludeDir.Glad}"
 	}
 
 	links 
 	{ 
 		"GLFW",
+		"Glad",
 		"opengl32.lib",
 		"dwmapi.lib"
 	}
@@ -57,7 +61,8 @@ project "GMCore"
 		defines
 		{
 			"GM_PLATFORM_WINDOWS",
-			"GM_BUILD_DLL" 
+			"GM_BUILD_DLL",
+			"GLFW_INCLUDE_NONE"
 		}
 
 		postbuildcommands

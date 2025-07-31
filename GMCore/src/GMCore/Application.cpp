@@ -3,6 +3,7 @@
 #include "Events/ApplicationEvent.h"
 #include "GMCore/Log.h"
 #include <GLFW/glfw3.h>
+#include <glad/glad.h>
 namespace GMCore {
 
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
@@ -32,7 +33,7 @@ namespace GMCore {
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
 
-		//GM_CORE_TRACE("{0}", e);
+		GM_CORE_TRACE("{0}", e.ToString());
 		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin(); )
 		{
 			(*--it)->OnEvent(e);

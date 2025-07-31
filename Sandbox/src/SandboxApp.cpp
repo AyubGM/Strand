@@ -10,12 +10,12 @@ public:
 
 	void OnUpdate() override
 	{
-		GM_INFO("ExampleLayer::Update");
+		//GM_INFO("ExampleLayer::Update");
 	}
 
 	void OnEvent(GMCore::Event& event) override
 	{
-		GM_TRACE("{0}", event);
+		GM_TRACE("{0}", event.ToString());
 	}
 
 };
