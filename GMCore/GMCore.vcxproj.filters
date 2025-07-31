@@ -37,6 +37,12 @@
     <ClInclude Include="src\GMCore\Events\MouseEvent.h">
       <Filter>GMCore\Events</Filter>
     </ClInclude>
+    <ClInclude Include="src\GMCore\Layer.h">
+      <Filter>GMCore</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GMCore\LayerStack.h">
+      <Filter>GMCore</Filter>
+    </ClInclude>
     <ClInclude Include="src\GMCore\Log.h">
       <Filter>GMCore</Filter>
     </ClInclude>
@@ -50,6 +56,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\GMCore\Application.cpp">
+      <Filter>GMCore</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GMCore\Layer.cpp">
+      <Filter>GMCore</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GMCore\LayerStack.cpp">
       <Filter>GMCore</Filter>
     </ClCompile>
     <ClCompile Include="src\GMCore\Log.cpp">

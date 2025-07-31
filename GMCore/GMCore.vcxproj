@@ -84,7 +84,7 @@
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/utf-8 /MDd %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
@@ -111,7 +111,7 @@
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/utf-8 /MD %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
@@ -139,7 +139,7 @@
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/utf-8 /MD %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
@@ -163,6 +163,8 @@
     <ClInclude Include="src\GMCore\Events\Event.h" />
     <ClInclude Include="src\GMCore\Events\KeyEvent.h" />
     <ClInclude Include="src\GMCore\Events\MouseEvent.h" />
+    <ClInclude Include="src\GMCore\Layer.h" />
+    <ClInclude Include="src\GMCore\LayerStack.h" />
     <ClInclude Include="src\GMCore\Log.h" />
     <ClInclude Include="src\GMCore\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="src\GMCore\Window.h" />
@@ -170,6 +172,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\GMCore\Application.cpp" />
+    <ClCompile Include="src\GMCore\Layer.cpp" />
+    <ClCompile Include="src\GMCore\LayerStack.cpp" />
     <ClCompile Include="src\GMCore\Log.cpp" />
     <ClCompile Include="src\GMCore\Platform\Windows\WindowsWindow.cpp" />
     <ClCompile Include="src\gmcpch.cpp">

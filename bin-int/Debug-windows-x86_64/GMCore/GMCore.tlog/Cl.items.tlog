@@ -1,4 +1,6 @@
 C:\dev\GMCore\GMCore\src\GMCore\Application.cpp;C:\dev\GMCore\bin-int\Debug-windows-x86_64\GMCore\Application.obj
+C:\dev\GMCore\GMCore\src\GMCore\Layer.cpp;C:\dev\GMCore\bin-int\Debug-windows-x86_64\GMCore\Layer.obj
+C:\dev\GMCore\GMCore\src\GMCore\LayerStack.cpp;C:\dev\GMCore\bin-int\Debug-windows-x86_64\GMCore\LayerStack.obj
 C:\dev\GMCore\GMCore\src\GMCore\Log.cpp;C:\dev\GMCore\bin-int\Debug-windows-x86_64\GMCore\Log.obj
 C:\dev\GMCore\GMCore\src\GMCore\Platform\Windows\WindowsWindow.cpp;C:\dev\GMCore\bin-int\Debug-windows-x86_64\GMCore\WindowsWindow.obj
 C:\dev\GMCore\GMCore\src\gmcpch.cpp;C:\dev\GMCore\bin-int\Debug-windows-x86_64\GMCore\gmcpch.obj
