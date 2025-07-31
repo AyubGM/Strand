@@ -4,3 +4,12 @@
 [submodule "GMCore/vendor/GLFW"]
 	path = GMCore/vendor/GLFW
 	url = https://github.com/TheCherno/glfw
+[submodule "GMCore/vendor.imgui"]
+	path = GMCore/vendor.imgui
+	url = https://github.com/TheCherno/imgui
+[submodule "GMCore/vendor/imgui"]
+	path = GMCore/vendor/imgui
+	url = https://github.com/TheCherno/imgui
+[submodule "GMCore/vendor/Imgui"]
+	path = GMCore/vendor/Imgui
+	url = https://github.com/TheCherno/imgui
