@@ -11,6 +11,11 @@
 #error GM only support Windows!
 #endif // GM_PLATFORM_WINDOWS
 
+
+#ifdef GN_DEBUG
+#define GM_ENABLE_ASSERTS
+#endif
+
 #ifdef GM_ENABLE_ASSERTS
 #define GM_ASSERT(x, ...) { if(!(x)) { HZ_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }
 #define GM_CORE_ASSERT(x, ...) { if(!(x)) { HZ_CORE_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }

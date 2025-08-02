@@ -17,14 +17,18 @@ IncludeDir["GLFW"] = "GMCore/vendor/GLFW/include"
 IncludeDir["Glad"] = "GMCore/vendor/Glad/include"
 IncludeDir["ImGui"] = "GMCore/vendor/imgui"
 
-include "GMCore/vendor/GLFW"
-include "GMCore/vendor/Glad"
-include "GMCore/vendor/imgui"
+
+
+group "Dependencies"
+	include "GMCore/vendor/GLFW"
+	include "GMCore/vendor/Glad"
+	include "GMCore/vendor/imgui"
 
 project "GMCore"
 	location "GMCore"
 	kind "SharedLib"
 	language "C++"
+	staticruntime "off"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -59,7 +63,6 @@ project "GMCore"
 
 	filter "system:windows"
 		cppdialect "C++20"
-		staticruntime "On"
 		systemversion "latest"
 		buildoptions { "/utf-8" }
 
@@ -78,17 +81,17 @@ project "GMCore"
 
 		filter "configurations:Debug"
 			defines "GM_DEBUG"
-			buildoptions "/MDd"
+			runtime "Debug"
 			symbols "On"
 
 		filter "configurations:Release"
 			defines "GM_RELEASE"
-			buildoptions "/MD"
+			runtime "Release"
 			optimize "On"
 
 		filter "configurations:Dist"
 			defines "GM_DIST"
-			buildoptions "/MD"
+			runtime "Release"
 			optimize "On"
 
 
@@ -96,6 +99,7 @@ project "Sandbox"
 	location "Sandbox"
 	kind "ConsoleApp"
 	language "C++"
+	staticruntime "off"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -121,7 +125,6 @@ project "Sandbox"
 
 	filter "system:windows"
 		cppdialect "C++20"
-		staticruntime "On"
 		systemversion "latest"
 		buildoptions { "/utf-8" }
 
@@ -134,15 +137,15 @@ project "Sandbox"
 
 		filter "configurations:Debug"
 			defines "GM_DEBUG"
-			buildoptions "/MDd"
+			runtime "Debug"
 			symbols "On"
 
 		filter "configurations:Release"
 			defines "GM_RELEASE"
-			buildoptions "/MD"
+			runtime "Release"
 			optimize "On"
 
 		filter "configurations:Dist"
 			defines "GM_DIST"
-			buildoptions "/MD"
+			runtime "Release"
 			optimize "On"
