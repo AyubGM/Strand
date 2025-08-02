@@ -1,4 +1,5 @@
 #include <GMCore.h>
+#include <ImGui/imgui.h>
 
 class ExampleLayer : public GMCore::Layer
 {
@@ -13,6 +14,15 @@ public:
 		//GM_INFO("ExampleLayer::Update");
 		if (GMCore::Input::IsKeyPressed(GM_KEY_TAB))
 			GM_TRACE("Tab key is pressed (poll)!");
+	}
+
+	virtual void OnImGuiRender() override
+	{
+		ImGui::Begin("Example Layer");
+		ImGui::Text("Hello from ExampleLayer!");
+		if (ImGui::Button("Click Me"))
+			GM_TRACE("Button clicked!");
+		ImGui::End();
 	}
 
 	void OnEvent(GMCore::Event& event) override

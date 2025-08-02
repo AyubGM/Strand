@@ -120,6 +120,7 @@ project "Sandbox"
 	{
 		"GMCore/vendor/spdlog/include",
 		"GMCore/src",
+		"GMCore/vendor",
 		"%{IncludeDir.glm}"
 	}
 
