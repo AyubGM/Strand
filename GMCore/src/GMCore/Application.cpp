@@ -71,7 +71,7 @@ namespace GMCore {
 			m_ImGuiLayer->End();
 
 
-			//Window update has poll events which will call Application onEvent and starts the chain of events for the layers and it has swap buffers which 
+			//m_Window update() has poll events which will call Application onEvent and starts the chain of events for the layers and it has swap buffers which 
 			m_Window->OnUpdate();
 		}
 	}
