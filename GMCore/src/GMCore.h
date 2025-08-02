@@ -5,6 +5,10 @@
 #include "GMCore/Layer.h"
 #include "GMCore/Log.h"
 
+#include "GMCore/Input.h"
+#include "GMCore/KeyCodes.h"
+#include "GMCore/MouseButtonCodes.h"
+
 #include "GMCore/ImGui/ImGuiLayer.h"
 
 // ---Entry Point--------------------

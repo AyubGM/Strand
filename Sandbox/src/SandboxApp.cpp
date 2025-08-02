@@ -11,11 +11,19 @@ public:
 	void OnUpdate() override
 	{
 		//GM_INFO("ExampleLayer::Update");
+		if (GMCore::Input::IsKeyPressed(GM_KEY_TAB))
+			GM_TRACE("Tab key is pressed (poll)!");
 	}
 
 	void OnEvent(GMCore::Event& event) override
 	{
-		GM_TRACE("{0}", event.ToString());
+		if (event.GetEventType() == GMCore::EventType::KeyPressed)
+		{
+			GMCore::KeyPressedEvent& e = (GMCore::KeyPressedEvent&)event;
+			if (e.GetKeyCode() == GM_KEY_TAB)
+				GM_TRACE("Tab key is pressed (event)!");
+			GM_TRACE("{0}", (char)e.GetKeyCode());
+		}
 	}
 
 };

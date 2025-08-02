@@ -4,6 +4,9 @@
 #include "GMCore/Log.h"
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
+
+#include "Input.h"
+
 namespace GMCore {
 
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
@@ -59,7 +62,7 @@ namespace GMCore {
 			for (Layer* layer : m_LayerStack)
 				layer->OnUpdate();
 
-			//
+			//Window update has poll events which will call Application onEvent and starts the chain of events for the layers and it has swap buffers which 
 			m_Window->OnUpdate();
 		}
 	}
