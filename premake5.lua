@@ -16,6 +16,7 @@ IncludeDir = {}
 IncludeDir["GLFW"] = "GMCore/vendor/GLFW/include"
 IncludeDir["Glad"] = "GMCore/vendor/Glad/include"
 IncludeDir["ImGui"] = "GMCore/vendor/imgui"
+IncludeDir["glm"] = "GMCore/vendor/glm"
 
 
 
@@ -39,7 +40,9 @@ project "GMCore"
 	files
 	{
 		"%{prj.name}/src/**.h",
-		"%{prj.name}/src/**.cpp"
+		"%{prj.name}/src/**.cpp",
+		"%{prj.name}/vendor/glm/glm/**.hpp",
+		"%{prj.name}/vendor/glm/glm/**.inl"
 	}
 
 	includedirs
@@ -48,7 +51,8 @@ project "GMCore"
 		"%{prj.name}/vendor/spdlog/include",
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.Glad}",
-		"%{IncludeDir.ImGui}"
+		"%{IncludeDir.ImGui}",
+		"%{IncludeDir.glm}"
 
 	}
 
@@ -115,7 +119,8 @@ project "Sandbox"
 	includedirs
 	{
 		"GMCore/vendor/spdlog/include",
-		"GMCore/src"
+		"GMCore/src",
+		"%{IncludeDir.glm}"
 	}
 
 	links

@@ -7,6 +7,7 @@
 #include "GMCore/LayerStack.h"
 #include "GMCore/Events/Event.h"
 #include "GMCore/Events/ApplicationEvent.h"
+#include "GMCore/ImGui/ImGuiLayer.h"
 
 namespace GMCore {
 
@@ -30,6 +31,7 @@ namespace GMCore {
 		bool OnWindowClose(WindowCloseEvent& e);
 
 		std::unique_ptr<Window> m_Window;
+		ImGuiLayer* m_ImGuiLayer;
 		bool m_Running = true;
 		LayerStack m_LayerStack;
 

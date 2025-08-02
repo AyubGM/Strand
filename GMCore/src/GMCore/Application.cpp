@@ -20,6 +20,9 @@ namespace GMCore {
 
 		m_Window = std::unique_ptr<Window> (Window::Create());
 		m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
+
+		m_ImGuiLayer = new ImGuiLayer();
+		PushOverlay(m_ImGuiLayer);
 	}
 	Application::~Application()
 	{
@@ -61,6 +64,12 @@ namespace GMCore {
 
 			for (Layer* layer : m_LayerStack)
 				layer->OnUpdate();
+
+			m_ImGuiLayer->Begin();
+			for (Layer* layer : m_LayerStack)
+				layer->OnImGuiRender();
+			m_ImGuiLayer->End();
+
 
 			//Window update has poll events which will call Application onEvent and starts the chain of events for the layers and it has swap buffers which 
 			m_Window->OnUpdate();
