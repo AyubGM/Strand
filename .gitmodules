@@ -7,3 +7,6 @@
 [submodule "GMCore/vendor/glm"]
 	path = GMCore/vendor/glm
 	url = https://github.com/g-truc/glm
+[submodule "GMCore/vendor/ImGui"]
+	path = GMCore/vendor/ImGui
+	url = https://github.com/ocornut/imgui.git
