@@ -2,7 +2,7 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>C:\dev\GMCore\bin\Debug-windows-x86_64\Strand\Strand.dll</FullPath>
+      <FullPath>C:\dev\Strand\bin\Debug-windows-x86_64\Strand\Strand.dll</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles />
