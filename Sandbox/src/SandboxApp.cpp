@@ -1,7 +1,7 @@
-#include <GMCore.h>
+#include <Strand.h>
 #include <ImGui/imgui.h>
 
-class ExampleLayer : public GMCore::Layer
+class ExampleLayer : public Strand::Layer
 {
 public:
 	ExampleLayer()
@@ -12,8 +12,8 @@ public:
 	void OnUpdate() override
 	{
 		//GM_INFO("ExampleLayer::Update");
-		if (GMCore::Input::IsKeyPressed(GM_KEY_TAB))
-			GM_TRACE("Tab key is pressed (poll)!");
+		if (Strand::Input::IsKeyPressed(SD_KEY_TAB))
+			SD_TRACE("Tab key is pressed (poll)!");
 	}
 
 	virtual void OnImGuiRender() override
@@ -21,23 +21,23 @@ public:
 		ImGui::Begin("Example Layer");
 		ImGui::Text("Hello from ExampleLayer!");
 		if (ImGui::Button("Click Me"))
-			GM_TRACE("Button clicked!");
+			SD_TRACE("Button clicked!");
 		ImGui::End();
 	}
 
-	void OnEvent(GMCore::Event& event) override
+	void OnEvent(Strand::Event& event) override
 	{
-		if (event.GetEventType() == GMCore::EventType::KeyPressed)
+		if (event.GetEventType() == Strand::EventType::KeyPressed)
 		{
-			GMCore::KeyPressedEvent& e = (GMCore::KeyPressedEvent&)event;
-			if (e.GetKeyCode() == GM_KEY_TAB)
-				GM_TRACE("Tab key is pressed (event)!");
-			GM_TRACE("{0}", (char)e.GetKeyCode());
+			Strand::KeyPressedEvent& e = (Strand::KeyPressedEvent&)event;
+			if (e.GetKeyCode() == SD_KEY_TAB)
+				SD_TRACE("Tab key is pressed (event)!");
+			SD_TRACE("{0}", (char)e.GetKeyCode());
 		}
 	}
 
 };
-class Sandbox : public GMCore::Application
+class Sandbox : public Strand::Application
 {
 public:
 	Sandbox()
@@ -52,7 +52,7 @@ public:
 
 };
 
-GMCore::Application* GMCore::CreateApplication()
+Strand::Application* Strand::CreateApplication()
 {
 	return new Sandbox();
 }

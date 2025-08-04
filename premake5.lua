@@ -1,4 +1,4 @@
-workspace "GMCore"
+workspace "Strand"
 	architecture "x64"
 	startproject "Sandbox"
 
@@ -13,20 +13,20 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 -- Include directories relative to root folder (solution directory)
 IncludeDir = {}
-IncludeDir["GLFW"] = "GMCore/vendor/GLFW/include"
-IncludeDir["Glad"] = "GMCore/vendor/Glad/include"
-IncludeDir["ImGui"] = "GMCore/vendor/imgui"
-IncludeDir["glm"] = "GMCore/vendor/glm"
+IncludeDir["GLFW"] = "Strand/vendor/GLFW/include"
+IncludeDir["Glad"] = "Strand/vendor/Glad/include"
+IncludeDir["ImGui"] = "Strand/vendor/imgui"
+IncludeDir["glm"] = "Strand/vendor/glm"
 
 
 
 group "Dependencies"
-	include "GMCore/vendor/GLFW"
-	include "GMCore/vendor/Glad"
-	include "GMCore/vendor/imgui"
+	include "Strand/vendor/GLFW"
+	include "Strand/vendor/Glad"
+	include "Strand/vendor/imgui"
 
-project "GMCore"
-	location "GMCore"
+project "Strand"
+	location "Strand"
 	kind "SharedLib"
 	language "C++"
 	staticruntime "off"
@@ -34,8 +34,8 @@ project "GMCore"
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
-	pchheader "gmcpch.h"
-	pchsource "GMCore/src/gmcpch.cpp"
+	pchheader "sdpch.h"
+	pchsource "Strand/src/sdpch.cpp"
 
 	files
 	{
@@ -72,8 +72,8 @@ project "GMCore"
 
 		defines
 		{
-			"GM_PLATFORM_WINDOWS",
-			"GM_BUILD_DLL",
+			"SD_PLATFORM_WINDOWS",
+			"SD_BUILD_DLL",
 			"GLFW_INCLUDE_NONE"
 		}
 
@@ -84,17 +84,17 @@ project "GMCore"
 
 
 		filter "configurations:Debug"
-			defines "GM_DEBUG"
+			defines "SD_DEBUG"
 			runtime "Debug"
 			symbols "On"
 
 		filter "configurations:Release"
-			defines "GM_RELEASE"
+			defines "SD_RELEASE"
 			runtime "Release"
 			optimize "On"
 
 		filter "configurations:Dist"
-			defines "GM_DIST"
+			defines "SD_DIST"
 			runtime "Release"
 			optimize "On"
 
@@ -118,15 +118,15 @@ project "Sandbox"
 
 	includedirs
 	{
-		"GMCore/vendor/spdlog/include",
-		"GMCore/src",
-		"GMCore/vendor",
+		"Strand/vendor/spdlog/include",
+		"Strand/src",
+		"Strand/vendor",
 		"%{IncludeDir.glm}"
 	}
 
 	links
 	{
-		"GMCore"
+		"Strand"
 	}
 
 	filter "system:windows"
@@ -136,22 +136,22 @@ project "Sandbox"
 
 		defines
 		{
-			"GM_PLATFORM_WINDOWS",
+			"SD_PLATFORM_WINDOWS",
 		}
 
 	
 
 		filter "configurations:Debug"
-			defines "GM_DEBUG"
+			defines "SD_DEBUG"
 			runtime "Debug"
 			symbols "On"
 
 		filter "configurations:Release"
-			defines "GM_RELEASE"
+			defines "SD_RELEASE"
 			runtime "Release"
 			optimize "On"
 
 		filter "configurations:Dist"
-			defines "GM_DIST"
+			defines "SD_DIST"
 			runtime "Release"
 			optimize "On"
