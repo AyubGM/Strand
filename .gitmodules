@@ -1,0 +1,12 @@
+[submodule "Strand/vendor/GLFW"]
+	path = Strand/vendor/GLFW
+	url = https://github.com/TheCherno/glfw
+[submodule "Strand/vendor/ImGui"]
+	path = Strand/vendor/ImGui
+	url = https://github.com/ocornut/imgui.git
+[submodule "Strand/vendor/glm"]
+	path = Strand/vendor/glm
+	url = https://github.com/g-truc/glm
+[submodule "Strand/vendor/spdlog"]
+	path = Strand/vendor/spdlog
+	url = https://github.com/gabime/spdlog
