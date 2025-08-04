@@ -1,16 +1,15 @@
 [submodule "vendor/spdlog"]
-	path =  GMCore/vendor/spdlog
-	url = https://github.com/gabime/spdlog
-	
-[submodule "GMCore/vendor/GLFW"]
-    path = GMCore/vendor/GLFW
+    path = Strand/vendor/spdlog
+    url = https://github.com/gabime/spdlog
+    
+[submodule "Strand/vendor/GLFW"]
+    path = Strand/vendor/GLFW
     url = https://github.com/TheCherno/glfw
 
-[submodule "GMCore/vendor/glm"]
-    path = GMCore/vendor/glm
+[submodule "Strand/vendor/glm"]
+    path = Strand/vendor/glm
     url = https://github.com/g-truc/glm
 
-[submodule "GMCore/vendor/ImGui"]
-    path = GMCore/vendor/ImGui
+[submodule "Strand/vendor/ImGui"]
+    path = Strand/vendor/ImGui
     url = https://github.com/ocornut/imgui.git
-
