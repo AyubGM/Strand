@@ -2,9 +2,6 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>C:\dev\Strand\bin\Debug-windows-x86_64\Strand\Strand.dll</FullPath>
-    </ProjectOutput>
-    <ProjectOutput>
       <FullPath>C:\dev\Strand\bin\Debug-windows-x86_64\Sandbox\Sandbox.exe</FullPath>
     </ProjectOutput>
   </ProjectOutputs>

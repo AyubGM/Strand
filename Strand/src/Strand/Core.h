@@ -1,12 +1,16 @@
 #pragma once
 
 #ifdef SD_PLATFORM_WINDOWS
+#if SD_DYNAMIC_LINK
 	#ifdef SD_BUILD_DLL
 		#define STRAND_API __declspec(dllexport)
 	#else
 		#define STRAND_API __declspec(dllimport)
 	#endif // SD_BUILD_DLL
 
+#else
+   #define STRAND_API
+#endif // SD_DYNAMIC_LINK
 #else
 	#error Strand only supports Windows!
 #endif // SD_PLATFORM_WINDOWS
