@@ -8,3 +8,4 @@ C:\dev\Strand\Strand\src\Strand\Layer.cpp;C:\dev\Strand\bin-int\Debug-windows-x8
 C:\dev\Strand\Strand\src\Strand\LayerStack.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\LayerStack.obj
 C:\dev\Strand\Strand\src\Strand\Log.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\Log.obj
 C:\dev\Strand\Strand\src\sdpch.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\sdpch.obj
+C:\dev\Strand\Strand\src\Strand\Renderer\Shader.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\Shader.obj

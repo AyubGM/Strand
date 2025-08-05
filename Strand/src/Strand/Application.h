@@ -8,6 +8,7 @@
 #include "Strand/Events/Event.h"
 #include "Strand/Events/ApplicationEvent.h"
 #include "Strand/ImGui/ImGuiLayer.h"
+#include "Strand/Renderer/Shader.h"
 
 namespace Strand {
 
@@ -34,6 +35,8 @@ namespace Strand {
 		ImGuiLayer* m_ImGuiLayer;
 		bool m_Running = true;
 		LayerStack m_LayerStack;
+
+		std::unique_ptr<Shader> m_Shader;
 
 		unsigned int m_VertextArray, m_VertextBuffer, m_IndexBuffer;
 

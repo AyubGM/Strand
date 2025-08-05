@@ -164,6 +164,7 @@
     <ClInclude Include="src\Strand\LayerStack.h" />
     <ClInclude Include="src\Strand\Log.h" />
     <ClInclude Include="src\Strand\MouseButtonCodes.h" />
+    <ClInclude Include="src\Strand\Renderer\Shader.h" />
     <ClInclude Include="src\Strand\Window.h" />
     <ClInclude Include="src\Strand\input.h" />
     <ClInclude Include="src\sdpch.h" />
@@ -599,6 +600,7 @@
     <ClCompile Include="src\sdpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\Strand\Renderer\Shader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="vendor\GLFW\GLFW.vcxproj">
