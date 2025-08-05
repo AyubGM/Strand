@@ -22,6 +22,7 @@ namespace Strand {
 		SD_CORE_INFO("  Vendor: {0}", (const char*)glGetString(GL_VENDOR));
 		SD_CORE_INFO("  Renderer: {0}", (const char*)glGetString(GL_RENDERER));
 		SD_CORE_INFO("  Version: {0}", (const char*)glGetString(GL_VERSION));
+
 	}
 	void OpenGLContext::SwapBuffers()
 	{
