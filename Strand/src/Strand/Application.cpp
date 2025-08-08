@@ -11,6 +11,27 @@ namespace Strand {
 
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
 
+	static GLenum ShaderDataTypeToOpenGLBaseType(ShaderDataType type)
+	{
+		switch (type)
+		{
+		case Strand::ShaderDataType::Float:    return GL_FLOAT;
+		case Strand::ShaderDataType::Float2:   return GL_FLOAT;
+		case Strand::ShaderDataType::Float3:   return GL_FLOAT;
+		case Strand::ShaderDataType::Float4:   return GL_FLOAT;
+		case Strand::ShaderDataType::Mat3:     return GL_FLOAT;
+		case Strand::ShaderDataType::Mat4:     return GL_FLOAT;
+		case Strand::ShaderDataType::Int:      return GL_INT;
+		case Strand::ShaderDataType::Int2:     return GL_INT;
+		case Strand::ShaderDataType::Int3:     return GL_INT;
+		case Strand::ShaderDataType::Int4:     return GL_INT;
+		case Strand::ShaderDataType::Bool:     return GL_BOOL;
+		}
+
+		SD_CORE_ASSERT(false, "Unknown ShaderDataType!");
+		return 0;
+	}
+
 	Application* Application::s_Instance = nullptr;
 
 	Application::Application()
@@ -28,17 +49,36 @@ namespace Strand {
 		glBindVertexArray(m_VertextArray);
 
 
-		float vertices[3 * 3] = {
-			-0.5f, -0.5f, 0.0f,
-			 0.5f, -0.5f, 0.0f,
-			 0.0f,  0.5f, 0.0f
+		float vertices[3 * 7] = {
+			-0.5f, -0.5f, 0.0f, 0.8f, 0.2f, 0.8f, 1.0f,
+			 0.5f, -0.5f, 0.0f, 0.2f, 0.3f, 0.8f, 1.0f,
+			 0.0f,  0.5f, 0.0f, 0.8f, 0.8f, 0.2f, 1.0f
 		};
 
 		m_VertexBuffer.reset(VertexBuffer::Create(vertices, sizeof(vertices)));
 
+		{
+			BufferLayout layout = {
+				{ ShaderDataType::Float3, "a_Position" },
+				{ ShaderDataType::Float4, "a_Color" }
+			};
 
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+			m_VertexBuffer->SetLayout(layout);
+		}
+
+		uint32_t index = 0;
+		const auto& layout = m_VertexBuffer->GetLayout();
+		for (const auto& element : layout)
+		{
+			glEnableVertexAttribArray(index);
+			glVertexAttribPointer(index,
+				element.GetComponentCount(),
+				ShaderDataTypeToOpenGLBaseType(element.Type),
+				element.Normalized ? GL_TRUE : GL_FALSE,
+				layout.GetStride(),
+				(const void*)element.Offset);
+			index++;
+		}
 
 
 		uint32_t indices[3] = { 0, 1, 2 };
