@@ -1,3 +1,4 @@
+C:\dev\Strand\Strand\src\Platform\OpenGL\OpenGLBuffer.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\OpenGLBuffer.obj
 C:\dev\Strand\Strand\src\Platform\OpenGL\OpenGLContext.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\OpenGLContext.obj
 C:\dev\Strand\Strand\src\Platform\Windows\WindowsInput.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\WindowsInput.obj
 C:\dev\Strand\Strand\src\Platform\Windows\WindowsWindow.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\WindowsWindow.obj
@@ -8,4 +9,6 @@ C:\dev\Strand\Strand\src\Strand\Layer.cpp;C:\dev\Strand\bin-int\Debug-windows-x8
 C:\dev\Strand\Strand\src\Strand\LayerStack.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\LayerStack.obj
 C:\dev\Strand\Strand\src\Strand\Log.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\Log.obj
 C:\dev\Strand\Strand\src\sdpch.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\sdpch.obj
+C:\dev\Strand\Strand\src\Strand\Renderer\Buffer.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\Buffer.obj
+C:\dev\Strand\Strand\src\Strand\Renderer\Renderer.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\Renderer.obj
 C:\dev\Strand\Strand\src\Strand\Renderer\Shader.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\Shader.obj

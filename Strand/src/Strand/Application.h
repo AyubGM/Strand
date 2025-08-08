@@ -9,6 +9,8 @@
 #include "Strand/Events/ApplicationEvent.h"
 #include "Strand/ImGui/ImGuiLayer.h"
 #include "Strand/Renderer/Shader.h"
+#include "Strand/Renderer/Buffer.h"
+
 
 namespace Strand {
 
@@ -38,7 +40,9 @@ namespace Strand {
 
 		std::unique_ptr<Shader> m_Shader;
 
-		unsigned int m_VertextArray, m_VertextBuffer, m_IndexBuffer;
+		unsigned int m_VertextArray;
+		std::unique_ptr<VertexBuffer> m_VertexBuffer;
+		std::unique_ptr<IndexBuffer> m_IndexBuffer;
 
 	private:
 		static Application* s_Instance;
