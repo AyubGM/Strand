@@ -1,5 +1,6 @@
 C:\dev\Strand\Strand\src\Platform\OpenGL\OpenGLBuffer.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\OpenGLBuffer.obj
 C:\dev\Strand\Strand\src\Platform\OpenGL\OpenGLContext.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\OpenGLContext.obj
+C:\dev\Strand\Strand\src\Platform\OpenGL\OpenGLRendererAPI.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\OpenGLRendererAPI.obj
 C:\dev\Strand\Strand\src\Platform\OpenGL\OpenGLVertexArray.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\OpenGLVertexArray.obj
 C:\dev\Strand\Strand\src\Platform\Windows\WindowsInput.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\WindowsInput.obj
 C:\dev\Strand\Strand\src\Platform\Windows\WindowsWindow.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\WindowsWindow.obj
@@ -11,6 +12,8 @@ C:\dev\Strand\Strand\src\Strand\LayerStack.cpp;C:\dev\Strand\bin-int\Debug-windo
 C:\dev\Strand\Strand\src\Strand\Log.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\Log.obj
 C:\dev\Strand\Strand\src\sdpch.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\sdpch.obj
 C:\dev\Strand\Strand\src\Strand\Renderer\Buffer.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\Buffer.obj
+C:\dev\Strand\Strand\src\Strand\Renderer\RenderCommand.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\RenderCommand.obj
 C:\dev\Strand\Strand\src\Strand\Renderer\Renderer.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\Renderer.obj
+C:\dev\Strand\Strand\src\Strand\Renderer\RendererAPI.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\RendererAPI.obj
 C:\dev\Strand\Strand\src\Strand\Renderer\Shader.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\Shader.obj
 C:\dev\Strand\Strand\src\Strand\Renderer\VertexArray.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\VertexArray.obj
