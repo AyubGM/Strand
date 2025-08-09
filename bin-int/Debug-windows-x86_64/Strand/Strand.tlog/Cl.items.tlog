@@ -12,6 +12,7 @@ C:\dev\Strand\Strand\src\Strand\LayerStack.cpp;C:\dev\Strand\bin-int\Debug-windo
 C:\dev\Strand\Strand\src\Strand\Log.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\Log.obj
 C:\dev\Strand\Strand\src\sdpch.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\sdpch.obj
 C:\dev\Strand\Strand\src\Strand\Renderer\Buffer.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\Buffer.obj
+C:\dev\Strand\Strand\src\Strand\Renderer\OrthographicCamera.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\OrthographicCamera.obj
 C:\dev\Strand\Strand\src\Strand\Renderer\RenderCommand.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\RenderCommand.obj
 C:\dev\Strand\Strand\src\Strand\Renderer\Renderer.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\Renderer.obj
 C:\dev\Strand\Strand\src\Strand\Renderer\RendererAPI.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\RendererAPI.obj

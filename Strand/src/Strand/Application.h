@@ -12,6 +12,8 @@
 #include "Strand/Renderer/Buffer.h"
 #include "Strand/Renderer/VertexArray.h"
 
+#include "Strand/Renderer/OrthographicCamera.h"
+
 
 namespace Strand {
 
@@ -45,6 +47,7 @@ namespace Strand {
 		std::shared_ptr<Shader> m_BlueShader;
 		std::shared_ptr<VertexArray> m_SquareVA;
 
+		OrthographicCamera m_Camera;
 	private:
 		static Application* s_Instance;
 	};

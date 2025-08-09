@@ -1,6 +1,8 @@
 #pragma once
 
 #include <string>
+#include <glm/glm.hpp>
+
 
 namespace Strand {
 
@@ -12,6 +14,8 @@ namespace Strand {
 
 		void Bind() const;
 		void Unbind() const;
+
+		void UploadUniformMat4(const std::string& name, const glm::mat4& matrix);
 	private:
 		uint32_t m_RendererID; // The OpenGL ID of the shader program
 	};
