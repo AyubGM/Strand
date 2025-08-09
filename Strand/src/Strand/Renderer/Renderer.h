@@ -18,6 +18,7 @@ namespace Strand
 		inline static RendererAPI::API GetAPI() { return RendererAPI::GetAPI(); }
 
 	private:
+		// SecneData So we do not have to copy the whole camera class
 		struct SceneData
 		{
 			glm::mat4 ViewProjectionMatrix;

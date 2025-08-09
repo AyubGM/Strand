@@ -162,6 +162,7 @@ namespace Strand {
 	{
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
+		dispatcher.Dispatch<KeyPressedEvent>(BIND_EVENT_FN(OnKeyPressed));
 
 		SD_CORE_TRACE("{0}", e.ToString());
 		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin(); )
@@ -180,8 +181,8 @@ namespace Strand {
 			RenderCommand::SetClearColor({ 0.0f, 0.0f, 0.0f, 1.0f });
 			RenderCommand::Clear();
 
-			m_Camera.SetPosition({ 0.5f, 0.5f, 0.0f });
-			m_Camera.SetRotation(45.0f);
+			/*m_Camera.SetPosition({ 0.5f, 0.5f, 0.0f });
+			m_Camera.SetRotation(45.0f);*/
 
 			Renderer::BeginScene(m_Camera);
 
@@ -211,4 +212,22 @@ namespace Strand {
 		m_Running = false;
 		return true;
 	}
+
+	// Testing
+	bool Application::OnKeyPressed(KeyPressedEvent& e)
+	{
+		float moveSpeed = 0.1f;
+		glm::vec3 pos = m_Camera.GetPosition();
+
+		switch (e.GetKeyCode())
+		{
+		case GLFW_KEY_W: pos.y += moveSpeed; break;
+		case GLFW_KEY_S: pos.y -= moveSpeed; break;
+		case GLFW_KEY_A: pos.x -= moveSpeed; break;
+		case GLFW_KEY_D: pos.x += moveSpeed; break;
+		}
+		m_Camera.SetPosition(pos);
+		return false;
+	}
+
 }

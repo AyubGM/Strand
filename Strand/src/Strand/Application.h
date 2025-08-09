@@ -35,6 +35,8 @@ namespace Strand {
 		inline static Application& Get() { return *s_Instance; }
 	private:
 		bool OnWindowClose(WindowCloseEvent& e);
+		// For testing purposes
+		bool OnKeyPressed(KeyPressedEvent& e);
 
 		std::unique_ptr<Window> m_Window;
 		ImGuiLayer* m_ImGuiLayer;
