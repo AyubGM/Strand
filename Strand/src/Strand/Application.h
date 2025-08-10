@@ -8,9 +8,8 @@
 #include "Strand/Events/Event.h"
 #include "Strand/Events/ApplicationEvent.h"
 #include "Strand/ImGui/ImGuiLayer.h"
-#include "Strand/Renderer/Shader.h"
-#include "Strand/Renderer/Buffer.h"
-#include "Strand/Renderer/VertexArray.h"
+
+#include "Strand/Core/Timestep.h"
 
 #include "Strand/Renderer/OrthographicCamera.h"
 
@@ -35,12 +34,13 @@ namespace Strand {
 		inline static Application& Get() { return *s_Instance; }
 	private:
 		bool OnWindowClose(WindowCloseEvent& e);
-
+	private:
 
 		std::unique_ptr<Window> m_Window;
 		ImGuiLayer* m_ImGuiLayer;
 		bool m_Running = true;
 		LayerStack m_LayerStack;
+		float m_LastFrameTime = 0.0f;
 
 		
 	private:

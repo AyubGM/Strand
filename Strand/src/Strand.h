@@ -5,6 +5,8 @@
 #include "Strand/Layer.h"
 #include "Strand/Log.h"
 
+#include "Strand/Core/Timestep.h"
+
 #include "Strand/Input.h"
 #include "Strand/KeyCodes.h"
 #include "Strand/MouseButtonCodes.h"

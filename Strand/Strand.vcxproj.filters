@@ -1365,6 +1365,7 @@
     <ClInclude Include="src\Strand\Renderer\RenderCommand.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h" />
     <ClInclude Include="src\Strand\Renderer\OrthographicCamera.h" />
+    <ClInclude Include="src\Strand\Core\Timestep.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\Windows\WindowsInput.cpp">
