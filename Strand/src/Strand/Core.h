@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #ifdef SD_PLATFORM_WINDOWS
 #if SD_DYNAMIC_LINK
 	#ifdef SD_BUILD_DLL
@@ -31,3 +33,12 @@
 
 #define BIT(x) (1 << x)
 #define SD_BIND_EVENT_FN(fn) std::bind(&fn, this, std::placeholders::_1)
+
+namespace Strand {
+
+	template<typename T>
+	using Scope = std::unique_ptr<T>;
+
+	template<typename T>
+	using Ref = std::shared_ptr<T>;
+}
