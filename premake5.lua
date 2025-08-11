@@ -17,6 +17,7 @@ IncludeDir["GLFW"] = "Strand/vendor/GLFW/include"
 IncludeDir["Glad"] = "Strand/vendor/Glad/include"
 IncludeDir["ImGui"] = "Strand/vendor/imgui"
 IncludeDir["glm"] = "Strand/vendor/glm"
+IncludeDir["stb_image"] = "Strand/vendor/stb_image"
 
 
 
@@ -42,6 +43,8 @@ project "Strand"
 	{
 		"%{prj.name}/src/**.h",
 		"%{prj.name}/src/**.cpp",
+		"%{prj.name}/vendor/stb_image/**.h",
+		"%{prj.name}/vendor/stb_image/**.cpp",
 		"%{prj.name}/vendor/glm/glm/**.hpp",
 		"%{prj.name}/vendor/glm/glm/**.inl"
 	}
@@ -58,7 +61,9 @@ project "Strand"
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.Glad}",
 		"%{IncludeDir.ImGui}",
-		"%{IncludeDir.glm}"
+		"%{IncludeDir.glm}",
+		"%{IncludeDir.stb_image}"
+
 
 	}
 
