@@ -1,6 +1,7 @@
 C:\dev\Strand\Strand\src\Platform\OpenGL\OpenGLBuffer.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\OpenGLBuffer.obj
 C:\dev\Strand\Strand\src\Platform\OpenGL\OpenGLContext.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\OpenGLContext.obj
 C:\dev\Strand\Strand\src\Platform\OpenGL\OpenGLRendererAPI.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\OpenGLRendererAPI.obj
+C:\dev\Strand\Strand\src\Platform\OpenGL\OpenGLShader.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\OpenGLShader.obj
 C:\dev\Strand\Strand\src\Platform\OpenGL\OpenGLVertexArray.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\OpenGLVertexArray.obj
 C:\dev\Strand\Strand\src\Platform\Windows\WindowsInput.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\WindowsInput.obj
 C:\dev\Strand\Strand\src\Platform\Windows\WindowsWindow.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\WindowsWindow.obj
