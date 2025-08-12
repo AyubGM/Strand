@@ -93,7 +93,7 @@ public:
 			}
 		)";
 
-		m_Shader.reset(Strand::Shader::Create(vertexSrc, fragmentSrc));
+		m_Shader = Strand::Shader::Create("VertexPosColor", vertexSrc, fragmentSrc);
 
 
 		std::string flatColorShaderVertexSrc = R"(
@@ -128,17 +128,15 @@ public:
 			}
 		)";
 
-		m_FlatColorShader.reset( Strand::Shader::Create(flatColorShaderVertexSrc, flatColorShaderFragmentSrc));
+		m_FlatColorShader = Strand::Shader::Create("FlatColor", flatColorShaderVertexSrc, flatColorShaderFragmentSrc);
 
 
 
-		m_TextureShader.reset(Strand::Shader::Create("assets/shaders/Texture.glsl"));
+		auto textureShader = m_ShaderLibrary.Load("assets/shaders/Texture.glsl");
 
 		m_Texture = Strand::Texture2D::Create("assets/textures/Checkerboard.png");
 		m_ChernoLogoTexture = Strand::Texture2D::Create("assets/textures/ChernoLogo.png");
 
-		std::dynamic_pointer_cast<Strand::OpenGLShader>(m_TextureShader)->Bind();
-		std::dynamic_pointer_cast<Strand::OpenGLShader>(m_TextureShader)->UploadUniformInt("u_Texture", 0);
 	}
 
 	void OnUpdate(Strand::Timestep ts) override
@@ -188,11 +186,13 @@ public:
 			}
 		}
 
+		auto textureShader = m_ShaderLibrary.Get("Texture");
+
 		m_Texture->Bind();
-		Strand::Renderer::Submit(m_TextureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+		Strand::Renderer::Submit(textureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
 
 		m_ChernoLogoTexture->Bind();
-		Strand::Renderer::Submit(m_TextureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+		Strand::Renderer::Submit(textureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
 
 		// Triangle
 		//Strand::Renderer::Submit(m_Shader, m_VertexArray);
@@ -238,10 +238,11 @@ public:
 	}
 
 private:
+	Strand::ShaderLibrary m_ShaderLibrary;
 	Strand::Ref<Strand::Shader> m_Shader;
 	Strand::Ref<Strand::VertexArray> m_VertexArray;
 
-	Strand::Ref<Strand::Shader> m_FlatColorShader, m_TextureShader;
+	Strand::Ref<Strand::Shader> m_FlatColorShader;
 	Strand::Ref<Strand::VertexArray> m_SquareVA;
 
 	Strand::Ref<Strand::Texture2D> m_Texture, m_ChernoLogoTexture;
