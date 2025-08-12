@@ -166,6 +166,7 @@ public:
 		m_TextureShader.reset(Strand::Shader::Create(textureShaderVertexSrc, textureShaderFragmentSrc));
 
 		m_Texture = Strand::Texture2D::Create("assets/textures/Checkerboard.png");
+		m_ChernoLogoTexture = Strand::Texture2D::Create("assets/textures/ChernoLogo.png");
 
 		std::dynamic_pointer_cast<Strand::OpenGLShader>(m_TextureShader)->Bind();
 		std::dynamic_pointer_cast<Strand::OpenGLShader>(m_TextureShader)->UploadUniformInt("u_Texture", 0);
@@ -220,6 +221,10 @@ public:
 
 		m_Texture->Bind();
 		Strand::Renderer::Submit(m_TextureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+
+		m_ChernoLogoTexture->Bind();
+		Strand::Renderer::Submit(m_TextureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+
 		// Triangle
 		//Strand::Renderer::Submit(m_Shader, m_VertexArray);
 
@@ -270,7 +275,7 @@ private:
 	Strand::Ref<Strand::Shader> m_FlatColorShader, m_TextureShader;
 	Strand::Ref<Strand::VertexArray> m_SquareVA;
 
-	Strand::Ref<Strand::Texture2D> m_Texture;
+	Strand::Ref<Strand::Texture2D> m_Texture, m_ChernoLogoTexture;
 
 	Strand::OrthographicCamera m_Camera;
 	glm::vec3 m_CameraPosition;
