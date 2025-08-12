@@ -5,6 +5,8 @@
 
 #include <glm/gtc/type_ptr.hpp>
 
+#include <filesystem>
+
 namespace Strand {
 
 
@@ -26,11 +28,14 @@ namespace Strand {
 		Compile(shaderSources);
 
 		// Extract name from filepath
-		auto lastSlash = filepath.find_last_of("/\\");
+		/*auto lastSlash = filepath.find_last_of("/\\");
 		lastSlash = lastSlash == std::string::npos ? 0 : lastSlash + 1;
 		auto lastDot = filepath.rfind('.');
 		auto count = lastDot == std::string::npos ? filepath.size() - lastSlash : lastDot - lastSlash;
-		m_Name = filepath.substr(lastSlash, count);
+		m_Name = filepath.substr(lastSlash, count);*/
+
+		std::filesystem::path path = filepath;
+		m_Name = path.stem().string(); // Returns the file's name stripped of the extension.
 	}
 
 	OpenGLShader::OpenGLShader(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc)
