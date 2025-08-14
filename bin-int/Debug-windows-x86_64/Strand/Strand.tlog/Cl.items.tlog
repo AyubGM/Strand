@@ -12,6 +12,7 @@ C:\dev\Strand\Strand\src\Strand\ImGui\ImGuiLayer.cpp;C:\dev\Strand\bin-int\Debug
 C:\dev\Strand\Strand\src\Strand\Layer.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\Layer.obj
 C:\dev\Strand\Strand\src\Strand\LayerStack.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\LayerStack.obj
 C:\dev\Strand\Strand\src\Strand\Log.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\Log.obj
+C:\dev\Strand\Strand\src\Strand\OrthographicCameraController.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\OrthographicCameraController.obj
 C:\dev\Strand\Strand\src\Strand\Renderer\Buffer.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\Buffer.obj
 C:\dev\Strand\Strand\src\Strand\Renderer\OrthographicCamera.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\OrthographicCamera.obj
 C:\dev\Strand\Strand\src\Strand\Renderer\RenderCommand.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\RenderCommand.obj

@@ -10,6 +10,7 @@
 #include "Strand/Input.h"
 #include "Strand/KeyCodes.h"
 #include "Strand/MouseButtonCodes.h"
+#include "Strand/OrthographicCameraController.h"
 
 #include "Strand/ImGui/ImGuiLayer.h"
 
