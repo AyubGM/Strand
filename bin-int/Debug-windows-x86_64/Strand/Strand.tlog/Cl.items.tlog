@@ -17,6 +17,7 @@ C:\dev\Strand\Strand\src\Strand\Renderer\OrthographicCamera.cpp;C:\dev\Strand\bi
 C:\dev\Strand\Strand\src\Strand\Renderer\OrthographicCameraController.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\OrthographicCameraController.obj
 C:\dev\Strand\Strand\src\Strand\Renderer\RenderCommand.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\RenderCommand.obj
 C:\dev\Strand\Strand\src\Strand\Renderer\Renderer.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\Renderer.obj
+C:\dev\Strand\Strand\src\Strand\Renderer\Renderer2D.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\Renderer2D.obj
 C:\dev\Strand\Strand\src\Strand\Renderer\RendererAPI.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\RendererAPI.obj
 C:\dev\Strand\Strand\src\Strand\Renderer\Shader.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\Shader.obj
 C:\dev\Strand\Strand\src\Strand\Renderer\Texture.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\Texture.obj
