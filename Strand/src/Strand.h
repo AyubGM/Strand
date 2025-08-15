@@ -27,5 +27,5 @@
 // -
 
 // ---Entry Point--------------------
-#include "Strand/Core/EntryPoint.h"
+//#include "Strand/Core/EntryPoint.h"
 // ----------------------------------
