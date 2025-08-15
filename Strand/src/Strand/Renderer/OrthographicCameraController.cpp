@@ -1,8 +1,8 @@
 #include "sdpch.h"
 #include "OrthographicCameraController.h"
 
-#include "Strand/Input.h"
-#include "Strand/KeyCodes.h"
+#include "Strand/Core/Input.h"
+#include "Strand/Core/KeyCodes.h"
 
 namespace Strand {
 

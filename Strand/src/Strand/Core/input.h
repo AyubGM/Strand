@@ -1,7 +1,7 @@
 #pragma once
 
 #include <utility>
-#include "Strand/Core.h"
+#include "Strand/Core/Core.h"
 
 namespace Strand {
 

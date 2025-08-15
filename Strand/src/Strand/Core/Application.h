@@ -4,7 +4,7 @@
 
 
 #include "Window.h"
-#include "Strand/LayerStack.h"
+#include "Strand/Core/LayerStack.h"
 #include "Strand/Events/Event.h"
 #include "Strand/Events/ApplicationEvent.h"
 #include "Strand/ImGui/ImGuiLayer.h"

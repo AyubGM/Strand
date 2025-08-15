@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include "Strand/Core.h"
+#include "Strand/Core/Core.h"
 
 namespace Strand {
 

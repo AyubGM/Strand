@@ -1,16 +1,16 @@
 #pragma once
 
 // For use by Strand Apps
-#include "Strand/Application.h"
-#include "Strand/Layer.h"
-#include "Strand/Log.h"
+#include "Strand/Core/Application.h"
+#include "Strand/Core/Layer.h"
+#include "Strand/Core/Log.h"
 
 #include "Strand/Core/Timestep.h"
 
-#include "Strand/Input.h"
-#include "Strand/KeyCodes.h"
-#include "Strand/MouseButtonCodes.h"
-#include "Strand/OrthographicCameraController.h"
+#include "Strand/Core/Input.h"
+#include "Strand/Core/KeyCodes.h"
+#include "Strand/Core/MouseButtonCodes.h"
+#include "Strand/Renderer/OrthographicCameraController.h"
 
 #include "Strand/ImGui/ImGuiLayer.h"
 
@@ -27,5 +27,5 @@
 // -
 
 // ---Entry Point--------------------
-#include "Strand/EntryPoint.h"
+#include "Strand/Core/EntryPoint.h"
 // ----------------------------------

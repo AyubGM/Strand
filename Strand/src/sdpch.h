@@ -13,7 +13,7 @@
 #include <unordered_map>
 #include <unordered_set>
 
-#include "Strand/Log.h"
+#include "Strand/Core/Log.h"
 
 #ifdef SD_PLATFORM_WINDOWS
 	#include <Windows.h>

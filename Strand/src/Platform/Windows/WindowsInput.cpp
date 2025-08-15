@@ -1,7 +1,7 @@
 #include "sdpch.h"
 #include "WindowsInput.h"
 
-#include "Strand/Application.h"
+#include "Strand/Core/Application.h"
 #include <GLFW/glfw3.h>
 
 namespace Strand {

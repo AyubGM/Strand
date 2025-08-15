@@ -1,7 +1,7 @@
 #pragma once
 
 
-#include "Strand/Input.h"
+#include "Strand/Core/Input.h"
 
 namespace Strand {
 

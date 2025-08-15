@@ -1,7 +1,6 @@
 #include "sdpch.h"
 #include "Application.h"
-#include "Events/ApplicationEvent.h"
-#include "Strand/Log.h"
+#include "Strand/Core/Log.h"
 #include <GLFW/glfw3.h>
 
 #include "Strand/Renderer/Renderer.h"
