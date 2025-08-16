@@ -64,6 +64,7 @@ void Sandbox2D::OnDetach()
 void Sandbox2D::OnUpdate(Strand::Timestep ts)
 {
 	PROFILE_SCOPE("Sandbox2D::OnUpdate");
+
 	{
 		PROFILE_SCOPE("CameraController::OnUpdate");
 		m_CameraController.OnUpdate(ts);
