@@ -15,6 +15,8 @@
 
 #include "Strand/Core/Log.h"
 
+#include "Strand/Debug/Instrumentor.h"
+
 #ifdef SD_PLATFORM_WINDOWS
 	#include <Windows.h>
 #endif // SD_PLATFORM_WINDOWS

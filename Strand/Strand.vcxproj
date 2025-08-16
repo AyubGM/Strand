@@ -166,6 +166,7 @@
     <ClInclude Include="src\Strand\Core\Timestep.h" />
     <ClInclude Include="src\Strand\Core\Window.h" />
     <ClInclude Include="src\Strand\Core\input.h" />
+    <ClInclude Include="src\Strand\Debug\Instrumentor.h" />
     <ClInclude Include="src\Strand\Events\ApplicationEvent.h" />
     <ClInclude Include="src\Strand\Events\Event.h" />
     <ClInclude Include="src\Strand\Events\KeyEvent.h" />

@@ -7,12 +7,18 @@ extern Strand::Application* Strand::CreateApplication();
 int main(int argc, char* argv)
 {
 	Strand::Log::Init();
-	SD_CORE_WARN("Initialized Log!"); 
-	int a = 5;
-	SD_INFO("Initialized Log! Var={0}", a);
+
+	SD_PROFILE_BEGIN_SESSION("Startup", "StrandProfile-Startup.json");
 	auto app = Strand::CreateApplication();
+	SD_PROFILE_END_SESSION();
+
+	SD_PROFILE_BEGIN_SESSION("Runtime", "StrandProfile-Runtime.json");
 	app->Run();
+	SD_PROFILE_END_SESSION();
+
+	SD_PROFILE_BEGIN_SESSION("Shutdown", "StrandProfile-Shutdown.json");
 	delete app;
+	SD_PROFILE_END_SESSION();
 }
 
 #endif // SD_PLATFORM_WINDOWS
