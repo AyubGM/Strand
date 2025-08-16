@@ -17,6 +17,8 @@ namespace Strand {
 	Application::Application()
 		
 	{
+		SD_PROFILE_FUNCTION();
+
 		SD_CORE_ASSERT(!s_Instance, "Application already exists!");
 		s_Instance = this;
 
@@ -33,23 +35,32 @@ namespace Strand {
 
 	Application::~Application()
 	{
+		SD_PROFILE_FUNCTION();
+
+		Renderer::Shutdown();
 	}
 
 
 	void Application::PushLayer(Layer* layer)
 	{
+		SD_PROFILE_FUNCTION();
+
 		m_LayerStack.PushLayer(layer);
 		layer->OnAttach();
 	}
 
 	void Application::PushOverlay(Layer* layer)
 	{
+		SD_PROFILE_FUNCTION();
+
 		m_LayerStack.PushOverlay(layer);
 		layer->OnAttach();
 	}
 
 	void Application::OnEvent(Event& e)
 	{
+		SD_PROFILE_FUNCTION();
+
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
 		dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(OnWindowResize));
@@ -65,23 +76,36 @@ namespace Strand {
 
 	void Application::Run()
 	{
+		SD_PROFILE_FUNCTION();
+
+
 		while (m_Running)
 		{
+			SD_PROFILE_SCOPE("RunLoop");
+
 			float time = (float)glfwGetTime();
 			Timestep timestep = time - m_LastFrameTime;
 			m_LastFrameTime = time;
 
 			if(!m_Minimized)
 			{
-				for (Layer* layer : m_LayerStack)
-					layer->OnUpdate(timestep);
+				{
+					SD_PROFILE_SCOPE("LayerStack OnUpdate");
+
+					for (Layer* layer : m_LayerStack)
+						layer->OnUpdate(timestep);
+				}
+
+				m_ImGuiLayer->Begin();
+				{
+					SD_PROFILE_SCOPE("LayerStack OnImGuiRender");
+
+					for (Layer* layer : m_LayerStack)
+						layer->OnImGuiRender();
+				}
+				m_ImGuiLayer->End();
+
 			}
-
-			m_ImGuiLayer->Begin();
-			for (Layer* layer : m_LayerStack)
-				layer->OnImGuiRender();
-			m_ImGuiLayer->End();
-
 
 			//m_Window update() has poll events which will call Application onEvent and starts the chain of events for the layers and it has swap buffers which 
 			m_Window->OnUpdate();
@@ -96,6 +120,8 @@ namespace Strand {
 
 	bool Application::OnWindowResize(WindowResizeEvent& e)
 	{
+		SD_PROFILE_FUNCTION();
+
 		if(e.GetWidth() == 0 || e.GetHeight() == 0)
 		{
 			m_Minimized = true; // If the window is minimized, we do not want to render anything

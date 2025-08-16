@@ -14,6 +14,7 @@ namespace Strand {
 	}
 	void OpenGLContext::Init()
 	{
+		SD_PROFILE_FUNCTION();
 
 		glfwMakeContextCurrent(m_WindowHandle);
 		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
@@ -26,6 +27,7 @@ namespace Strand {
 	}
 	void OpenGLContext::SwapBuffers()
 	{
+		SD_PROFILE_FUNCTION();
 
 		glfwSwapBuffers(m_WindowHandle);
 	}
