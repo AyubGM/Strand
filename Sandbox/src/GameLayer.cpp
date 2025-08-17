@@ -10,10 +10,14 @@ GameLayer::GameLayer(): Layer("GameLayer")
 {
 	auto& window = Application::Get().GetWindow();
 	CreateCamera(window.GetWidth(), window.GetHeight());
+	m_Camera->SetPosition({ 0.0f, 0.0f, 0.0f }); //TODO
+	Random::Init();
 }
 
 void GameLayer::OnAttach()
 {
+	m_Level.Init();
+
 	ImGuiIO io = ImGui::GetIO();
 	m_Font = io.Fonts->AddFontFromFileTTF("assets/OpenSans-Regular.ttf", 16.0f);
 }
@@ -25,30 +29,31 @@ void GameLayer::OnDetach()
 void GameLayer::OnUpdate(Strand::Timestep ts)
 {
 	m_Time += ts;
-	if((int)(m_Time * 10.0f) & 8 > 4)
+	if ((int)(m_Time * 10.0f) % 8 > 4)
 		m_Blink = !m_Blink;
 
-	const auto& playerPos = glm::vec2(0.0f, 0.0f);
-	// Update camera position based on player position
-	m_Camera->SetPosition({ playerPos.x, playerPos.y, 0.0f });
+	if (m_Level.IsGameOver())
+		m_State = GameState::GameOver;
+
+	const auto& playerPos = glm::vec2(0.5f, 0.2f);//m_Level.GetPlayer().GetPosition();
+	//m_Camera->SetPosition({ playerPos.x, playerPos.y, 0.0f });
 
 	switch (m_State)
 	{
 	case GameState::Play:
 	{
-		//level.OnUpdate(ts);
+		m_Level.OnUpdate(ts);
 		break;
 	}
-		
 	}
 
-	Strand::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
+	// Render
+	Strand::RenderCommand::SetClearColor({ 0.0f, 0.0f, 0.0f, 1 });
 	Strand::RenderCommand::Clear();
 
-	Strand::Renderer::BeginScene(*m_Camera);
-	// level.OnRender();
-	Strand::Renderer::EndScene();
-
+	Strand::Renderer2D::BeginScene(*m_Camera);
+	m_Level.OnRender();
+	Strand::Renderer2D::EndScene();
 }
 
 void GameLayer::OnImGuiRender()
@@ -105,23 +110,24 @@ void GameLayer::OnImGuiRender()
 void GameLayer::OnEvent(Strand::Event& e)
 {
 	EventDispatcher dispatcher(e);
-	dispatcher.Dispatch<WindowResizeEvent>(SD_BIND_EVENT_FN(GameLayer::OnWindowResizeEvent));
-	dispatcher.Dispatch<MouseButtonPressedEvent>(SD_BIND_EVENT_FN(GameLayer::OnMouseButtonPressedEvent));
+	dispatcher.Dispatch<WindowResizeEvent>(SD_BIND_EVENT_FN(GameLayer::OnWindowResize));
+	dispatcher.Dispatch<MouseButtonPressedEvent>(SD_BIND_EVENT_FN(GameLayer::OnMouseButtonPressed));
 
 }
 
 
-bool GameLayer::OnMouseButtonPressedEvent(Strand::MouseButtonPressedEvent& e)
+bool GameLayer::OnMouseButtonPressed(Strand::MouseButtonPressedEvent& e)
 {
 	if (m_State == GameState::GameOver)
-	{	//m_Level.Reset()
+	{
+		m_Level.Reset();
 	}
 
 	m_State = GameState::Play;
 	return false;
 }
 
-bool GameLayer::OnWindowResizeEvent(Strand::WindowResizeEvent& e)
+bool GameLayer::OnWindowResize(Strand::WindowResizeEvent& e)
 {
 	CreateCamera(e.GetWidth(), e.GetHeight());
 	return false;
@@ -132,12 +138,11 @@ void GameLayer::CreateCamera(uint32_t width, uint32_t height)
 {
 	float aspectRatio = (float)width / (float)height;
 
-	float camWidth = 8.0f;
+	float camWidth = 40.0f;
 	float bottom = -camWidth;
 	float top = camWidth;
 	float left = bottom * aspectRatio;
 	float right = top * aspectRatio;
-
 	m_Camera = CreateScope<OrthographicCamera>(left, right, bottom, top);
 }
 
