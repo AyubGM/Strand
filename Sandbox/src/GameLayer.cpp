@@ -35,8 +35,8 @@ void GameLayer::OnUpdate(Strand::Timestep ts)
 	if (m_Level.IsGameOver())
 		m_State = GameState::GameOver;
 
-	const auto& playerPos = glm::vec2(0.5f, 0.2f);//m_Level.GetPlayer().GetPosition();
-	//m_Camera->SetPosition({ playerPos.x, playerPos.y, 0.0f });
+	const auto& playerPos = m_Level.GetPlayer().GetPosition();
+	m_Camera->SetPosition({ playerPos.x, playerPos.y, 0.0f });
 
 	switch (m_State)
 	{
@@ -62,7 +62,7 @@ void GameLayer::OnImGuiRender()
 	{
 	case GameLayer::GameState::Play:
 	{
-		uint32_t playerScore = 100; // TODO
+		uint32_t playerScore = m_Level.GetPlayer().GetScore(); // TODO
 		std::string scoreStr = std::string("Score: ") + std::to_string(playerScore);
 		ImGui::GetForegroundDrawList()->AddText(m_Font, 48.0f, ImGui::GetWindowPos(), 0xffffffff, scoreStr.c_str());
 		break;
@@ -91,7 +91,7 @@ void GameLayer::OnImGuiRender()
 
 		pos.x += 200.0f;
 		pos.y += 150.0f;
-		uint32_t playerScore = 100; //m_Level.GetPlayer().GetScore();
+		uint32_t playerScore = m_Level.GetPlayer().GetScore();
 		std::string scoreStr = std::string("Score: ") + std::to_string(playerScore);
 		ImGui::GetForegroundDrawList()->AddText(m_Font, 48.0f, pos, 0xffffffff, scoreStr.c_str());
 		break; 
@@ -138,7 +138,7 @@ void GameLayer::CreateCamera(uint32_t width, uint32_t height)
 {
 	float aspectRatio = (float)width / (float)height;
 
-	float camWidth = 40.0f;
+	float camWidth = 8.0f;
 	float bottom = -camWidth;
 	float top = camWidth;
 	float left = bottom * aspectRatio;

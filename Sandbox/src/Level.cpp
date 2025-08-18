@@ -68,7 +68,7 @@ static bool PointInTri(const glm::vec2& p, glm::vec2& p0, const glm::vec2& p1, c
 void Level::Init()
 {
 	m_TriangleTexture = Texture2D::Create("assets/textures/Triangle.png");
-	//m_Player.LoadAssets();
+	m_Player.LoadAssets();
 
 	m_Pillars.resize(5);
 	for (int i = 0; i < 5; i++)
@@ -77,7 +77,7 @@ void Level::Init()
 
 void Level::OnUpdate(Strand::Timestep ts)
 {
-	//m_Player.OnUpdate(ts);
+	m_Player.OnUpdate(ts);
 
 	if (CollisionTest())
 	{
@@ -90,17 +90,17 @@ void Level::OnUpdate(Strand::Timestep ts)
 	  m_PillarHSV.x = 0.0f;
 
 
-	//if (m_Player.GetPosition().x > m_PillarTarget)
-	//{
+	if (m_Player.GetPosition().x > m_PillarTarget)
+	{
 		CreatePillar(m_PillarIndex, m_PillarTarget + 20.0f);
 		m_PillarIndex = ++m_PillarIndex % m_Pillars.size();
 		m_PillarTarget += 10.0f;
-	//}
+	}
 }
 
 void Level::OnRender()
 {
-	const auto& playerPos = glm::vec2(0.5f, 0.2f); //m_Player.GetPosition();
+	const auto& playerPos = m_Player.GetPosition();
 
 	glm::vec4 color = HSVtoRGB(m_PillarHSV);
 
@@ -119,13 +119,13 @@ void Level::OnRender()
 
 	}
 
-	//m_Player.OnRender();
+	m_Player.OnRender();
 
 }
 
 void Level::OnImGuiRender()
 {
-	//m_Player.OnImGuiRender();
+	m_Player.OnImGuiRender();
 }
 
 void Level::CreatePillar(int index, float offset)
@@ -156,7 +156,7 @@ void Level::Reset()
 {
 	m_GameOver = false;
 
-	//m_Player.Reset();
+	m_Player.Reset();
 
 	m_PillarTarget = 30.0f;
 	m_PillarIndex = 0;

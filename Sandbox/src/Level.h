@@ -1,8 +1,8 @@
 #pragma once
 
-#include"Strand.h"
 #include "Random.h"
 
+#include "Player.h"
 struct Pillar
 {
 	glm::vec3 TopPosition = { 0.0f, 10.0f, 0.0f };
@@ -25,7 +25,7 @@ public:
 	bool IsGameOver() const { return m_GameOver; }
 	void Reset();
 
-	//Player& GetPlayer() { return m_Player; }
+	Player& GetPlayer() { return m_Player; }
 
 private:
 	void CreatePillar(int index, float offset);
@@ -34,7 +34,7 @@ private:
 	void GameOver();
 
 private:
-	//Player m_Player;
+	Player m_Player;
 
 	bool m_GameOver = false;
 
