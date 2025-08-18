@@ -10,7 +10,7 @@ GameLayer::GameLayer(): Layer("GameLayer")
 {
 	auto& window = Application::Get().GetWindow();
 	CreateCamera(window.GetWidth(), window.GetHeight());
-	m_Camera->SetPosition({ 0.0f, 0.0f, 0.0f }); //TODO
+	m_Camera->SetPosition({ 0.0f, 0.0f, 0.0f });
 	Random::Init();
 }
 
@@ -62,7 +62,7 @@ void GameLayer::OnImGuiRender()
 	{
 	case GameLayer::GameState::Play:
 	{
-		uint32_t playerScore = m_Level.GetPlayer().GetScore(); // TODO
+		uint32_t playerScore = m_Level.GetPlayer().GetScore(); 
 		std::string scoreStr = std::string("Score: ") + std::to_string(playerScore);
 		ImGui::GetForegroundDrawList()->AddText(m_Font, 48.0f, ImGui::GetWindowPos(), 0xffffffff, scoreStr.c_str());
 		break;
