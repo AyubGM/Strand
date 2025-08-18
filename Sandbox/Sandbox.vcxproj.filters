@@ -21,21 +21,6 @@
     <ClCompile Include="src\Sandbox2D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\GameLayer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Level.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Random.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Player.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ParticleSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Game1\GameLayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -95,5 +80,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\shaders\FlatColor.glsl" />
+    <None Include="assets\shaders\Texture.glsl" />
   </ItemGroup>
 </Project>
