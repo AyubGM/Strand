@@ -25,7 +25,7 @@ public:
 		};
 
 		Strand::Ref<Strand::VertexBuffer> vertexBuffer;
-		vertexBuffer.reset(Strand::VertexBuffer::Create(vertices, sizeof(vertices)));
+		vertexBuffer = Strand::VertexBuffer::Create(vertices, sizeof(vertices));
 		Strand::BufferLayout layout = {
 			{ Strand::ShaderDataType::Float3, "a_Position" },
 			{ Strand::ShaderDataType::Float4, "a_Color" }
@@ -35,7 +35,7 @@ public:
 
 		uint32_t indices[3] = { 0, 1, 2 };
 		Strand::Ref<Strand::IndexBuffer> indexBuffer;
-		indexBuffer.reset(Strand::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
+		indexBuffer = Strand::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t));
 		m_VertexArray->SetIndexBuffer(indexBuffer);
 
 		m_SquareVA = Strand::VertexArray::Create();
@@ -48,7 +48,7 @@ public:
 		};
 
 		Strand::Ref<Strand::VertexBuffer> squareVB;
-		squareVB.reset(Strand::VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
+		squareVB = Strand::VertexBuffer::Create(squareVertices, sizeof(squareVertices));
 		squareVB->SetLayout({
 			{ Strand::ShaderDataType::Float3, "a_Position" },
 			{ Strand::ShaderDataType::Float2, "a_TexCoord" }
@@ -57,7 +57,7 @@ public:
 
 		uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
 		Strand::Ref<Strand::IndexBuffer> squareIB;
-		squareIB.reset(Strand::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
+		squareIB = Strand::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t));
 		m_SquareVA->SetIndexBuffer(squareIB);
 
 
