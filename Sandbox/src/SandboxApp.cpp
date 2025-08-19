@@ -9,7 +9,6 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "Sandbox2D.h"
-#include "GameLayer.h"
 
 class ExampleLayer : public Strand::Layer
 {
@@ -245,8 +244,8 @@ public:
 	Sandbox()
 	{ 
 		//PushLayer(new ExampleLayer());
-		//PushLayer(new Sandbox2D());
-		PushLayer(new GameLayer());
+		PushLayer(new Sandbox2D());
+		//PushLayer(new GameLayer());
 	}
 
 	~Sandbox()
