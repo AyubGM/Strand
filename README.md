@@ -1,1 +1,1 @@
-# GMCore
+# Strand
