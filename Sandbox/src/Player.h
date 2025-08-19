@@ -5,7 +5,7 @@
 #include "Color.h"
 #include "Random.h"
 
-//#include "ParticleSystem.h"
+#include "ParticleSystem.h"
 
 class Player {
 
@@ -37,8 +37,8 @@ private:
 	float m_SmokeEmitInterval = 0.4f;
 	float m_SmokeNextEmitTime = m_SmokeEmitInterval;
 
-	//ParticleProps m_SmokeParticle, m_EngineParticle;
-	//ParticleSystem m_ParticleSystem;
+	ParticleProps m_SmokeParticle, m_EngineParticle;
+	ParticleSystem m_ParticleSystem;
 
 	Strand::Ref<Strand::Texture2D> m_ShipTexture;
 
