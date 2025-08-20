@@ -43,21 +43,21 @@ namespace Strand {
 		Add(name, shader);
 	}
 
-	Strand::Ref<Strand::Shader> ShaderLibrary::Load(const std::string& filepath)
+	Ref<Strand::Shader> ShaderLibrary::Load(const std::string& filepath)
 	{
 		auto shader = Shader::Create(filepath);
 		Add(shader);
 		return shader;
 	}
 
-	Strand::Ref<Strand::Shader> ShaderLibrary::Load(const std::string& name, const std::string& filepath)
+	Ref<Strand::Shader> ShaderLibrary::Load(const std::string& name, const std::string& filepath)
 	{
 		auto shader = Shader::Create(filepath);
 		Add(name, shader);
 		return shader;
 	}
 
-	Strand::Ref<Strand::Shader> ShaderLibrary::Get(const std::string& name)
+	Ref<Strand::Shader> ShaderLibrary::Get(const std::string& name)
 	{
 		SD_CORE_ASSERT(Exists(name), "Shader not found!");
 		return m_Shaders[name];

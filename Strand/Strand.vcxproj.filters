@@ -19,6 +19,9 @@
     <Filter Include="src\Strand\Core">
       <UniqueIdentifier>{609CBB79-CC27-293E-D538-AC324143853E}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Strand\Debug">
+      <UniqueIdentifier>{7E833BB1-6A7C-5A03-93AE-3F887F063A0F}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Strand\Events">
       <UniqueIdentifier>{EC4536DC-585C-3472-A1D3-BF930D2905FA}</UniqueIdentifier>
     </Filter>
@@ -102,7 +105,7 @@
     <ClInclude Include="src\Strand\Core\Log.h">
       <Filter>src\Strand\Core</Filter>
     </ClInclude>
-    <ClInclude Include="src\Strand\Core\MouseButtonCodes.h">
+    <ClInclude Include="src\Strand\Core\MouseCodes.h">
       <Filter>src\Strand\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Strand\Core\Timestep.h">
@@ -113,6 +116,9 @@
     </ClInclude>
     <ClInclude Include="src\Strand\Core\input.h">
       <Filter>src\Strand\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Strand\Debug\Instrumentor.h">
+      <Filter>src\Strand\Debug</Filter>
     </ClInclude>
     <ClInclude Include="src\Strand\Events\ApplicationEvent.h">
       <Filter>src\Strand\Events</Filter>
@@ -145,6 +151,9 @@
       <Filter>src\Strand\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Strand\Renderer\Renderer.h">
+      <Filter>src\Strand\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Strand\Renderer\Renderer2D.h">
       <Filter>src\Strand\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Strand\Renderer\RendererAPI.h">
@@ -1419,8 +1428,6 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="src\Strand\Renderer\Renderer2D.h" />
-    <ClInclude Include="src\Strand\Debug\Instrumentor.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp">
@@ -1450,6 +1457,9 @@
     <ClCompile Include="src\Strand\Core\Application.cpp">
       <Filter>src\Strand\Core</Filter>
     </ClCompile>
+    <ClCompile Include="src\Strand\Core\Input.cpp">
+      <Filter>src\Strand\Core</Filter>
+    </ClCompile>
     <ClCompile Include="src\Strand\Core\Layer.cpp">
       <Filter>src\Strand\Core</Filter>
     </ClCompile>
@@ -1459,6 +1469,9 @@
     <ClCompile Include="src\Strand\Core\Log.cpp">
       <Filter>src\Strand\Core</Filter>
     </ClCompile>
+    <ClCompile Include="src\Strand\Core\Window.cpp">
+      <Filter>src\Strand\Core</Filter>
+    </ClCompile>
     <ClCompile Include="src\Strand\ImGui\ImGuiBuild.cpp">
       <Filter>src\Strand\ImGui</Filter>
     </ClCompile>
@@ -1466,6 +1479,9 @@
       <Filter>src\Strand\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="src\Strand\Renderer\Buffer.cpp">
+      <Filter>src\Strand\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Strand\Renderer\GraphicsContext.cpp">
       <Filter>src\Strand\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Strand\Renderer\OrthographicCamera.cpp">
@@ -1478,6 +1494,9 @@
       <Filter>src\Strand\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Strand\Renderer\Renderer.cpp">
+      <Filter>src\Strand\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Strand\Renderer\Renderer2D.cpp">
       <Filter>src\Strand\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Strand\Renderer\RendererAPI.cpp">
@@ -1498,6 +1517,5 @@
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="src\Strand\Renderer\Renderer2D.cpp" />
   </ItemGroup>
 </Project>

@@ -9,9 +9,4 @@ namespace Strand {
 	{
 	}
 
-	Layer::~Layer()
-	{
-
-	}
-
 }

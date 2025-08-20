@@ -1,10 +1,12 @@
 #pragma once
 
+#include "Strand/Core/Core.h"
+
 #ifdef SD_PLATFORM_WINDOWS
 
 extern Strand::Application* Strand::CreateApplication();
 
-int main(int argc, char* argv)
+int main(int argc, char** argv)
 {
 	Strand::Log::Init();
 

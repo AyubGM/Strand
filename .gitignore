@@ -362,6 +362,19 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 
+
+# Binaries
+**/bin/
+!vendor/bin/premake/
+bin-int/
+
+# Visual Studio files and folder
+.vs/
+**.sln
+**.vcxproj
+**.vcxproj.filters
+**.vcxproj.user
+
 # Ignore profiles
 Sandbox/StrandProfile-Runtime.json
 Sandbox/StrandProfile-Shutdown.json

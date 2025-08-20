@@ -1,16 +1,15 @@
 #include "sdpch.h"
-#include "Application.h"
+#include "Strand/Core/Application.h"
+
 #include "Strand/Core/Log.h"
-#include <GLFW/glfw3.h>
 
 #include "Strand/Renderer/Renderer.h"
 
-#include "Input.h"
+#include "Strand/Core/Input.h"
+
+#include <glfw/glfw3.h>
 
 namespace Strand {
-
-#define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
-
 
 	Application* Application::s_Instance = nullptr;
 
@@ -23,7 +22,7 @@ namespace Strand {
 		s_Instance = this;
 
 		m_Window = std::unique_ptr<Window> (Window::Create());
-		m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
+		m_Window->SetEventCallback(SD_BIND_EVENT_FN(Application::OnEvent));
 
 		Renderer::Init();
 
@@ -62,13 +61,13 @@ namespace Strand {
 		SD_PROFILE_FUNCTION();
 
 		EventDispatcher dispatcher(e);
-		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
-		dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(OnWindowResize));
+		dispatcher.Dispatch<WindowCloseEvent>(SD_BIND_EVENT_FN(Application::OnWindowClose));
+		dispatcher.Dispatch<WindowResizeEvent>(SD_BIND_EVENT_FN(Application::OnWindowResize));
 
-		SD_CORE_TRACE("{0}", e.ToString());
-		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin(); )
+		//SD_CORE_TRACE("{0}", e.ToString());
+		for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it)
 		{
-			(*--it)->OnEvent(e);
+			(*it)->OnEvent(e);
 			if (e.Handled)
 				break;
 		}

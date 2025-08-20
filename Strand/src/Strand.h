@@ -9,7 +9,7 @@
 
 #include "Strand/Core/Input.h"
 #include "Strand/Core/KeyCodes.h"
-#include "Strand/Core/MouseButtonCodes.h"
+#include "Strand/Core/MouseCodes.h"
 #include "Strand/Renderer/OrthographicCameraController.h"
 
 #include "Strand/ImGui/ImGuiLayer.h"

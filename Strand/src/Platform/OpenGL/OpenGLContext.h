@@ -6,7 +6,7 @@ struct GLFWwindow; // Forward declaration of GLFWwindow
 
 namespace Strand {
 
-	class STRAND_API OpenGLContext : public GraphicsContext
+	class  OpenGLContext : public GraphicsContext
 	{
 	public:
 		OpenGLContext(GLFWwindow* windowHandle);

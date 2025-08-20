@@ -7,12 +7,15 @@ C:\dev\Strand\Strand\src\Platform\OpenGL\OpenGLVertexArray.cpp;C:\dev\Strand\bin
 C:\dev\Strand\Strand\src\Platform\Windows\WindowsInput.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\WindowsInput.obj
 C:\dev\Strand\Strand\src\Platform\Windows\WindowsWindow.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\WindowsWindow.obj
 C:\dev\Strand\Strand\src\Strand\Core\Application.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\Application.obj
+C:\dev\Strand\Strand\src\Strand\Core\Input.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\Input.obj
 C:\dev\Strand\Strand\src\Strand\Core\Layer.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\Layer.obj
 C:\dev\Strand\Strand\src\Strand\Core\LayerStack.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\LayerStack.obj
 C:\dev\Strand\Strand\src\Strand\Core\Log.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\Log.obj
+C:\dev\Strand\Strand\src\Strand\Core\Window.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\Window.obj
 C:\dev\Strand\Strand\src\Strand\ImGui\ImGuiBuild.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\ImGuiBuild.obj
 C:\dev\Strand\Strand\src\Strand\ImGui\ImGuiLayer.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\ImGuiLayer.obj
 C:\dev\Strand\Strand\src\Strand\Renderer\Buffer.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\Buffer.obj
+C:\dev\Strand\Strand\src\Strand\Renderer\GraphicsContext.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\GraphicsContext.obj
 C:\dev\Strand\Strand\src\Strand\Renderer\OrthographicCamera.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\OrthographicCamera.obj
 C:\dev\Strand\Strand\src\Strand\Renderer\OrthographicCameraController.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\OrthographicCameraController.obj
 C:\dev\Strand\Strand\src\Strand\Renderer\RenderCommand.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\RenderCommand.obj

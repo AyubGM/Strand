@@ -32,7 +32,7 @@ namespace Strand {
 			s_RendererAPI->DrawIndexed(vertexArray, count);
 		}
 	private:
-		static RendererAPI* s_RendererAPI;
+		static Scope<RendererAPI> s_RendererAPI;
 	};
 
 }

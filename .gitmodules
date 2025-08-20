@@ -1,12 +1,16 @@
 [submodule "Strand/vendor/GLFW"]
 	path = Strand/vendor/GLFW
 	url = https://github.com/TheCherno/glfw
+	branch = master
 [submodule "Strand/vendor/ImGui"]
 	path = Strand/vendor/ImGui
 	url = https://github.com/ocornut/imgui.git
+	branch = docking
 [submodule "Strand/vendor/glm"]
 	path = Strand/vendor/glm
 	url = https://github.com/g-truc/glm
+	branch = master
 [submodule "Strand/vendor/spdlog"]
 	path = Strand/vendor/spdlog
 	url = https://github.com/gabime/spdlog
+	branch = v1.x

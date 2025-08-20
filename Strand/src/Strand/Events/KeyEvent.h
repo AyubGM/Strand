@@ -1,64 +1,77 @@
 #pragma once
-#include "Event.h"
+
+#include "Strand/Events/Event.h"
+#include "Strand/Core/Input.h"
 
 
 namespace Strand {
 
-	class STRAND_API KeyEvent : public Event
+	class KeyEvent : public Event
 	{
 	public:
-		inline int GetKeyCode() const { return m_KeyCode; }
-		EVENT_CLASS_CATEGORY(EventCategoryKeyboard | EventCategoryInput)
+		KeyCode GetKeyCode() const { return m_KeyCode; }
 
+		EVENT_CLASS_CATEGORY(EventCategoryKeyboard | EventCategoryInput)
 	protected:
-		KeyEvent(int keyCode)
-			: m_KeyCode(keyCode) {
+		KeyEvent(KeyCode keycode)
+			: m_KeyCode(keycode) {
 		}
-		int m_KeyCode; // The key code of the pressed or released key
+
+		KeyCode m_KeyCode;
 	};
-	
-	class STRAND_API KeyPressedEvent : public KeyEvent
+
+	class KeyPressedEvent : public KeyEvent
 	{
 	public:
-		KeyPressedEvent(int keyCode, int repeatCount)
-			: KeyEvent(keyCode), m_RepeatCount(repeatCount) {
+		KeyPressedEvent(KeyCode keycode, int repeatCount)
+			: KeyEvent(keycode), m_RepeatCount(repeatCount) {
 		}
-		inline int GetRepeatCount() const { return m_RepeatCount; }
-		std::string ToString() const override {
+
+		int GetRepeatCount() const { return m_RepeatCount; }
+
+		std::string ToString() const override
+		{
 			std::stringstream ss;
-			ss << "KeyPressedEvent: " << m_KeyCode << " (Repeat Count: " << m_RepeatCount << ")";
+			ss << "KeyPressedEvent: " << m_KeyCode << " (" << m_RepeatCount << " repeats)";
 			return ss.str();
 		}
+
 		EVENT_CLASS_TYPE(KeyPressed)
 	private:
-		int m_RepeatCount; // The number of times the key has been pressed
-			
+		int m_RepeatCount;
 	};
 
-	class STRAND_API KeyReleasedEvent : public KeyEvent
+	class KeyReleasedEvent : public KeyEvent
 	{
 	public:
-		KeyReleasedEvent(int keyCode)
-			: KeyEvent(keyCode) {
+		KeyReleasedEvent(KeyCode keycode)
+			: KeyEvent(keycode) {
 		}
-		std::string ToString() const override {
+
+		std::string ToString() const override
+		{
 			std::stringstream ss;
 			ss << "KeyReleasedEvent: " << m_KeyCode;
 			return ss.str();
 		}
+
 		EVENT_CLASS_TYPE(KeyReleased)
 	};
-	class STRAND_API KeyTypedEvent : public KeyEvent
+
+	class KeyTypedEvent : public KeyEvent
 	{
-		public:
-		KeyTypedEvent(int keyCode)
-			: KeyEvent(keyCode) {
+	public:
+		KeyTypedEvent(KeyCode keycode)
+			: KeyEvent(keycode) {
 		}
-		std::string ToString() const override {
+
+		std::string ToString() const override
+		{
 			std::stringstream ss;
 			ss << "KeyTypedEvent: " << m_KeyCode;
 			return ss.str();
 		}
+
 		EVENT_CLASS_TYPE(KeyTyped)
 	};
 

@@ -9,6 +9,11 @@ workspace "Strand"
 		"Dist"
 	}
 
+	flags
+	{
+		"MultiProcessorCompile"
+	}
+
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 -- Include directories relative to root folder (solution directory)
@@ -25,6 +30,8 @@ group "Dependencies"
 	include "Strand/vendor/GLFW"
 	include "Strand/vendor/Glad"
 	include "Strand/vendor/imgui"
+
+group ""
 
 project "Strand"
 	location "Strand"
@@ -73,7 +80,7 @@ project "Strand"
 		"Glad",
 		"ImGui",
 		"opengl32.lib",
-		"dwmapi.lib"
+		
 	}
 
 	filter "system:windows"
@@ -82,7 +89,6 @@ project "Strand"
 
 		defines
 		{
-			"SD_PLATFORM_WINDOWS",
 			"SD_BUILD_DLL",
 			"GLFW_INCLUDE_NONE"
 		}
@@ -139,12 +145,6 @@ project "Sandbox"
 	filter "system:windows"
 		systemversion "latest"
 		buildoptions { "/utf-8" }
-
-		defines
-		{
-			"SD_PLATFORM_WINDOWS",
-		}
-
 	
 
 		filter "configurations:Debug"

@@ -7,7 +7,7 @@
 
 namespace Strand
 {
-	class STRAND_API Log
+	class Log
 	{
 	public:
 		static void Init();
@@ -28,11 +28,11 @@ namespace Strand
 #define SD_CORE_INFO(...)		::Strand::Log::GetCoreLogger()->info(__VA_ARGS__)
 #define SD_CORE_WARN(...)		::Strand::Log::GetCoreLogger()->warn(__VA_ARGS__)
 #define SD_CORE_ERROR(...)		::Strand::Log::GetCoreLogger()->error(__VA_ARGS__)
-#define SD_CORE_FATAL(...)		::Strand::Log::GetCoreLogger()->critical(__VA_ARGS__)
+#define SD_CORE_CRITICAL(...)	::Strand::Log::GetCoreLogger()->critical(__VA_ARGS__)
 
 // Client log macros
 #define SD_TRACE(...)			::Strand::Log::GetClientLogger()->trace(__VA_ARGS__)
 #define SD_INFO(...)			::Strand::Log::GetClientLogger()->info(__VA_ARGS__)
 #define SD_WARN(...)			::Strand::Log::GetClientLogger()->warn(__VA_ARGS__)
 #define SD_ERROR(...)			::Strand::Log::GetClientLogger()->error(__VA_ARGS__)
-#define SD_FATAL(...)			::Strand::Log::GetClientLogger()->critical(__VA_ARGS__)
+#define SD_CRITICAL(...)		::Strand::Log::GetClientLogger()->critical(__VA_ARGS__)

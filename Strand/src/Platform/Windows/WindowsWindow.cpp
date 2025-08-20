@@ -1,29 +1,24 @@
 #include "sdpch.h"
-#include "WindowsWindow.h"
+#include "Platform/Windows/WindowsWindow.h"
+
+#include "Strand/Core/Input.h"
 
 #include "Strand/Events/ApplicationEvent.h"
 #include "Strand/Events/MouseEvent.h"
 #include "Strand/Events/KeyEvent.h"
 
+#include "Strand/Renderer/Renderer.h"
+
+
 #include "Platform/OpenGL/OpenGLContext.h"
-
-
 
 namespace Strand {
 
 	static uint8_t s_GLFWWindowCount = 0;
 
-	//Might be removed in the future, but for now we need to ensure GLFW is initialized only once
-	static bool s_GLFWInitialized = false;
-
 	static void GLFWErrorCallback(int error, const char* description)
 	{
 		SD_CORE_ERROR("GLFW Error ({0}): {1}", error, description);
-	}
-
-	Window* Window::Create(const WindowProps& props)
-	{
-		return new WindowsWindow(props);
 	}
 
 	WindowsWindow::WindowsWindow(const WindowProps& props)
@@ -48,38 +43,31 @@ namespace Strand {
 		m_Data.Width = props.Width;
 		m_Data.Height = props.Height;
 
-
 		SD_CORE_INFO("Creating window {0} ({1}, {2})", props.Title, props.Width, props.Height);
 
-		
-
-
-		if (!s_GLFWInitialized)
+		if (s_GLFWWindowCount == 0)
 		{
 			SD_PROFILE_SCOPE("glfwInit");
-			// TODO: glfwTerminate on system shutdown
 			int success = glfwInit();
-			SD_CORE_ASSERT(success, "Could not intialize GLFW!");
-
+			SD_CORE_ASSERT(success, "Could not initialize GLFW!");
 			glfwSetErrorCallback(GLFWErrorCallback);
-			//Here REMOVE
-			s_GLFWInitialized = true;
 		}
 
 		{
 			SD_PROFILE_SCOPE("glfwCreateWindow");
+#if defined(SD_DEBUG)
+			if (Renderer::GetAPI() == RendererAPI::API::OpenGL)
+				glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
+#endif
 			m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
 			++s_GLFWWindowCount;
 		}
 
-		m_Context = new OpenGLContext(m_Window);
-		
+		m_Context = GraphicsContext::Create(m_Window);
 		m_Context->Init();
 
-		
 		glfwSetWindowUserPointer(m_Window, &m_Data);
 		SetVSync(true);
-
 
 		// Set GLFW callbacks
 		glfwSetWindowSizeCallback(m_Window, [](GLFWwindow* window, int width, int height)
@@ -107,19 +95,19 @@ namespace Strand {
 				{
 				case GLFW_PRESS:
 				{
-					KeyPressedEvent event(key, 0);
+					KeyPressedEvent event(static_cast<KeyCode>(key), 0);
 					data.EventCallback(event);
 					break;
 				}
 				case GLFW_RELEASE:
 				{
-					KeyReleasedEvent event(key);
+					KeyReleasedEvent event(static_cast<KeyCode>(key));
 					data.EventCallback(event);
 					break;
 				}
 				case GLFW_REPEAT:
 				{
-					KeyPressedEvent event(key, 1);
+					KeyPressedEvent event(static_cast<KeyCode>(key), 1);
 					data.EventCallback(event);
 					break;
 				}
@@ -130,7 +118,7 @@ namespace Strand {
 			{
 				WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
 
-				KeyTypedEvent event(keycode);
+				KeyTypedEvent event(static_cast<KeyCode>(keycode));
 				data.EventCallback(event);
 			});
 
@@ -142,13 +130,13 @@ namespace Strand {
 				{
 				case GLFW_PRESS:
 				{
-					MouseButtonPressedEvent event(button);
+					MouseButtonPressedEvent event(static_cast<MouseCode>(button));
 					data.EventCallback(event);
 					break;
 				}
 				case GLFW_RELEASE:
 				{
-					MouseButtonReleasedEvent event(button);
+					MouseButtonReleasedEvent event(static_cast<MouseCode>(button));
 					data.EventCallback(event);
 					break;
 				}
@@ -174,10 +162,15 @@ namespace Strand {
 
 	void WindowsWindow::Shutdown()
 	{
-
 		SD_PROFILE_FUNCTION();
 
 		glfwDestroyWindow(m_Window);
+		--s_GLFWWindowCount;
+
+		if (s_GLFWWindowCount == 0)
+		{
+			glfwTerminate();
+		}
 	}
 
 	void WindowsWindow::OnUpdate()
@@ -204,5 +197,4 @@ namespace Strand {
 	{
 		return m_Data.VSync;
 	}
-
 }

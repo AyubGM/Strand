@@ -19,10 +19,6 @@ namespace Strand {
 	{
 	}
 
-	ImGuiLayer::~ImGuiLayer()
-	{
-	}
-
 	void ImGuiLayer::OnAttach()
 	{
 		SD_PROFILE_FUNCTION();
@@ -67,8 +63,6 @@ namespace Strand {
 		ImGui::DestroyContext();
 	}
 
-	
-
 	void ImGuiLayer::Begin()
 	{
 		SD_PROFILE_FUNCTION();
@@ -76,7 +70,6 @@ namespace Strand {
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
-
 	}
 
 	void ImGuiLayer::End()
