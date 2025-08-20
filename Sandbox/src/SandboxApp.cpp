@@ -3,6 +3,7 @@
 
 #include "Sandbox2D.h"
 #include "ExampleLayer.h"
+#include "Game1/GameLayer.h"
 
 
 class Sandbox : public Strand::Application
@@ -11,8 +12,8 @@ public:
 	Sandbox()
 	{ 
 		//PushLayer(new ExampleLayer());
-		PushLayer(new Sandbox2D());
-		//PushLayer(new GameLayer());
+		//PushLayer(new Sandbox2D());
+		PushLayer(new GameLayer());
 	}
 
 	~Sandbox()

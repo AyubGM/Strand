@@ -71,7 +71,7 @@ void Player::OnUpdate(Strand::Timestep ts)
 void Player::OnRender()
 {
 	m_ParticleSystem.OnRender();
-	//Renderer2D::DrawQuad({ m_Position.x, m_Position.y, 0.5f }, { 1.0f, 1.3f }, glm::radians(GetRotation()), m_ShipTexture);
+	Renderer2D::DrawRotatedQuad({ m_Position.x, m_Position.y, 0.5f }, { 1.0f, 1.3f }, GetRotation(), m_ShipTexture,1.0, glm::vec4(1.0));
 }
 
 void Player::OnImGuiRender()
