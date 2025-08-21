@@ -2,7 +2,7 @@
 
 #include "sdpch.h"
 
-#include "Strand/Core/Core.h"
+#include "Strand/Core/Base.h"
 #include "Strand/Events/Event.h"
 
 namespace Strand {

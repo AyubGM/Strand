@@ -160,7 +160,7 @@
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="src\Strand.h" />
     <ClInclude Include="src\Strand\Core\Application.h" />
-    <ClInclude Include="src\Strand\Core\Core.h" />
+    <ClInclude Include="src\Strand\Core\Base.h" />
     <ClInclude Include="src\Strand\Core\EntryPoint.h" />
     <ClInclude Include="src\Strand\Core\KeyCodes.h" />
     <ClInclude Include="src\Strand\Core\Layer.h" />

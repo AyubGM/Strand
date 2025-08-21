@@ -1,7 +1,7 @@
 #pragma once
 
 #include "sdpch.h"
-#include "Strand/Core/Core.h"
+#include "Strand/Core/Base.h"
 
 
 
