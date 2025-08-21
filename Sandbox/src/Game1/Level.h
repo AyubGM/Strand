@@ -35,6 +35,7 @@ private:
 
 private:
 	Player m_Player;
+	Player m_Player2;
 
 	bool m_GameOver = false;
 

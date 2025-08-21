@@ -7,7 +7,7 @@
 
 #include "Strand/Core/Input.h"
 
-#include <glfw/glfw3.h>
+#include <GLFW/glfw3.h>
 
 namespace Strand {
 
@@ -54,6 +54,11 @@ namespace Strand {
 
 		m_LayerStack.PushOverlay(layer);
 		layer->OnAttach();
+	}
+
+	void Application::Close()
+	{
+		m_Running = false;
 	}
 
 	void Application::OnEvent(Event& e)

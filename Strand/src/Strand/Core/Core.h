@@ -44,12 +44,22 @@
 #endif // End of platform detection
 
 #ifdef SD_DEBUG
+#if defined(SD_PLATFORM_WINDOWS)
+#define SD_DEBUGBREAK() __debugbreak()
+#elif defined(SD_PLATFORM_LINUX)
+#include <signal.h>
+#define SD_DEBUGBREAK() raise(SIGTRAP)
+#else
+#error "Platform doesn't support debugbreak yet!"
+#endif
 #define SD_ENABLE_ASSERTS
+#else
+#define SD_DEBUGBREAK()
 #endif
 
 #ifdef SD_ENABLE_ASSERTS
-#define SD_ASSERT(x, ...) { if(!(x)) { SD_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }
-#define SD_CORE_ASSERT(x, ...) { if(!(x)) { SD_CORE_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }
+#define SD_ASSERT(x, ...) { if(!(x)) { SD_ERROR("Assertion Failed: {0}", __VA_ARGS__); SD_DEBUGBREAK(); } }
+#define SD_CORE_ASSERT(x, ...) { if(!(x)) { SD_CORE_ERROR("Assertion Failed: {0}", __VA_ARGS__); SD_DEBUGBREAK(); } }
 #else
 #define SD_ASSERT(x, ...)
 #define SD_CORE_ASSERT(x, ...)
