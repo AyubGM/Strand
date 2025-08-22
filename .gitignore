@@ -368,12 +368,6 @@ FodyWeavers.xsd
 !vendor/bin/premake/
 bin-int/
 
-# Visual Studio files and folder
-.vs/
-**.sln
-**.vcxproj
-**.vcxproj.filters
-**.vcxproj.user
 
 # Ignore profiles
 Sandbox/StrandProfile-Runtime.json
