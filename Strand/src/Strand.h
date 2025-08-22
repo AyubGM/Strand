@@ -14,6 +14,10 @@
 
 #include "Strand/ImGui/ImGuiLayer.h"
 
+
+#include "Strand/Scene/Scene.h"
+#include "Strand/Scene/Components.h"
+
 // ---Renderer------------------------
 #include "Strand/Renderer/Renderer.h"
 #include "Strand/Renderer/Renderer2D.h"

@@ -23,6 +23,7 @@ IncludeDir["Glad"] = "Strand/vendor/Glad/include"
 IncludeDir["ImGui"] = "Strand/vendor/imgui"
 IncludeDir["glm"] = "Strand/vendor/glm"
 IncludeDir["stb_image"] = "Strand/vendor/stb_image"
+IncludeDir["entt"] = "Strand/vendor/entt/include"
 
 
 
@@ -70,7 +71,8 @@ project "Strand"
 		"%{IncludeDir.Glad}",
 		"%{IncludeDir.ImGui}",
 		"%{IncludeDir.glm}",
-		"%{IncludeDir.stb_image}"
+		"%{IncludeDir.stb_image}",
+		"%{IncludeDir.entt}"
 
 
 	}
@@ -134,7 +136,8 @@ project "Sandbox"
 		"Strand/vendor/spdlog/include",
 		"Strand/src",
 		"Strand/vendor",
-		"%{IncludeDir.glm}"
+		"%{IncludeDir.glm}",
+		"%{IncludeDir.entt}"
 	}
 
 	links
@@ -184,7 +187,8 @@ project "Bridges"
 		"Strand/vendor/spdlog/include",
 		"Strand/src",
 		"Strand/vendor",
-		"%{IncludeDir.glm}"
+		"%{IncludeDir.glm}",
+		"%{IncludeDir.entt}"
 	}
 
 	links
