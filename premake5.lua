@@ -161,3 +161,52 @@ project "Sandbox"
 			defines "SD_DIST"
 			runtime "Release"
 			optimize "on"
+
+
+project "Bridges"
+	location "Bridges"
+	kind "ConsoleApp"
+	language "C++"
+	cppdialect "C++20"
+	staticruntime "on"
+
+	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+
+	files
+	{
+		"%{prj.name}/src/**.h",
+		"%{prj.name}/src/**.cpp"
+	}
+
+	includedirs
+	{
+		"Strand/vendor/spdlog/include",
+		"Strand/src",
+		"Strand/vendor",
+		"%{IncludeDir.glm}"
+	}
+
+	links
+	{
+		"Strand"
+	}
+
+	filter "system:windows"
+		systemversion "latest"
+		buildoptions { "/utf-8" }
+		
+	filter "configurations:Debug"
+		defines "SD_DEBUG"
+		runtime "Debug"
+		symbols "on"
+
+	filter "configurations:Release"
+		defines "SD_RELEASE"
+		runtime "Release"
+		optimize "on"
+
+	filter "configurations:Dist"
+		defines "SD_DIST"
+		runtime "Release"
+		optimize "on"
