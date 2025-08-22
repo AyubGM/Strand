@@ -189,6 +189,7 @@
     <ClInclude Include="src\Strand\Renderer\Texture.h" />
     <ClInclude Include="src\Strand\Renderer\VertexArray.h" />
     <ClInclude Include="src\Strand\Scene\Components.h" />
+    <ClInclude Include="src\Strand\Scene\Entity.h" />
     <ClInclude Include="src\Strand\Scene\Scene.h" />
     <ClInclude Include="src\sdpch.h" />
     <ClInclude Include="vendor\entt\include\entt.hpp" />
@@ -641,6 +642,7 @@
     <ClCompile Include="src\Strand\Renderer\Shader.cpp" />
     <ClCompile Include="src\Strand\Renderer\Texture.cpp" />
     <ClCompile Include="src\Strand\Renderer\VertexArray.cpp" />
+    <ClCompile Include="src\Strand\Scene\Entity.cpp" />
     <ClCompile Include="src\Strand\Scene\Scene.cpp" />
     <ClCompile Include="src\sdpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
