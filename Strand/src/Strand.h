@@ -21,6 +21,7 @@
 
 #include "Strand/Renderer/Buffer.h"
 #include "Strand/Renderer/Shader.h"
+#include "Strand/Renderer/Framebuffer.h"
 #include "Strand/Renderer/Texture.h"
 #include "Strand/Renderer/VertexArray.h"
 

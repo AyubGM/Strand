@@ -21,6 +21,10 @@ void Sandbox2D::OnAttach()
 	SD_PROFILE_FUNCTION();
 
 	m_CheckerboardTexture = Strand::Texture2D::Create("assets/textures/Checkerboard.png");
+	Strand::FramebufferSpecification fbSpec;
+	fbSpec.Width = 1280;
+	fbSpec.Height = 720;
+	m_Framebuffer = Strand::Framebuffer::Create(fbSpec);
 }
 
 void Sandbox2D::OnDetach()
@@ -35,13 +39,16 @@ void Sandbox2D::OnUpdate(Strand::Timestep ts)
 	// Update
 	m_CameraController.OnUpdate(ts);
 
+
+	// Render
+	Strand::Renderer2D::ResetStats();
 	{
 		SD_PROFILE_SCOPE("Renderer Prep");
+		m_Framebuffer->Bind();
 		Strand::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
 		Strand::RenderCommand::Clear();
 	}
-	// Render
-	Strand::Renderer2D::ResetStats();
+
 	{
 		static float rotation = 0.0f;
 		rotation += ts * 50.0f;
@@ -65,6 +72,7 @@ void Sandbox2D::OnUpdate(Strand::Timestep ts)
 			}
 		}
 		Strand::Renderer2D::EndScene();
+		m_Framebuffer->Unbind();
 	}
 
 }
@@ -147,29 +155,13 @@ void Sandbox2D::OnImGuiRender()
 
 		ImGui::ColorEdit4("Square Color", glm::value_ptr(m_SquareColor));
 
-		uint32_t textureID = m_CheckerboardTexture->GetRendererID();
-		ImGui::Image((void*)textureID, ImVec2{ 256.0f, 256.0f });
+		uint32_t textureID = m_Framebuffer->GetColorAttachmentRendererID();
+		ImGui::Image((void*)textureID, ImVec2{ 1280, 720 });
 		ImGui::End();
 
 		ImGui::End();
 	}
-	else
-	{
-		ImGui::Begin("Settings");
-
-		auto stats = Strand::Renderer2D::GetStats();
-		ImGui::Text("Renderer2D Stats:");
-		ImGui::Text("Draw Calls: %d", stats.DrawCalls);
-		ImGui::Text("Quads: %d", stats.QuadCount);
-		ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
-		ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
-
-		ImGui::ColorEdit4("Square Color", glm::value_ptr(m_SquareColor));
-
-		uint32_t textureID = m_CheckerboardTexture->GetRendererID();
-		ImGui::Image((void*)textureID, ImVec2{ 256.0f, 256.0f });
-		ImGui::End();
-	}
+	
 	
 }
 

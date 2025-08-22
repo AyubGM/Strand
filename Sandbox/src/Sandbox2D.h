@@ -22,6 +22,7 @@ private:
 	// Temp
 	Strand::Ref<Strand::VertexArray> m_SquareVA;
 	Strand::Ref<Strand::Shader> m_FlatColorShader;
+	Strand::Ref<Strand::Framebuffer> m_Framebuffer;
 
 	Strand::Ref<Strand::Texture2D> m_CheckerboardTexture;
 
