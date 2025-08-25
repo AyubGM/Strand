@@ -141,6 +141,9 @@
     <ClInclude Include="src\Strand\Renderer\Buffer.h">
       <Filter>src\Strand\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="src\Strand\Renderer\Camera.h">
+      <Filter>src\Strand\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="src\Strand\Renderer\Framebuffer.h">
       <Filter>src\Strand\Renderer</Filter>
     </ClInclude>
@@ -177,7 +180,16 @@
     <ClInclude Include="src\Strand\Scene\Components.h">
       <Filter>src\Strand\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="src\Strand\Scene\Entity.h">
+      <Filter>src\Strand\Scene</Filter>
+    </ClInclude>
     <ClInclude Include="src\Strand\Scene\Scene.h">
+      <Filter>src\Strand\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Strand\Scene\SceneCamera.h">
+      <Filter>src\Strand\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Strand\Scene\ScriptableEntity.h">
       <Filter>src\Strand\Scene</Filter>
     </ClInclude>
     <ClInclude Include="src\sdpch.h">
@@ -1440,11 +1452,9 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="vendor\entt\include\entt.hpp" />
-    <ClInclude Include="src\Strand\Scene\Entity.h" />
-    <ClInclude Include="src\Strand\Renderer\Camera.h" />
-    <ClInclude Include="src\Strand\Scene\SceneCamera.h" />
-    <ClInclude Include="src\Strand\Scene\ScriptableEntity.h" />
+    <ClInclude Include="src\Strand\Scene\SceneSerializer.h" />
+    <ClInclude Include="src\Strand\Core\PlatformDetection.h" />
+    <ClInclude Include="src\Strand\Core\Assert.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp">
@@ -1531,7 +1541,13 @@
     <ClCompile Include="src\Strand\Renderer\VertexArray.cpp">
       <Filter>src\Strand\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="src\Strand\Scene\Entity.cpp">
+      <Filter>src\Strand\Scene</Filter>
+    </ClCompile>
     <ClCompile Include="src\Strand\Scene\Scene.cpp">
+      <Filter>src\Strand\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Strand\Scene\SceneCamera.cpp">
       <Filter>src\Strand\Scene</Filter>
     </ClCompile>
     <ClCompile Include="src\sdpch.cpp">
@@ -1540,7 +1556,6 @@
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="src\Strand\Scene\Entity.cpp" />
-    <ClCompile Include="src\Strand\Scene\SceneCamera.cpp" />
+    <ClCompile Include="src\Strand\Scene\SceneSerializer.cpp" />
   </ItemGroup>
 </Project>

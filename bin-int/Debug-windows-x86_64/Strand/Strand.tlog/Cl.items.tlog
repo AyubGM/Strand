@@ -28,6 +28,7 @@ C:\dev\Strand\Strand\src\Strand\Renderer\Texture.cpp;C:\dev\Strand\bin-int\Debug
 C:\dev\Strand\Strand\src\Strand\Renderer\VertexArray.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\VertexArray.obj
 C:\dev\Strand\Strand\src\Strand\Scene\Entity.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\Entity.obj
 C:\dev\Strand\Strand\src\Strand\Scene\Scene.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\Scene.obj
-C:\dev\Strand\Strand\src\sdpch.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\sdpch.obj
 C:\dev\Strand\Strand\src\Strand\Scene\SceneCamera.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\SceneCamera.obj
+C:\dev\Strand\Strand\src\sdpch.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\sdpch.obj
+C:\dev\Strand\Strand\src\Strand\Scene\SceneSerializer.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\SceneSerializer.obj
 C:\dev\Strand\Strand\vendor\stb_image\stb_image.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\stb_image.obj

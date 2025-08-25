@@ -4,6 +4,7 @@
 #include "Strand/Core/Application.h"
 #include "Strand/Core/Layer.h"
 #include "Strand/Core/Log.h"
+#include "Strand/Core/Assert.h"
 
 #include "Strand/Core/Timestep.h"
 
