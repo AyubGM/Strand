@@ -1444,6 +1444,7 @@
     <ClInclude Include="src\Strand\Scene\Entity.h" />
     <ClInclude Include="src\Strand\Renderer\Camera.h" />
     <ClInclude Include="src\Strand\Scene\SceneCamera.h" />
+    <ClInclude Include="src\Strand\Scene\ScriptableEntity.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp">

@@ -17,6 +17,7 @@
 
 #include "Strand/Scene/Scene.h"
 #include "Strand/Scene/Entity.h"
+#include "Strand/Scene/ScriptableEntity.h"
 #include "Strand/Scene/Components.h"
 
 // ---Renderer------------------------
