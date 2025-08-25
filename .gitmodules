@@ -14,3 +14,6 @@
 	path = Strand/vendor/spdlog
 	url = https://github.com/gabime/spdlog
 	branch = v1.x
+[submodule "Strand/vendor/yaml-cpp"]
+	path = Strand/vendor/yaml-cpp
+	url = https://github.com/TheCherno/yaml-cpp
