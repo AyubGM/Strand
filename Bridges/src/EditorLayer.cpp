@@ -42,6 +42,8 @@ namespace Strand {
 		public:
 			void OnCreate()
 			{
+				auto& transform = GetComponent<TransformComponent>().Transform;
+				transform[3][0] = rand() % 10 - 5.0f;
 			}
 
 			void OnDestroy()
@@ -65,6 +67,8 @@ namespace Strand {
 		};
 
 		m_CameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
+
+		m_SecondCamera.AddComponent<NativeScriptComponent>().Bind<CameraController>();
 
 	}
 
@@ -195,10 +199,16 @@ namespace Strand {
 		ImGui::DragFloat3("Camera Transform",
 			glm::value_ptr(m_CameraEntity.GetComponent<TransformComponent>().Transform[3]));
 
-		if (ImGui::Checkbox("Camera A", &m_PrimaryCamera))
+		if (m_PrimaryCamera)
 		{
+			ImGui::Checkbox("Camera A", &m_PrimaryCamera);
 			m_CameraEntity.GetComponent<CameraComponent>().Primary = m_PrimaryCamera;
+		}
+		else
+		{
+			ImGui::Checkbox("Camera B", &m_PrimaryCamera);
 			m_SecondCamera.GetComponent<CameraComponent>().Primary = !m_PrimaryCamera;
+
 		}
 
 		{
