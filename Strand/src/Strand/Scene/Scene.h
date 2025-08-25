@@ -28,6 +28,7 @@ namespace Strand {
 
 
 		friend class Entity;
+		friend class SceneHierarchyPanel;
 	};
 
 }
