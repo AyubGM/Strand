@@ -1,7 +1,7 @@
 #pragma once
 
 #include <glm/glm.hpp>
-#include "Strand/Renderer/Camera.h"
+#include "Strand/Scene/SceneCamera.h"
 
 namespace Strand {
 
@@ -43,14 +43,13 @@ namespace Strand {
 
 	struct CameraComponent
 	{
-		Strand::Camera Camera;
+		SceneCamera Camera;
 		bool Primary = true; // TODO: think about moving to Scene
+		bool FixedAspectRatio = false;
 
 		CameraComponent() = default;
 		CameraComponent(const CameraComponent&) = default;
-		CameraComponent(const glm::mat4& projection)
-			: Camera(projection) {
-		}
-	};
 
+
+	};
 }

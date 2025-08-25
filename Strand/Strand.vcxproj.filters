@@ -1443,6 +1443,7 @@
     <ClInclude Include="vendor\entt\include\entt.hpp" />
     <ClInclude Include="src\Strand\Scene\Entity.h" />
     <ClInclude Include="src\Strand\Renderer\Camera.h" />
+    <ClInclude Include="src\Strand\Scene\SceneCamera.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp">
@@ -1539,5 +1540,6 @@
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
     <ClCompile Include="src\Strand\Scene\Entity.cpp" />
+    <ClCompile Include="src\Strand\Scene\SceneCamera.cpp" />
   </ItemGroup>
 </Project>
