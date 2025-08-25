@@ -1,8 +1,9 @@
 #pragma once
 
-#include "OrthographicCamera.h"
+#include "Strand/Renderer/OrthographicCamera.h"
+#include "Strand/Renderer/Camera.h"
 
-#include "Texture.h"
+#include "Strand/Renderer/Texture.h"
 
 namespace Strand {
 
@@ -12,7 +13,8 @@ namespace Strand {
 		static void Init();
 		static void Shutdown();
 
-		static void BeginScene(const OrthographicCamera& camera);
+		static void BeginScene(const Camera& camera, const glm::mat4& transform);
+		static void BeginScene(const OrthographicCamera& camera); // TODO: Remove
 		static void EndScene();
 		static void Flush();
 

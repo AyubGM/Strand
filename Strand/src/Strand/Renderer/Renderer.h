@@ -1,8 +1,8 @@
 #pragma once
 
-#include "RenderCommand.h"
-#include "OrthographicCamera.h"
-#include "Shader.h"
+#include "Strand/Renderer/RenderCommand.h"
+#include "Strand/Renderer/OrthographicCamera.h"
+#include "Strand/Renderer/Shader.h"
 
 namespace Strand
 {

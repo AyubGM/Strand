@@ -1,6 +1,7 @@
 #pragma once
 
 #include <glm/glm.hpp>
+#include "Strand/Renderer/Camera.h"
 
 namespace Strand {
 
@@ -37,6 +38,18 @@ namespace Strand {
 		SpriteRendererComponent(const SpriteRendererComponent&) = default;
 		SpriteRendererComponent(const glm::vec4& color)
 			: Color(color) {
+		}
+	};
+
+	struct CameraComponent
+	{
+		Strand::Camera Camera;
+		bool Primary = true; // TODO: think about moving to Scene
+
+		CameraComponent() = default;
+		CameraComponent(const CameraComponent&) = default;
+		CameraComponent(const glm::mat4& projection)
+			: Camera(projection) {
 		}
 	};
 
