@@ -90,6 +90,9 @@
     <ClInclude Include="src\Strand\Core\Application.h">
       <Filter>src\Strand\Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\Strand\Core\Assert.h">
+      <Filter>src\Strand\Core</Filter>
+    </ClInclude>
     <ClInclude Include="src\Strand\Core\Base.h">
       <Filter>src\Strand\Core</Filter>
     </ClInclude>
@@ -109,6 +112,9 @@
       <Filter>src\Strand\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Strand\Core\MouseCodes.h">
+      <Filter>src\Strand\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Strand\Core\PlatformDetection.h">
       <Filter>src\Strand\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Strand\Core\Timestep.h">
@@ -187,6 +193,9 @@
       <Filter>src\Strand\Scene</Filter>
     </ClInclude>
     <ClInclude Include="src\Strand\Scene\SceneCamera.h">
+      <Filter>src\Strand\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Strand\Scene\SceneSerializer.h">
       <Filter>src\Strand\Scene</Filter>
     </ClInclude>
     <ClInclude Include="src\Strand\Scene\ScriptableEntity.h">
@@ -1452,9 +1461,6 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="src\Strand\Scene\SceneSerializer.h" />
-    <ClInclude Include="src\Strand\Core\PlatformDetection.h" />
-    <ClInclude Include="src\Strand\Core\Assert.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp">
@@ -1550,12 +1556,14 @@
     <ClCompile Include="src\Strand\Scene\SceneCamera.cpp">
       <Filter>src\Strand\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="src\Strand\Scene\SceneSerializer.cpp">
+      <Filter>src\Strand\Scene</Filter>
+    </ClCompile>
     <ClCompile Include="src\sdpch.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="src\Strand\Scene\SceneSerializer.cpp" />
   </ItemGroup>
 </Project>
