@@ -6,6 +6,7 @@ C:\dev\Strand\Strand\src\Platform\OpenGL\OpenGLShader.cpp;C:\dev\Strand\bin-int\
 C:\dev\Strand\Strand\src\Platform\OpenGL\OpenGLTexture.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\OpenGLTexture.obj
 C:\dev\Strand\Strand\src\Platform\OpenGL\OpenGLVertexArray.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\OpenGLVertexArray.obj
 C:\dev\Strand\Strand\src\Platform\Windows\WindowsInput.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\WindowsInput.obj
+C:\dev\Strand\Strand\src\Platform\Windows\WindowsPlatformUtils.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\WindowsPlatformUtils.obj
 C:\dev\Strand\Strand\src\Platform\Windows\WindowsWindow.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\WindowsWindow.obj
 C:\dev\Strand\Strand\src\Strand\Core\Application.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\Application.obj
 C:\dev\Strand\Strand\src\Strand\Core\Layer.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\Layer.obj
