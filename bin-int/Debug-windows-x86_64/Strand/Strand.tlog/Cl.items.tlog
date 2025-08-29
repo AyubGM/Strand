@@ -17,6 +17,7 @@ C:\dev\Strand\Strand\src\Strand\ImGui\ImGuiBuild.cpp;C:\dev\Strand\bin-int\Debug
 C:\dev\Strand\Strand\src\Strand\ImGui\ImGuiLayer.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\ImGuiLayer.obj
 C:\dev\Strand\Strand\src\Strand\Math\Math.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\Math.obj
 C:\dev\Strand\Strand\src\Strand\Renderer\Buffer.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\Buffer.obj
+C:\dev\Strand\Strand\src\Strand\Renderer\EditorCamera.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\EditorCamera.obj
 C:\dev\Strand\Strand\src\Strand\Renderer\Framebuffer.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\Framebuffer.obj
 C:\dev\Strand\Strand\src\Strand\Renderer\GraphicsContext.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\GraphicsContext.obj
 C:\dev\Strand\Strand\src\Strand\Renderer\OrthographicCamera.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\OrthographicCamera.obj

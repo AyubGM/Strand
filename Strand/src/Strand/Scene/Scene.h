@@ -1,9 +1,12 @@
 #pragma once
 
-#include "entt.hpp"
 
 
 #include "Strand/Core/Timestep.h"
+
+#include "Strand/Renderer/EditorCamera.h"
+
+#include "entt.hpp"
 
 namespace Strand {
 
@@ -21,7 +24,8 @@ namespace Strand {
 		// TEMP
 		entt::registry& Reg() { return m_Registry; }
 
-		void OnUpdate(Timestep ts);
+		void OnUpdateRuntime(Timestep ts);
+		void OnUpdateEditor(Timestep ts, EditorCamera& camera);
 		void OnViewportResize(uint32_t width, uint32_t height);
 
 		Entity GetPrimaryCameraEntity();
