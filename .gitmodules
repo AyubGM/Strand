@@ -17,3 +17,6 @@
 [submodule "Strand/vendor/yaml-cpp"]
 	path = Strand/vendor/yaml-cpp
 	url = https://github.com/TheCherno/yaml-cpp
+[submodule "Strand/vendor/ImGuizmo"]
+	path = Strand/vendor/ImGuizmo
+	url = https://github.com/TheCherno/ImGuizmo
