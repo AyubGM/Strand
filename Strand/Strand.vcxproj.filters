@@ -28,14 +28,23 @@
     <Filter Include="src\Strand\ImGui">
       <UniqueIdentifier>{32EE99B1-1EE7-B803-4719-9E883371980F}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Strand\Math">
+      <UniqueIdentifier>{E1DCC079-4D68-2E3E-5679-B132C2838A3E}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Strand\Renderer">
       <UniqueIdentifier>{AE7FDAB9-1AE1-B7C7-A34E-FE790FAFEE86}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\Strand\Scene">
       <UniqueIdentifier>{25E649B2-11DF-6804-3A11-4E8926694810}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Strand\Utils">
+      <UniqueIdentifier>{687A77B2-5473-9604-7DA5-7B8969FD7510}</UniqueIdentifier>
+    </Filter>
     <Filter Include="vendor">
       <UniqueIdentifier>{B3738122-9F15-ACF8-88D0-BF4C74113349}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vendor\ImGuizmo">
+      <UniqueIdentifier>{73BF7F4C-DF4A-ED10-E85B-700554664911}</UniqueIdentifier>
     </Filter>
     <Filter Include="vendor\glm">
       <UniqueIdentifier>{829FC5A8-6E57-07F6-D75E-E051C335A2E6}</UniqueIdentifier>
@@ -144,6 +153,9 @@
     <ClInclude Include="src\Strand\ImGui\ImGuiLayer.h">
       <Filter>src\Strand\ImGui</Filter>
     </ClInclude>
+    <ClInclude Include="src\Strand\Math\Math.h">
+      <Filter>src\Strand\Math</Filter>
+    </ClInclude>
     <ClInclude Include="src\Strand\Renderer\Buffer.h">
       <Filter>src\Strand\Renderer</Filter>
     </ClInclude>
@@ -201,8 +213,14 @@
     <ClInclude Include="src\Strand\Scene\ScriptableEntity.h">
       <Filter>src\Strand\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="src\Strand\Utils\PlatformUtils.h">
+      <Filter>src\Strand\Utils</Filter>
+    </ClInclude>
     <ClInclude Include="src\sdpch.h">
       <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\ImGuizmo\ImGuizmo.h">
+      <Filter>vendor\ImGuizmo</Filter>
     </ClInclude>
     <ClInclude Include="vendor\glm\glm\common.hpp">
       <Filter>vendor\glm\glm</Filter>
@@ -1461,7 +1479,6 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="src\Strand\Utils\PlatformUtils.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp">
@@ -1488,6 +1505,9 @@
     <ClCompile Include="src\Platform\Windows\WindowsInput.cpp">
       <Filter>src\Platform\Windows</Filter>
     </ClCompile>
+    <ClCompile Include="src\Platform\Windows\WindowsPlatformUtils.cpp">
+      <Filter>src\Platform\Windows</Filter>
+    </ClCompile>
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">
       <Filter>src\Platform\Windows</Filter>
     </ClCompile>
@@ -1511,6 +1531,9 @@
     </ClCompile>
     <ClCompile Include="src\Strand\ImGui\ImGuiLayer.cpp">
       <Filter>src\Strand\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Strand\Math\Math.cpp">
+      <Filter>src\Strand\Math</Filter>
     </ClCompile>
     <ClCompile Include="src\Strand\Renderer\Buffer.cpp">
       <Filter>src\Strand\Renderer</Filter>
@@ -1563,9 +1586,11 @@
     <ClCompile Include="src\sdpch.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="vendor\ImGuizmo\ImGuizmo.cpp">
+      <Filter>vendor\ImGuizmo</Filter>
+    </ClCompile>
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="src\Platform\Windows\WindowsPlatformUtils.cpp" />
   </ItemGroup>
 </Project>

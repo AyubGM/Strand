@@ -1,6 +1,6 @@
 workspace "Strand"
 	architecture "x64"
-	startproject "Sandbox"
+	startproject "Bridges"
 
 	configurations
 	{
@@ -25,6 +25,7 @@ IncludeDir["glm"] = "Strand/vendor/glm"
 IncludeDir["stb_image"] = "Strand/vendor/stb_image"
 IncludeDir["entt"] = "Strand/vendor/entt/include"
 IncludeDir["yaml_cpp"] = "Strand/vendor/yaml-cpp/include"
+IncludeDir["ImGuizmo"] = "Strand/vendor/ImGuizmo"
 
 
 
@@ -56,14 +57,18 @@ project "Strand"
 		"%{prj.name}/vendor/stb_image/**.h",
 		"%{prj.name}/vendor/stb_image/**.cpp",
 		"%{prj.name}/vendor/glm/glm/**.hpp",
-		"%{prj.name}/vendor/glm/glm/**.inl"
+		"%{prj.name}/vendor/glm/glm/**.inl",
+
+		"%{prj.name}/vendor/ImGuizmo/ImGuizmo.h",
+		"%{prj.name}/vendor/ImGuizmo/ImGuizmo.cpp"
 	}
 
 	defines
 	{
 		"_CRT_SECURE_NO_WARNINGS",
 		"GLFW_INCLUDE_NONE",
-		"YAML_CPP_STATIC_DEFINE"
+		"YAML_CPP_STATIC_DEFINE",
+		"IMGUI_DEFINE_MATH_OPERATORS"
 	}
 
 	includedirs
@@ -76,7 +81,8 @@ project "Strand"
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.stb_image}",
 		"%{IncludeDir.entt}",
-		"%{IncludeDir.yaml_cpp}"
+		"%{IncludeDir.yaml_cpp}",
+		"%{IncludeDir.ImGuizmo}"
 
 
 	}
@@ -90,6 +96,9 @@ project "Strand"
 		"opengl32.lib",
 		
 	}
+
+	filter "files:Strand/vendor/ImGuizmo/**.cpp"
+    flags { "NoPCH" }
 
 	filter "system:windows"
 		systemversion "latest"
@@ -193,7 +202,8 @@ project "Bridges"
 		"Strand/src",
 		"Strand/vendor",
 		"%{IncludeDir.glm}",
-		"%{IncludeDir.entt}"
+		"%{IncludeDir.entt}",
+		"%{IncludeDir.ImGuizmo}"
 	}
 
 	links
