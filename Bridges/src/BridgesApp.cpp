@@ -8,8 +8,8 @@ namespace Strand {
 	class StrandEditor : public Application
 	{
 	public:
-		StrandEditor()
-			: Application("Strand Editor")
+		StrandEditor(ApplicationCommandLineArgs args)
+			: Application("Strand Editor", args)
 		{
 			PushLayer(new EditorLayer());
 		}
@@ -19,9 +19,9 @@ namespace Strand {
 		}
 	};
 
-	Application* CreateApplication()
+	Application* CreateApplication(ApplicationCommandLineArgs args)
 	{
-		return new StrandEditor();
+		return new StrandEditor(args);
 	}
 
 }

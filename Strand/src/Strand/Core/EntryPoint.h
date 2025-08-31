@@ -1,17 +1,18 @@
 #pragma once
 
 #include "Strand/Core/Base.h"
+#include "Strand/Core/Application.h"
 
 #ifdef SD_PLATFORM_WINDOWS
 
-extern Strand::Application* Strand::CreateApplication();
+extern Strand::Application* Strand::CreateApplication(ApplicationCommandLineArgs args);
 
 int main(int argc, char** argv)
 {
 	Strand::Log::Init();
 
 	SD_PROFILE_BEGIN_SESSION("Startup", "StrandProfile-Startup.json");
-	auto app = Strand::CreateApplication();
+	auto app = Strand::CreateApplication({ argc, argv });
 	SD_PROFILE_END_SESSION();
 
 	SD_PROFILE_BEGIN_SESSION("Runtime", "StrandProfile-Runtime.json");
