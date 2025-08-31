@@ -23,7 +23,7 @@ public:
 
 };
 
-Strand::Application* Strand::CreateApplication()
+Strand::Application* Strand::CreateApplication(ApplicationCommandLineArgs args)
 {
 	return new Sandbox();
 }
