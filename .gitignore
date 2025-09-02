@@ -374,3 +374,8 @@ Sandbox/StrandProfile-Runtime.json
 Sandbox/StrandProfile-Shutdown.json
 Sandbox/StrandProfile-Startup.json
 
+
+# Directories
+Strand/vendor/VulkanSDK
+Bridges/assets/cache
+scripts/__pycache__

@@ -51,7 +51,7 @@ namespace Strand {
 		static Statistics GetStats();
 	private:
 		static void StartBatch();
-		static void FlushAndReset();
+		static void NextBatch();
 	};
 
 }

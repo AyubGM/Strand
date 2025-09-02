@@ -4,6 +4,7 @@ C:\dev\Strand\Strand\src\Platform\OpenGL\OpenGLFramebuffer.cpp;C:\dev\Strand\bin
 C:\dev\Strand\Strand\src\Platform\OpenGL\OpenGLRendererAPI.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\OpenGLRendererAPI.obj
 C:\dev\Strand\Strand\src\Platform\OpenGL\OpenGLShader.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\OpenGLShader.obj
 C:\dev\Strand\Strand\src\Platform\OpenGL\OpenGLTexture.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\OpenGLTexture.obj
+C:\dev\Strand\Strand\src\Platform\OpenGL\OpenGLUniformBuffer.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\OpenGLUniformBuffer.obj
 C:\dev\Strand\Strand\src\Platform\OpenGL\OpenGLVertexArray.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\OpenGLVertexArray.obj
 C:\dev\Strand\Strand\src\Platform\Windows\WindowsInput.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\WindowsInput.obj
 C:\dev\Strand\Strand\src\Platform\Windows\WindowsPlatformUtils.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\WindowsPlatformUtils.obj
@@ -28,6 +29,7 @@ C:\dev\Strand\Strand\src\Strand\Renderer\Renderer2D.cpp;C:\dev\Strand\bin-int\De
 C:\dev\Strand\Strand\src\Strand\Renderer\RendererAPI.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\RendererAPI.obj
 C:\dev\Strand\Strand\src\Strand\Renderer\Shader.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\Shader.obj
 C:\dev\Strand\Strand\src\Strand\Renderer\Texture.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\Texture.obj
+C:\dev\Strand\Strand\src\Strand\Renderer\UniformBuffer.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\UniformBuffer.obj
 C:\dev\Strand\Strand\src\Strand\Renderer\VertexArray.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\VertexArray.obj
 C:\dev\Strand\Strand\src\Strand\Scene\Entity.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\Entity.obj
 C:\dev\Strand\Strand\src\Strand\Scene\Scene.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\Scene.obj
