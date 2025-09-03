@@ -55,11 +55,8 @@ namespace Strand {
 			);
 			if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
 			{
-				if (ImGui::Button(filenameString.c_str()))
-				{
-					if(directoryEntry.is_directory())
-						m_CurrentDirectory /= path.filename();
-				}
+				if(directoryEntry.is_directory())
+					m_CurrentDirectory /= path.filename();
 			}
 			ImGui::TextWrapped(filenameString.c_str());
 
