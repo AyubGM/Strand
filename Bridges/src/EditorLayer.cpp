@@ -236,6 +236,7 @@ namespace Strand {
 		}
 
 		m_SceneHierarchyPanel.OnImGuiRender();
+		m_ContentBrowserPanel.OnImGuiRender();
 
 
 		std::string name = "None";
