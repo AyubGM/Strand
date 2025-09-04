@@ -61,10 +61,10 @@ namespace Strand {
 
 		{
 
-			auto group = m_Registry.group<TransformComponent, CameraComponent>();
-			for (auto entity : group)
+			auto view = m_Registry.view<TransformComponent, CameraComponent>();
+			for (auto entity : view)
 			{
-				auto [transform, camera] = group.get<TransformComponent, CameraComponent>(entity);
+				auto [transform, camera] = view.get<TransformComponent, CameraComponent>(entity);
 
 				if (camera.Primary)
 				{
@@ -79,7 +79,7 @@ namespace Strand {
 		{
 			Renderer2D::BeginScene(*mainCamera, cameraTransform);
 
-			auto group = m_Registry.view<TransformComponent, SpriteRendererComponent>();
+			auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
 			for (auto entity : group)
 			{
 				auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
@@ -88,6 +88,10 @@ namespace Strand {
 			}
 
 			Renderer2D::EndScene();
+		}
+		else
+		{
+			SD_CORE_WARN("No primary camera in scene! Scene will not render.");
 		}
 
 	}
