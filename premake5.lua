@@ -27,6 +27,7 @@ IncludeDir["GLFW"] = "Strand/vendor/GLFW/include"
 IncludeDir["Glad"] = "Strand/vendor/Glad/include"
 IncludeDir["ImGui"] = "Strand/vendor/imgui"
 IncludeDir["glm"] = "Strand/vendor/glm"
+IncludeDir["Box2D"] = "Strand/vendor/Box2D/include"
 IncludeDir["stb_image"] = "Strand/vendor/stb_image"
 IncludeDir["entt"] = "Strand/vendor/entt/include"
 IncludeDir["yaml_cpp"] = "Strand/vendor/yaml-cpp/include"
@@ -57,6 +58,7 @@ Library["SPIRV_Cross_GLSL_Release"] = "%{LibraryDir.VulkanSDK}/spirv-cross-glsl.
 --  Strand Dependencies --------
 
 group "Dependencies"
+    include "Strand/vendor/Box2D"
 	include "Strand/vendor/GLFW"
 	include "Strand/vendor/Glad"
 	include "Strand/vendor/imgui"
@@ -102,6 +104,7 @@ project "Strand"
 	{
 		"%{prj.name}/src",
 		"%{prj.name}/vendor/spdlog/include",
+		"%{IncludeDir.Box2D}",
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.Glad}",
 		"%{IncludeDir.ImGui}",
@@ -116,6 +119,7 @@ project "Strand"
 
 	links 
 	{ 
+		"Box2D",
 		"GLFW",
 		"Glad",
 		"ImGui",
@@ -197,6 +201,7 @@ project "Sandbox"
 	includedirs
 	{
 		"Strand/vendor/spdlog/include",
+		"%{IncludeDir.Box2D}",
 		"Strand/src",
 		"Strand/vendor",
 		"%{IncludeDir.glm}",
@@ -205,6 +210,7 @@ project "Sandbox"
 
 	links
 	{
+		"Box2D",
 		"Strand"
 	}
 
@@ -253,15 +259,17 @@ project "Bridges"
 	includedirs
 	{
 		"Strand/vendor/spdlog/include",
+		"%{IncludeDir.Box2D}",
 		"Strand/src",
 		"Strand/vendor",
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.entt}",
-		"%{IncludeDir.ImGuizmo}"
+		"%{IncludeDir.ImGuizmo}",
 	}
 
 	links
 	{
+		"Box2D",
 		"Strand"
 	}
 

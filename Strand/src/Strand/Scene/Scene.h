@@ -8,6 +8,9 @@
 
 #include "entt.hpp"
 
+// Box2D
+#include "box2d/box2d.h"
+
 namespace Strand {
 
 	class Entity;
@@ -20,6 +23,9 @@ namespace Strand {
 
 		Entity CreateEntity(const std::string& name = std::string());
 		void DestroyEntity(Entity entity);
+
+		void OnRuntimeStart();
+		void OnRuntimeStop();
 
 		// TEMP
 		entt::registry& Reg() { return m_Registry; }
@@ -37,6 +43,8 @@ namespace Strand {
 	private:
 		entt::registry m_Registry;
 		uint32_t m_ViewportWidth = 0, m_ViewportHeight = 0;
+
+		b2WorldId m_PhysicsWorld = b2_nullWorldId;
 
 
 		friend class Entity;
