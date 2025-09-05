@@ -21,3 +21,6 @@
 	path = Strand/vendor/ImGuizmo
 	url = https://github.com/CedricGuillemet/ImGuizmo.git
 
+[submodule "Strand/vendor/Box2D"]
+	path = Strand/vendor/Box2D
+	url = https://github.com/AyubGM/box2d
