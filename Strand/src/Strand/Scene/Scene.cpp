@@ -87,6 +87,8 @@ namespace Strand {
 				shapeDef.material.friction = bc2d.Friction;
 				shapeDef.material.restitution = bc2d.Restitution;
 				//shapeDef.material.restitutionThreshold = bc2d.RestitutionThreshold;
+				//TODO need to check the API and need to change to world defintion
+				worldDef.restitutionThreshold= bc2d.RestitutionThreshold; 
 				b2ShapeId shapeId = b2CreatePolygonShape(bodyId, &shapeDef, &box);
 			}
 		}
