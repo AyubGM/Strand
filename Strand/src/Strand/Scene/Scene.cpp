@@ -70,9 +70,8 @@ namespace Strand {
 
 
 			b2BodyId bodyId = b2CreateBody(m_PhysicsWorld, &bodyDef);
-			b2BodyId* bodyIdPtr = &bodyId;
 
-			rb2d.RuntimeBody = bodyIdPtr;
+			rb2d.RuntimeBody = bodyId;
 
 			if (entity.HasComponent<BoxCollider2DComponent>())
 			{
@@ -139,7 +138,7 @@ namespace Strand {
 				auto& rb2d = entity.GetComponent<Rigidbody2DComponent>();
 
 				//b2Body* body = (b2Body*)rb2d.RuntimeBody;
-				b2BodyId bodyId = *(b2BodyId*)rb2d.RuntimeBody;
+				b2BodyId bodyId = rb2d.RuntimeBody;
 				
 
 				const b2Vec2 position = b2Body_GetPosition(bodyId);

@@ -96,7 +96,7 @@ namespace Strand {
 		bool FixedRotation = false;
 
 		// Storage for runtime
-		void* RuntimeBody = nullptr;
+		b2BodyId RuntimeBody = { 0 };
 
 		Rigidbody2DComponent() = default;
 		Rigidbody2DComponent(const Rigidbody2DComponent&) = default;

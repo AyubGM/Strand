@@ -54,6 +54,8 @@ void Player::OnUpdate(Strand::Timestep ts)
 	}
 
 	m_Velocity.y = glm::clamp(m_Velocity.y, -20.0f, 20.0f);
+	//HERE////////////
+	////////////
 	m_Position += m_Velocity * (float)ts;
 
 	// Particles
