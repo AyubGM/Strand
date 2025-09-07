@@ -13,6 +13,7 @@ C:\dev\Strand\Strand\src\Strand\Core\Application.cpp;C:\dev\Strand\bin-int\Debug
 C:\dev\Strand\Strand\src\Strand\Core\Layer.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\Layer.obj
 C:\dev\Strand\Strand\src\Strand\Core\LayerStack.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\LayerStack.obj
 C:\dev\Strand\Strand\src\Strand\Core\Log.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\Log.obj
+C:\dev\Strand\Strand\src\Strand\Core\UUID.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\UUID.obj
 C:\dev\Strand\Strand\src\Strand\Core\Window.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\Window.obj
 C:\dev\Strand\Strand\src\Strand\ImGui\ImGuiBuild.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\ImGuiBuild.obj
 C:\dev\Strand\Strand\src\Strand\ImGui\ImGuiLayer.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\ImGuiLayer.obj

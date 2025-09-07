@@ -172,6 +172,7 @@
     <ClInclude Include="src\Strand\Core\PlatformDetection.h" />
     <ClInclude Include="src\Strand\Core\Timer.h" />
     <ClInclude Include="src\Strand\Core\Timestep.h" />
+    <ClInclude Include="src\Strand\Core\UUID.h" />
     <ClInclude Include="src\Strand\Core\Window.h" />
     <ClInclude Include="src\Strand\Core\input.h" />
     <ClInclude Include="src\Strand\Debug\Instrumentor.h" />
@@ -641,6 +642,7 @@
     <ClCompile Include="src\Strand\Core\Layer.cpp" />
     <ClCompile Include="src\Strand\Core\LayerStack.cpp" />
     <ClCompile Include="src\Strand\Core\Log.cpp" />
+    <ClCompile Include="src\Strand\Core\UUID.cpp" />
     <ClCompile Include="src\Strand\Core\Window.cpp" />
     <ClCompile Include="src\Strand\ImGui\ImGuiBuild.cpp" />
     <ClCompile Include="src\Strand\ImGui\ImGuiLayer.cpp" />

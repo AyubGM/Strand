@@ -1,5 +1,13 @@
 #pragma once
 
+
+
+#include "Strand/Scene/SceneCamera.h"
+#include "Strand/Core/UUID.h"
+#include "Strand/Renderer/Texture.h"
+
+#include "box2d/box2d.h"
+
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -7,11 +15,17 @@
 #include <glm/gtx/quaternion.hpp>
 
 
-#include "Strand/Scene/SceneCamera.h"
-#include "Strand/Scene/ScriptableEntity.h"
-#include "Strand/Renderer/Texture.h"
 
 namespace Strand {
+
+	struct IDComponent
+	{
+		UUID ID;
+
+		IDComponent() = default;
+		IDComponent(const IDComponent&) = default;
+		IDComponent(const UUID& id) : ID(id) {}
+	};
 
 	struct TagComponent
 	{
@@ -70,6 +84,9 @@ namespace Strand {
 
 
 	};
+
+	// Forward declaration
+	class ScriptableEntity;
 
 	struct NativeScriptComponent
 	{

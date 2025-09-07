@@ -3,7 +3,7 @@
 
 
 #include "Strand/Core/Timestep.h"
-
+#include "Strand/Core/UUID.h"
 #include "Strand/Renderer/EditorCamera.h"
 
 #include "entt.hpp"
@@ -22,6 +22,7 @@ namespace Strand {
 		~Scene();
 
 		Entity CreateEntity(const std::string& name = std::string());
+		Entity CreateEntityWithUUID(UUID uuid, const std::string& name = std::string());
 		void DestroyEntity(Entity entity);
 
 		void OnRuntimeStart();
