@@ -26,24 +26,27 @@ namespace Strand {
     {
 		ImGui::Begin("Scene Hierarchy");
 
-		// Iterate all entities by looping over the registry's storage
-		auto view = m_Context->m_Registry.view<TagComponent>();
-		for (auto entityID : view)
+		if (m_Context)
 		{
-			Entity entity{ entityID , m_Context.get() };
-			DrawEntityNode(entity);
-		}
+			// Iterate all entities by looping over the registry's storage
+			auto view = m_Context->m_Registry.view<TagComponent>();
+			for (auto entityID : view)
+			{
+				Entity entity{ entityID , m_Context.get() };
+				DrawEntityNode(entity);
+			}
 
-		if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())
-			m_SelectionContext = {};
+			if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())
+				m_SelectionContext = {};
 
-		// Right-click on blank space
-		if (ImGui::BeginPopupContextWindow(0, 1))
-		{
-			if (ImGui::MenuItem("Create Empty Entity"))
-				m_Context->CreateEntity("Empty Entity");
+			// Right-click on blank space
+			if (ImGui::BeginPopupContextWindow(0, 1))
+			{
+				if (ImGui::MenuItem("Create Empty Entity"))
+					m_Context->CreateEntity("Empty Entity");
 
-			ImGui::EndPopup();
+				ImGui::EndPopup();
+			}
 		}
 
 
