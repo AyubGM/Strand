@@ -86,6 +86,7 @@ namespace Strand {
 		CopyComponent<NativeScriptComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
 		CopyComponent<Rigidbody2DComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
 		CopyComponent<BoxCollider2DComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
+		CopyComponent<CircleCollider2DComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
 
 		return newScene;
 	}
@@ -153,6 +154,23 @@ namespace Strand {
 				//TODO need to check the API and need to change to world defintion
 				worldDef.restitutionThreshold= bc2d.RestitutionThreshold; 
 				b2ShapeId shapeId = b2CreatePolygonShape(bodyId, &shapeDef, &box);
+			}
+
+			if (entity.HasComponent<CircleCollider2DComponent>())
+			{
+				auto& cc2d = entity.GetComponent<CircleCollider2DComponent>();
+
+				b2Circle circle;
+				circle.center.x = cc2d.Offset.x;
+				circle.center.y = cc2d.Offset.y;
+				circle.radius = cc2d.Radius;
+
+				b2ShapeDef shapeDef = b2DefaultShapeDef();
+				shapeDef.density = cc2d.Density;
+				shapeDef.material.friction = cc2d.Friction;
+				shapeDef.material.restitution = cc2d.Restitution;
+				b2ShapeId shapeId = b2CreateCircleShape(bodyId, &shapeDef, &circle);
+				//cc2d.RuntimeFixture = reinterpret_cast<void*>(shapeId);
 			}
 		}
 	}
@@ -329,6 +347,7 @@ namespace Strand {
 		CopyComponentIfExists<NativeScriptComponent>(newEntity, entity);
 		CopyComponentIfExists<Rigidbody2DComponent>(newEntity, entity);
 		CopyComponentIfExists<BoxCollider2DComponent>(newEntity, entity);
+		CopyComponentIfExists<CircleCollider2DComponent>(newEntity, entity);
 	}
 
 	Entity Scene::GetPrimaryCameraEntity()
@@ -397,4 +416,8 @@ namespace Strand {
 	{
 	}
 
+	template<>
+	void Scene::OnComponentAdded<CircleCollider2DComponent>(Entity entity, CircleCollider2DComponent& component)
+	{
+	}
 }
