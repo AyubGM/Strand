@@ -163,7 +163,7 @@ namespace Strand {
 				b2Circle circle;
 				circle.center.x = cc2d.Offset.x;
 				circle.center.y = cc2d.Offset.y;
-				circle.radius = cc2d.Radius;
+				circle.radius = transform.Scale.x * cc2d.Radius;
 
 				b2ShapeDef shapeDef = b2DefaultShapeDef();
 				shapeDef.density = cc2d.Density;
