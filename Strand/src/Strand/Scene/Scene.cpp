@@ -33,6 +33,7 @@ namespace Strand {
 
 	Scene::~Scene()
 	{
+		m_PhysicsWorld = b2_nullWorldId;
 	}
 
 	template<typename Component>
@@ -112,75 +113,25 @@ namespace Strand {
 		m_Registry.destroy(entity);
 	}
 
+
 	void Scene::OnRuntimeStart()
 	{
-		//TODO Create Box2D Wrapper
-		b2WorldDef worldDef = b2DefaultWorldDef();
-		worldDef.gravity = { 0.0f, -9.8f };
-		m_PhysicsWorld = b2CreateWorld(&worldDef);
-
-		auto view = m_Registry.view<Rigidbody2DComponent>();
-		for (auto e : view)
-		{
-			Entity entity = { e, this };
-			auto& transform = entity.GetComponent<TransformComponent>();
-			auto& rb2d = entity.GetComponent<Rigidbody2DComponent>();
-
-			b2BodyDef bodyDef = b2DefaultBodyDef();
-			bodyDef.type = Rigidbody2DTypeToBox2DBody(rb2d.Type);
-			bodyDef.position = { transform.Translation.x, transform.Translation.y };
-			bodyDef.rotation = b2MakeRot(transform.Rotation.z);
-			bodyDef.motionLocks.angularZ = rb2d.FixedRotation;
-
-
-			b2BodyId bodyId = b2CreateBody(m_PhysicsWorld, &bodyDef);
-
-			rb2d.RuntimeBody = bodyId;
-
-			if (entity.HasComponent<BoxCollider2DComponent>())
-			{
-				auto& bc2d = entity.GetComponent<BoxCollider2DComponent>();
-
-				b2Polygon box = b2MakeBox(bc2d.Size.x * transform.Scale.x / 2.0f, bc2d.Size.y * transform.Scale.y / 2.0f);
-
-				//box.SetAsBox(bc2d.Size.x * transform.Scale.x, bc2d.Size.y * transform.Scale.y);
-
-				b2ShapeDef shapeDef = b2DefaultShapeDef();
-				/*fixtureDef.shape = &boxShape;*/
-				shapeDef.density = bc2d.Density;
-				shapeDef.material.friction = bc2d.Friction;
-				shapeDef.material.restitution = bc2d.Restitution;
-				//shapeDef.material.restitutionThreshold = bc2d.RestitutionThreshold;
-				//TODO need to check the API and need to change to world defintion
-				worldDef.restitutionThreshold= bc2d.RestitutionThreshold; 
-				b2ShapeId shapeId = b2CreatePolygonShape(bodyId, &shapeDef, &box);
-			}
-
-			if (entity.HasComponent<CircleCollider2DComponent>())
-			{
-				auto& cc2d = entity.GetComponent<CircleCollider2DComponent>();
-
-				b2Circle circle;
-				circle.center.x = cc2d.Offset.x;
-				circle.center.y = cc2d.Offset.y;
-				circle.radius = transform.Scale.x * cc2d.Radius;
-
-				b2ShapeDef shapeDef = b2DefaultShapeDef();
-				shapeDef.density = cc2d.Density;
-				shapeDef.material.friction = cc2d.Friction;
-				shapeDef.material.restitution = cc2d.Restitution;
-				b2ShapeId shapeId = b2CreateCircleShape(bodyId, &shapeDef, &circle);
-				//cc2d.RuntimeFixture = reinterpret_cast<void*>(shapeId);
-			}
-		}
+		OnPhysics2DStart();
 	}
 
 	void Scene::OnRuntimeStop()
 	{
-		b2DestroyWorld(m_PhysicsWorld);
-		m_PhysicsWorld = b2_nullWorldId;
-		/*delete m_PhysicsWorld;
-		m_PhysicsWorld = nullptr;*/
+		OnPhysics2DStop();
+	}
+
+	void Scene::OnSimulationStart()
+	{
+		OnPhysics2DStart();
+	}
+
+	void Scene::OnSimulationStop()
+	{
+		OnPhysics2DStop();
 	}
 
 
@@ -290,33 +241,47 @@ namespace Strand {
 
 	}
 
+	void Scene::OnUpdateSimulation(Timestep ts, EditorCamera& camera)
+	{
+		// Physics
+		{
+
+			const int32_t subStepCount = 8;
+			b2World_Step(m_PhysicsWorld, ts, subStepCount);
+
+			// Retrieve transform from Box2D
+			auto view = m_Registry.view<Rigidbody2DComponent>();
+			for (auto e : view)
+			{
+				Entity entity = { e, this };
+				auto& transform = entity.GetComponent<TransformComponent>();
+				auto& rb2d = entity.GetComponent<Rigidbody2DComponent>();
+
+				//b2Body* body = (b2Body*)rb2d.RuntimeBody;
+				b2BodyId bodyId = rb2d.RuntimeBody;
+
+
+				const b2Vec2 position = b2Body_GetPosition(bodyId);
+				const b2Rot rotation = b2Body_GetRotation(bodyId);
+
+				//const auto& position = body->GetPosition();
+				transform.Translation.x = position.x;
+				transform.Translation.y = position.y;
+				//transform.Rotation.z = body->GetAngle();
+				transform.Rotation.z = b2Rot_GetAngle(rotation);
+		
+			}
+		}
+
+		// Render
+		RenderScene(camera);
+	}
+
 	void Scene::OnUpdateEditor(Timestep ts, EditorCamera& camera)
 	{
-		Renderer2D::BeginScene(camera);
+		// Render
+		RenderScene(camera);
 
-		// Draw sprites
-		{
-			auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
-			for (auto entity : group)
-			{
-				auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
-
-				Renderer2D::DrawSprite(transform.GetTransform(), sprite, (int)entity);
-			}
-		}
-
-		// Draw circles
-		{
-			auto view = m_Registry.view<TransformComponent, CircleRendererComponent>();
-			for (auto entity : view)
-			{
-				auto [transform, circle] = view.get<TransformComponent, CircleRendererComponent>(entity);
-
-				Renderer2D::DrawCircle(transform.GetTransform(), circle.Color, circle.Thickness, circle.Fade, (int)entity);
-			}
-		}
-
-		Renderer2D::EndScene();
 	}
 
 
@@ -360,6 +325,106 @@ namespace Strand {
 				return Entity{ entity, this };
 		}
 		return {};
+	}
+
+	void Scene::OnPhysics2DStart()
+	{
+		//TODO Create Box2D Wrapper
+		b2WorldDef worldDef = b2DefaultWorldDef();
+		worldDef.gravity = { 0.0f, -9.8f };
+		m_PhysicsWorld = b2CreateWorld(&worldDef);
+
+		auto view = m_Registry.view<Rigidbody2DComponent>();
+		for (auto e : view)
+		{
+			Entity entity = { e, this };
+			auto& transform = entity.GetComponent<TransformComponent>();
+			auto& rb2d = entity.GetComponent<Rigidbody2DComponent>();
+
+			b2BodyDef bodyDef = b2DefaultBodyDef();
+			bodyDef.type = Rigidbody2DTypeToBox2DBody(rb2d.Type);
+			bodyDef.position = { transform.Translation.x, transform.Translation.y };
+			bodyDef.rotation = b2MakeRot(transform.Rotation.z);
+			bodyDef.motionLocks.angularZ = rb2d.FixedRotation;
+
+
+			b2BodyId bodyId = b2CreateBody(m_PhysicsWorld, &bodyDef);
+
+			rb2d.RuntimeBody = bodyId;
+
+			if (entity.HasComponent<BoxCollider2DComponent>())
+			{
+				auto& bc2d = entity.GetComponent<BoxCollider2DComponent>();
+
+				b2Polygon box = b2MakeBox(bc2d.Size.x * transform.Scale.x / 2.0f, bc2d.Size.y * transform.Scale.y / 2.0f);
+
+				//box.SetAsBox(bc2d.Size.x * transform.Scale.x, bc2d.Size.y * transform.Scale.y);
+
+				b2ShapeDef shapeDef = b2DefaultShapeDef();
+				/*fixtureDef.shape = &boxShape;*/
+				shapeDef.density = bc2d.Density;
+				shapeDef.material.friction = bc2d.Friction;
+				shapeDef.material.restitution = bc2d.Restitution;
+				//shapeDef.material.restitutionThreshold = bc2d.RestitutionThreshold;
+				//TODO need to check the API and need to change to world defintion
+				worldDef.restitutionThreshold = bc2d.RestitutionThreshold;
+				b2ShapeId shapeId = b2CreatePolygonShape(bodyId, &shapeDef, &box);
+			}
+
+			if (entity.HasComponent<CircleCollider2DComponent>())
+			{
+				auto& cc2d = entity.GetComponent<CircleCollider2DComponent>();
+
+				b2Circle circle;
+				circle.center.x = cc2d.Offset.x;
+				circle.center.y = cc2d.Offset.y;
+				circle.radius = transform.Scale.x * cc2d.Radius;
+
+				b2ShapeDef shapeDef = b2DefaultShapeDef();
+				shapeDef.density = cc2d.Density;
+				shapeDef.material.friction = cc2d.Friction;
+				shapeDef.material.restitution = cc2d.Restitution;
+				b2ShapeId shapeId = b2CreateCircleShape(bodyId, &shapeDef, &circle);
+				//cc2d.RuntimeFixture = reinterpret_cast<void*>(shapeId);
+			}
+		}
+	}
+
+	void Scene::OnPhysics2DStop()
+	{
+		b2DestroyWorld(m_PhysicsWorld);
+		m_PhysicsWorld = b2_nullWorldId;
+		/*delete m_PhysicsWorld;
+		m_PhysicsWorld = nullptr;*/
+	}
+
+	void Scene::RenderScene(EditorCamera& camera)
+	{
+		Renderer2D::BeginScene(camera);
+
+		// Draw sprites
+		{
+			auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
+			for (auto entity : group)
+			{
+				auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
+
+				Renderer2D::DrawSprite(transform.GetTransform(), sprite, (int)entity);
+			}
+		}
+
+		// Draw circles
+		{
+			auto view = m_Registry.view<TransformComponent, CircleRendererComponent>();
+			for (auto entity : view)
+			{
+				auto [transform, circle] = view.get<TransformComponent, CircleRendererComponent>(entity);
+
+				Renderer2D::DrawCircle(transform.GetTransform(), circle.Color, circle.Thickness, circle.Fade, (int)entity);
+			}
+		}
+
+		Renderer2D::EndScene();
 	}
 
 	template<typename T>
