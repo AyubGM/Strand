@@ -308,6 +308,7 @@ namespace Strand {
 		}
 		catch (YAML::ParserException e)
 		{
+			SD_CORE_ERROR("Failed to load .strand file '{0}'\n     {1}", filepath, e.what());
 			return false;
 		}
 
