@@ -27,5 +27,6 @@
   <ItemGroup>
     <None Include="assets\shaders\Renderer2D_Circle.glsl" />
     <None Include="assets\shaders\Renderer2D_Line.glsl" />
+    <None Include="assets\scenes\Example.strand" />
   </ItemGroup>
 </Project>
