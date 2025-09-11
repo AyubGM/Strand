@@ -14,9 +14,7 @@ namespace Strand {
 			PushLayer(new EditorLayer());
 		}
 
-		~Bridges()
-		{
-		}
+		
 	};
 
 	Application* CreateApplication(ApplicationCommandLineArgs args)
