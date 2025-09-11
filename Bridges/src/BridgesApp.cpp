@@ -5,23 +5,27 @@
 
 namespace Strand {
 
-	class StrandEditor : public Application
+	class Bridges : public Application
 	{
 	public:
-		StrandEditor(ApplicationCommandLineArgs args)
-			: Application("Strand Editor", args)
+		Bridges(const ApplicationSpecification& spec)
+			: Application(spec)
 		{
 			PushLayer(new EditorLayer());
 		}
 
-		~StrandEditor()
+		~Bridges()
 		{
 		}
 	};
 
 	Application* CreateApplication(ApplicationCommandLineArgs args)
 	{
-		return new StrandEditor(args);
+		ApplicationSpecification spec;
+		spec.Name = "Bridges";
+		spec.CommandLineArgs = args;
+
+		return new Bridges(spec);
 	}
 
 }

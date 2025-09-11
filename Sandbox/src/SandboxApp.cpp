@@ -9,7 +9,8 @@
 class Sandbox : public Strand::Application
 {
 public:
-	Sandbox()
+	Sandbox(const Strand::ApplicationSpecification& specification)
+		: Strand::Application(specification)
 	{ 
 		//PushLayer(new ExampleLayer());
 		//PushLayer(new Sandbox2D());
@@ -25,5 +26,10 @@ public:
 
 Strand::Application* Strand::CreateApplication(ApplicationCommandLineArgs args)
 {
-	return new Sandbox();
+	ApplicationSpecification spec;
+	spec.Name = "Sandbox";
+	spec.WorkingDirectory = "../Bridges";
+	spec.CommandLineArgs = args;
+
+	return new Sandbox(spec);
 }
