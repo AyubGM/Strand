@@ -38,7 +38,7 @@ namespace Strand {
 
 		EVENT_CLASS_TYPE(KeyPressed)
 	private:
-		 bool m_IsRepeat;;
+		 bool m_IsRepeat;
 	};
 
 	class KeyReleasedEvent : public KeyEvent
