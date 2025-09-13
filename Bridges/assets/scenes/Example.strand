@@ -4,11 +4,11 @@ Entities:
     TagComponent:
       Tag: CheckerboardBG
     TransformComponent:
-      Translation: [2.4000001, 0, -12.255374]
+      Translation: [2.4000001, 0, -0.360000014]
       Rotation: [0, 0, 0]
       Scale: [20, 20, 20]
     SpriteRendererComponent:
-      Color: [0.999989986, 1, 0.999989986, 1]
+      Color: [0.99227798, 0.99227798, 0.99227798, 1]
       TexturePath: assets\textures\Checkerboard.png
       TilingFactor: 10
   - Entity: 17154294327283940743

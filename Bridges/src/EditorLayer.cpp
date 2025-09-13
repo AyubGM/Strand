@@ -35,10 +35,11 @@ namespace Strand {
 		fbSpec.Height = 720;
 		m_Framebuffer = Framebuffer::Create(fbSpec);
 
+		// SUS
 		m_EditorScene = CreateRef<Scene>();
 		m_ActiveScene = m_EditorScene;
 
-		m_ActiveScene = CreateRef<Scene>();
+		//m_ActiveScene = CreateRef<Scene>();
 
 		m_EditorCamera = EditorCamera(30.0f, 1.778f, 0.1f, 1000.0f);
 
@@ -94,11 +95,13 @@ namespace Strand {
 		{
 		case SceneState::Edit:
 		{
+			//SUS
 			if (m_ViewportFocused)
 				m_CameraController.OnUpdate(ts);
 
 			m_EditorCamera.OnUpdate(ts);
 
+			//Just Render
 			m_ActiveScene->OnUpdateEditor(ts, m_EditorCamera);
 			break;
 		}
@@ -106,11 +109,13 @@ namespace Strand {
 		{
 			m_EditorCamera.OnUpdate(ts);
 
+			//Set up physics and then render
 			m_ActiveScene->OnUpdateSimulation(ts, m_EditorCamera);
 			break;
 		}
 		case SceneState::Play:
 		{
+			//Set up physics, find main camera component and then render
 			m_ActiveScene->OnUpdateRuntime(ts);
 			break;
 		}

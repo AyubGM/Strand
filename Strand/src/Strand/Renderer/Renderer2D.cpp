@@ -198,6 +198,8 @@ namespace Strand {
 		SD_PROFILE_FUNCTION();
 		
 		delete[] s_Data.QuadVertexBufferBase;
+		delete[] s_Data.CircleVertexBufferBase;
+		delete[] s_Data.LineVertexBufferBase;
 	}
 
 
@@ -242,12 +244,7 @@ namespace Strand {
 	{
 		SD_PROFILE_FUNCTION();
 
-		uint32_t dataSize = (uint32_t)((uint8_t*)s_Data.QuadVertexBufferPtr - (uint8_t*)s_Data.QuadVertexBufferBase);
-		s_Data.QuadVertexBuffer->SetData(s_Data.QuadVertexBufferBase, dataSize);
-
 		Flush();
-		
-
 	}
 
 	void Renderer2D::StartBatch()
@@ -460,9 +457,8 @@ namespace Strand {
 	{
 		SD_PROFILE_FUNCTION();
 
-		// TODO: implement for circles
-		// if (s_Data.QuadIndexCount >= Renderer2DData::MaxIndices)
-		// 	NextBatch();
+		if (s_Data.CircleIndexCount >= Renderer2DData::MaxIndices)
+			NextBatch();
 
 		for (size_t i = 0; i < 4; i++)
 		{
@@ -482,6 +478,10 @@ namespace Strand {
 
 	void Renderer2D::DrawLine(const glm::vec3& p0, glm::vec3& p1, const glm::vec4& color, int entityID)
 	{
+		//TODO
+		if (s_Data.LineVertexCount >= Renderer2DData::MaxVertices)
+			NextBatch();
+
 		s_Data.LineVertexBufferPtr->Position = p0;
 		s_Data.LineVertexBufferPtr->Color = color;
 		s_Data.LineVertexBufferPtr->EntityID = entityID;
