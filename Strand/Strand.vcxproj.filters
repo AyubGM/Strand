@@ -1492,6 +1492,8 @@
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
     <ClInclude Include="src\Strand\Core\UUID.h" />
+    <ClInclude Include="src\Strand\Renderer\Renderer3D.h" />
+    <ClInclude Include="src\Strand\Renderer\Mesh.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp">
@@ -1615,5 +1617,7 @@
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
     <ClCompile Include="src\Strand\Core\UUID.cpp" />
+    <ClCompile Include="src\Strand\Renderer\Renderer3D.cpp" />
+    <ClCompile Include="src\Strand\Renderer\Mesh.cpp" />
   </ItemGroup>
 </Project>
