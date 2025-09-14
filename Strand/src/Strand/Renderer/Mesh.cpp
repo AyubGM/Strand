@@ -11,11 +11,11 @@ namespace Strand {
 
 
 		m_VertexBuffer = VertexBuffer::Create((float*)vertices.data(), vertices.size() * sizeof(StaticMeshVertex));
-
+		
 		m_VertexBuffer->SetLayout({
-			{ ShaderDataType::Float3, "a_Position" },
-			{ ShaderDataType::Float3, "a_Normal" },
-			{ ShaderDataType::Float2, "a_TexCoord" }
+		   { ShaderDataType::Float3, "a_Position" },
+		   { ShaderDataType::Float3, "a_Normal"},
+		   { ShaderDataType::Float2, "a_TexCoord"}
 			});
 
 		m_VertexArray->AddVertexBuffer(m_VertexBuffer);

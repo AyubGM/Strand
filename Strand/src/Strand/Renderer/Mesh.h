@@ -14,6 +14,7 @@ namespace Strand {
 	class Mesh
 	{
 	public:
+		Mesh() = default;
 		Mesh(const std::vector<StaticMeshVertex>& vertices, const std::vector<uint32_t>& indices);
 
 		~Mesh() = default;

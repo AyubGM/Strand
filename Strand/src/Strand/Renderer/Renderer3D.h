@@ -28,13 +28,14 @@ namespace Strand {
 		// Begins the 3D scene, setting up the camera and starting a new render batch.
 		static void BeginScene(const Camera& camera, const glm::mat4& transform);
 		static void BeginScene(const EditorCamera& camera);
-		static void BeginScene(const glm::vec3& cameraPosition, const std::vector<PointLight>& pointLights);
+		static void BeginScene(const EditorCamera& camera, const std::vector<PointLight>& pointLights);
 
 		// Ends the 3D scene and flushes the remaining render data to the GPU.
 		static void EndScene();
 
 		// Draws a static mesh.
 		//static void DrawStaticMesh(const glm::mat4& transform, Ref<Mesh> mesh, Ref<Shader> shader);
+		static void DrawCubeMesh(const glm::mat4& transform, const Ref<Mesh> mesh);
 		static void DrawStaticMesh(const glm::mat4& transform, Ref<Mesh> mesh, const glm::vec3& albedo, float metallic, float roughness, float ao);
 
 
@@ -55,12 +56,12 @@ namespace Strand {
 	private:
 	
 
-		struct SceneData
+	/*	struct SceneData
 		{
 			glm::mat4 ViewProjectionMatrix;
 		};
 
-		static Scope<SceneData> s_SceneData;
+		static Scope<SceneData> s_SceneData;*/
 
 		// Flushes the current render batch to the GPU.
 		static void Flush();

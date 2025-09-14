@@ -12,6 +12,7 @@
 #include "Strand/Core/KeyCodes.h"
 #include "Strand/Core/MouseCodes.h"
 #include "Strand/Renderer/OrthographicCameraController.h"
+#include "Strand/Renderer/EditorCamera.h"
 
 #include "Strand/ImGui/ImGuiLayer.h"
 
@@ -24,6 +25,7 @@
 // ---Renderer------------------------
 #include "Strand/Renderer/Renderer.h"
 #include "Strand/Renderer/Renderer2D.h"
+#include "Strand/Renderer/Renderer3D.h"
 #include "Strand/Renderer/RenderCommand.h"
 
 #include "Strand/Renderer/Buffer.h"

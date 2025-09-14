@@ -18,6 +18,9 @@ public:
 	void OnEvent(Strand::Event& e) override;
 private:
 	Strand::OrthographicCameraController m_CameraController;
+	Strand::EditorCamera m_EditorCamera;
+	//Strand::Mesh m_CubeMesh;
+	Strand::Ref<Strand::Mesh> m_CubeMesh;
 
 	// Temp
 	Strand::Ref<Strand::VertexArray> m_SquareVA;
