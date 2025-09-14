@@ -20,9 +20,12 @@ namespace Strand {
 		PointLight PointLights[4];
 	};
 
+	static Scope<SceneData> s_SceneData;
+
 	struct Renderer3DData
 	{
-		Ref<Shader> PBRShader;
+		Ref<Shader> PBRSimpleShader;
+		Ref<Shader> PBRTexturedShader;
 		Ref<Shader> DefualtShader;
 
 
@@ -43,7 +46,7 @@ namespace Strand {
 		Ref<UniformBuffer> CameraUniformBuffer;
 		Ref<UniformBuffer> ObjectUniformBuffer; // binding = 1
 		Ref<UniformBuffer> MaterialUniformBuffer; // binding = 2
-		Ref<UniformBuffer> SceneUniformBuffer; // binding = 
+		Ref<UniformBuffer> SceneUniformBuffer; // binding = 3
 
 		Renderer3D::Statistics Stats;
 	};
@@ -53,8 +56,10 @@ namespace Strand {
 	void Renderer3D::Init()
 	{
 		SD_PROFILE_FUNCTION();
+		s_SceneData = CreateScope<SceneData>();
 
-		s_Data.PBRShader = Shader::Create("assets/shaders/Renderer3D_PBR.glsl");
+		s_Data.PBRSimpleShader = Shader::Create("assets/shaders/Renderer3D_PBR_Simple.glsl");
+		s_Data.PBRTexturedShader = Shader::Create("assets/shaders/Renderer3D_PBR_Textured.glsl");
 		s_Data.DefualtShader = Shader::Create("assets/shaders/Renderer3D_Defualt.glsl");
 
 		s_Data.CameraUniformBuffer = UniformBuffer::Create(sizeof(Renderer3DData::CameraData), 0);
@@ -91,18 +96,17 @@ namespace Strand {
 	{
 		SD_PROFILE_FUNCTION();
 
-		s_Data.PBRShader->Bind();
+		//s_Data.PBRSimpleShader->Bind();
 
 		s_Data.CameraBuffer.ViewProjection = camera.GetViewProjection();
 		s_Data.CameraUniformBuffer->SetData(&s_Data.CameraBuffer, sizeof(Renderer3DData::CameraData));
 
-		SceneData sceneData = {};
-		sceneData.CameraPosition = camera.GetPosition();
-		sceneData.NumPointLights = glm::min((uint32_t)pointLights.size(), 4u);
-		for (uint32_t i = 0; i < sceneData.NumPointLights; ++i) {
-			sceneData.PointLights[i] = pointLights[i];
+		
+		s_SceneData->CameraPosition = camera.GetPosition();
+		s_SceneData->NumPointLights = glm::min((uint32_t)pointLights.size(), 4u);
+		for (uint32_t i = 0; i < s_SceneData->NumPointLights; ++i) {
+			s_SceneData->PointLights[i] = pointLights[i];
 		}
-		s_Data.SceneUniformBuffer->SetData(&sceneData, sizeof(SceneData));
 	}
 
 	void Renderer3D::EndScene()
@@ -115,6 +119,8 @@ namespace Strand {
 		SD_PROFILE_FUNCTION();
 
 		s_Data.DefualtShader->Bind();
+		s_Data.SceneUniformBuffer->SetData(s_SceneData.get(), sizeof(SceneData));
+
 		// Update UBOs
 		s_Data.ObjectBuffer.u_Model = transform;
 		s_Data.ObjectBuffer.u_NormalMatrix = glm::transpose(glm::inverse(transform));
@@ -128,25 +134,64 @@ namespace Strand {
 		s_Data.Stats.MeshCount++;
 	}
 
-	void Renderer3D::DrawStaticMesh( const glm::mat4& transform, const Ref<Mesh> mesh, const glm::vec3& albedo, float metallic, float roughness, float ao)
+	void Renderer3D::DrawStaticMesh(const glm::mat4& transform, const Ref<Mesh> mesh,
+		const glm::vec3& albedo, float metallic, float roughness, float ao)
 	{
 		SD_PROFILE_FUNCTION();
 
-		s_Data.PBRShader->Bind();
-		// Update UBOs
+		s_Data.PBRSimpleShader->Bind();
+		s_Data.SceneUniformBuffer->SetData(s_SceneData.get(), sizeof(SceneData));
+
 		s_Data.ObjectBuffer.u_Model = transform;
 		s_Data.ObjectBuffer.u_NormalMatrix = glm::transpose(glm::inverse(transform));
 		s_Data.ObjectUniformBuffer->SetData(&s_Data.ObjectBuffer, sizeof(Renderer3DData::ObjectBuffer));
+
 		MaterialData matData = { albedo, metallic, roughness, ao };
 		s_Data.MaterialUniformBuffer->SetData(&matData, sizeof(MaterialData));
 
 		mesh->GetVertexArray()->Bind();
 		RenderCommand::DrawIndexed(mesh->GetVertexArray());
 
+		s_Data.Stats.DrawCalls++;
+		s_Data.Stats.MeshCount++;
+	}
+
+
+	void Renderer3D::DrawStaticMesh( const glm::mat4& transform, const Ref<Mesh> mesh, const Ref<Material> material)
+	{
+		SD_PROFILE_FUNCTION();
+
+		s_Data.PBRTexturedShader->Bind();
+		s_Data.SceneUniformBuffer->SetData(s_SceneData.get(), sizeof(SceneData));
+
+		// Update UBOs
+		s_Data.ObjectBuffer.u_Model = transform;
+		s_Data.ObjectBuffer.u_NormalMatrix = glm::transpose(glm::inverse(transform));
+		s_Data.ObjectUniformBuffer->SetData(&s_Data.ObjectBuffer, sizeof(Renderer3DData::ObjectBuffer));
+
+		// Bind textures to their respective texture units
+		material->AlbedoMap->Bind(0);
+		material->NormalMap->Bind(1);
+		material->MetallicMap->Bind(2);
+		material->RoughnessMap->Bind(3);
+		material->AOMap->Bind(4);
+
+		// Set the sampler uniform integers to the correct texture units
+		s_Data.PBRTexturedShader->SetInt("u_AlbedoMap", 0);
+		s_Data.PBRTexturedShader->SetInt("u_NormalMap", 1);
+		s_Data.PBRTexturedShader->SetInt("u_MetallicMap", 2);
+		s_Data.PBRTexturedShader->SetInt("u_RoughnessMap", 3);
+		s_Data.PBRTexturedShader->SetInt("u_AOMap", 4);
+
+		mesh->GetVertexArray()->Bind();
+		RenderCommand::DrawIndexed(mesh->GetVertexArray());
+
 		// Update performance statistics.
 		s_Data.Stats.DrawCalls++;
 		s_Data.Stats.MeshCount++;
 	}
+
+
 
 	//-------------------------------------------------------------------------------------------------
 	// Statistics

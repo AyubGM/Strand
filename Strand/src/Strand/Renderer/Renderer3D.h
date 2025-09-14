@@ -17,6 +17,15 @@ namespace Strand {
 		glm::vec3 Color;
 	};
 
+	struct Material
+	{
+		Ref<Texture2D> AlbedoMap;
+		Ref<Texture2D> NormalMap;
+		Ref<Texture2D> MetallicMap;
+		Ref<Texture2D> RoughnessMap;
+		Ref<Texture2D> AOMap;
+	};
+
 	class Renderer3D
 	{
 	public:
@@ -36,6 +45,7 @@ namespace Strand {
 		// Draws a static mesh.
 		//static void DrawStaticMesh(const glm::mat4& transform, Ref<Mesh> mesh, Ref<Shader> shader);
 		static void DrawCubeMesh(const glm::mat4& transform, const Ref<Mesh> mesh);
+		static void DrawStaticMesh(const glm::mat4& transform, Ref<Mesh> mesh, Ref<Material> material);
 		static void DrawStaticMesh(const glm::mat4& transform, Ref<Mesh> mesh, const glm::vec3& albedo, float metallic, float roughness, float ao);
 
 
@@ -47,15 +57,14 @@ namespace Strand {
 			//uint32_t IndexCount = 0;
 			uint32_t MeshCount = 0;
 
-			//uint32_t GetTotalVertexCount() { return VertexCount; }
-			//uint32_t GetTotalIndexCount() { return IndexCount; }
+			uint32_t GetTotalVertexCount() { return MeshCount * 8; }
+			uint32_t GetTotalIndexCount() { return MeshCount * 36; }
 			uint32_t GetTotalMeshCount() { return MeshCount; }
 		};
 		static void ResetStats();
 		static Statistics GetStats();
 	private:
 	
-
 	/*	struct SceneData
 		{
 			glm::mat4 ViewProjectionMatrix;

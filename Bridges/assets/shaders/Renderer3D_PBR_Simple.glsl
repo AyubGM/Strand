@@ -17,7 +17,6 @@ layout(std140, binding = 1) uniform ObjectData
 {
     mat4 u_Model;
     mat4 u_NormalMatrix; 
-
 };
 
 // Output to the fragment shader
@@ -54,7 +53,7 @@ layout(location = 2) in vec2 v_TexCoord;
 // Per-object material properties
 layout(std140, binding = 2) uniform MaterialData
 {
-    vec4 u_Albedo;
+    vec3 u_Albedo;
     float u_Metallic;
     float u_Roughness;
     float u_AO;
@@ -70,7 +69,7 @@ struct PointLight
 // Scene-wide uniforms
 layout(std140, binding = 3) uniform SceneData
 {
-    vec4 u_CameraPosition;
+    vec3 u_CameraPosition;
     // We'll support a max of 4 point lights for now
     int u_NumPointLights;
     PointLight u_PointLights[4];
@@ -120,55 +119,15 @@ vec3 FresnelSchlick(float cosTheta, vec3 F0)
     return F0 + (1.0 - F0) * pow(clamp(1.0 - cosTheta, 0.0, 1.0), 5.0);
 }
 
-// Simplified PBR lighting model
-vec3 CalculatePBR(vec3 N, vec3 V, vec3 albedo, float metallic, float roughness, float ao)
-{
-    vec3 F0 = vec3(0.04);
-    F0 = mix(F0, albedo, metallic);
-    
-    vec3 Lo = vec3(0.0);
-    
-    for(int i = 0; i < u_NumPointLights; ++i)
-    {
-        // Light vector and distance
-        vec3 L = u_PointLights[i].Position - v_WorldPosition;
-        float distance = length(L);
-        L = normalize(L);
-        
-        // Attenuation
-        float attenuation = 1.0 / (distance * distance);
-        vec3 radiance = u_PointLights[i].Color * attenuation;
-        
-        // Simplified PBR (for now)
-        vec3 halfwayDir = normalize(L + V);
-        
-        vec3 fresnel = F0 + (1.0 - F0) * pow(1.0 - max(dot(V, halfwayDir), 0.0), 5.0);
-        
-        vec3 kD = mix(vec3(1.0 - fresnel), vec3(0.0), metallic);
-        vec3 diffuse = kD * albedo / PI;
-        
-        float NDF = 1.0 / (roughness * roughness);
-        float G = 1.0 / 2.0;
-        
-        vec3 specular = fresnel;
-        
-        Lo += (kD * diffuse + specular) * radiance * max(0.0, dot(N, L));
-    }
-    
-    // Ambient lighting
-    vec3 ambient = 0.03 * albedo * ao;
-    
-    return ambient + Lo;
-}
 
 void main()
 {
 vec3 N = normalize(v_Normal);
-	vec3 V = normalize(u_CameraPosition - v_WorldPosition);
+	vec3 V = normalize(u_CameraPosition.xyz - v_WorldPosition);
 
     // Base reflectivity: 4% for non-metals, albedo for metals
 	vec3 F0 = vec3(0.04); 
-	F0 = mix(F0, u_Albedo, u_Metallic);
+	F0 = mix(F0, u_Albedo.xyz, u_Metallic);
 	
 	// Outgoing radiance (the final color we calculate)
 	vec3 Lo = vec3(0.0);
@@ -198,11 +157,11 @@ vec3 N = normalize(v_Normal);
 		kD *= 1.0 - u_Metallic; // Metals have no diffuse color
 		
 		float NdotL = max(dot(N, L), 0.0);		
-		Lo += (kD * u_Albedo / PI + specular) * radiance * NdotL;
+		Lo += (kD * u_Albedo.rgb / PI + specular) * radiance * NdotL;
 	}
 	
     // Simple ambient light
-	vec3 ambient = vec3(0.03) * u_Albedo * u_AO;
+	vec3 ambient = vec3(0.03) * u_Albedo.rgb * u_AO;
 	vec3 color = ambient + Lo;
 	
     // HDR tonemapping and gamma correction
