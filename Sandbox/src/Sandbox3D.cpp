@@ -28,43 +28,55 @@ Sandbox3D::Sandbox3D()
 	: Layer("Sandbox3D"), m_CameraController(1280.0f / 720.0f), m_EditorCamera(30.0f, 1.778f, 0.1f, 1000.0f), m_SquareColor({0.2f, 0.3f, 0.8f, 1.0f})
 {
 	std::vector<Strand::StaticMeshVertex> cubeVertices = {
-		// Vertex 0: Front-bottom-left
-		{glm::vec3(-1.0f, -1.0f,  1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f)},
-		// Vertex 1: Front-bottom-right
-		{glm::vec3(1.0f, -1.0f,  1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 0.0f)},
-		// Vertex 2: Front-top-right
-		{glm::vec3(1.0f,  1.0f,  1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 1.0f)},
-		// Vertex 3: Front-top-left
-		{glm::vec3(-1.0f,  1.0f,  1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 1.0f)},
+	{glm::vec3(-1.0f, -1.0f, 1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f)},
+	{glm::vec3(1.0f, -1.0f, 1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 0.0f)},
+	{glm::vec3(1.0f,  1.0f, 1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 1.0f)},
+	{glm::vec3(-1.0f,  1.0f, 1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 1.0f)},
 
-		// Vertex 4: Back-bottom-left
-		{glm::vec3(-1.0f, -1.0f, -1.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec2(1.0f, 0.0f)},
-		// Vertex 5: Back-bottom-right
-		{glm::vec3(1.0f, -1.0f, -1.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec2(0.0f, 0.0f)},
-		// Vertex 6: Back-top-right
-		{glm::vec3(1.0f,  1.0f, -1.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec2(0.0f, 1.0f)},
-		// Vertex 7: Back-top-left
-		{glm::vec3(-1.0f,  1.0f, -1.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec2(1.0f, 1.0f)}
+	// Back face
+	{glm::vec3(-1.0f, -1.0f, -1.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec2(0.0f, 0.0f)},
+	{glm::vec3(1.0f, -1.0f, -1.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec2(1.0f, 0.0f)},
+	{glm::vec3(1.0f,  1.0f, -1.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec2(1.0f, 1.0f)},
+	{glm::vec3(-1.0f,  1.0f, -1.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec2(0.0f, 1.0f)},
+
+	// Right face
+	{glm::vec3(1.0f, -1.0f,  1.0f), glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f)},
+	{glm::vec3(1.0f, -1.0f, -1.0f), glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(1.0f, 0.0f)},
+	{glm::vec3(1.0f,  1.0f, -1.0f), glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(1.0f, 1.0f)},
+	{glm::vec3(1.0f,  1.0f,  1.0f), glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(0.0f, 1.0f)},
+
+	// Left face
+	{glm::vec3(-1.0f, -1.0f, -1.0f), glm::vec3(-1.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f)},
+	{glm::vec3(-1.0f, -1.0f,  1.0f), glm::vec3(-1.0f, 0.0f, 0.0f), glm::vec2(1.0f, 0.0f)},
+	{glm::vec3(-1.0f,  1.0f,  1.0f), glm::vec3(-1.0f, 0.0f, 0.0f), glm::vec2(1.0f, 1.0f)},
+	{glm::vec3(-1.0f,  1.0f, -1.0f), glm::vec3(-1.0f, 0.0f, 0.0f), glm::vec2(0.0f, 1.0f)},
+
+	// Top face
+	{glm::vec3(-1.0f,  1.0f,  1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(0.0f, 0.0f)},
+	{glm::vec3(1.0f,  1.0f,  1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(1.0f, 0.0f)},
+	{glm::vec3(1.0f,  1.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(1.0f, 1.0f)},
+	{glm::vec3(-1.0f,  1.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(0.0f, 1.0f)},
+
+	// Bottom face
+	{glm::vec3(-1.0f, -1.0f, -1.0f), glm::vec3(0.0f, -1.0f, 0.0f), glm::vec2(0.0f, 0.0f)},
+	{glm::vec3(1.0f, -1.0f, -1.0f), glm::vec3(0.0f, -1.0f, 0.0f), glm::vec2(1.0f, 0.0f)},
+	{glm::vec3(1.0f, -1.0f,  1.0f), glm::vec3(0.0f, -1.0f, 0.0f), glm::vec2(1.0f, 1.0f)},
+	{glm::vec3(-1.0f, -1.0f,  1.0f), glm::vec3(0.0f, -1.0f, 0.0f), glm::vec2(0.0f, 1.0f)}
 	};
 
 	std::vector<uint32_t> cubeindces = {
-		0, 1, 2,  // Front face, first triangle
-		2, 3, 0,  // Front face, second triangle
-
-		1, 5, 6,  // Right face, first triangle
-		6, 2, 1,  // Right face, second triangle
-
-		5, 4, 7,  // Back face, first triangle
-		7, 6, 5,  // Back face, second triangle
-
-		4, 0, 3,  // Left face, first triangle
-		3, 7, 4,  // Left face, second triangle
-
-		3, 2, 6,  // Top face, first triangle
-		6, 7, 3,  // Top face, second triangle
-
-		4, 5, 1,  // Bottom face, first triangle
-		1, 0, 4   // Bottom face, second triangle
+		0, 1, 2,  // Front
+		0, 2, 3,
+		4, 5, 6,  // Back
+		4, 6, 7,
+		8, 9, 10, // Right
+		8, 10, 11,
+		12, 13, 14, // Left
+		12, 14, 15,
+		16, 17, 18, // Top
+		16, 18, 19,
+		20, 21, 22, // Bottom
+		20, 22, 23
 	};
 
 	//m_CubeMesh = Strand::Mesh(cubeVertices, cubeindces);
@@ -104,19 +116,19 @@ void Sandbox3D::OnUpdate(Strand::Timestep ts)
 		rotation += ts * 50.0f;
 
 		glm::mat4 model = glm::mat4(1.0f);
-		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
-		std::vector<Strand::PointLight> lights = {
+		//model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
+		/*std::vector<Strand::PointLight> lights = {
 			{ glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f) }
-		};
+		};*/
 
 		glm::vec3 cubeColor = glm::vec3(1.0f, 0.5f, 0.31f);
-		glm::vec3 lightColor = glm::vec3(1.0f, 1.0f, 1.0f);
+		Strand::PointLight light = { glm::vec3(1.2f, 1.0f, 2.0f), glm::vec3(1.0f, 1.0f, 1.0f)};
 
 		SD_PROFILE_SCOPE("Renderer Draw");
 		
 
 		Strand::Renderer3D::BeginScene(m_EditorCamera);
-		Strand::Renderer3D::DrawCubeMesh(model, m_CubeMesh, cubeColor, lightColor);
+		Strand::Renderer3D::DrawCubeMesh(model, m_CubeMesh, cubeColor, light);
 		Strand::Renderer3D::EndScene();
 
 		m_EditorCamera.OnUpdate(ts);

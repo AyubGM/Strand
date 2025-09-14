@@ -22,6 +22,8 @@ layout(std140, binding = 1) uniform ObjectData
 struct VertexOutput
 {
 	vec3 Color;
+    vec3 FragPos;
+	vec3 Normal;
 	vec2 TexCoord;
 
 };
@@ -35,6 +37,8 @@ void main()
    // Output.a_Color = a_Color
     gl_Position = u_ViewProjection * u_Model * vec4(a_Position, 1.0f);
     Output.Color = u_objectColor;
+    Output.FragPos = vec3(u_Model * vec4(a_Position, 1.0f));
+    Output.Normal = normalize(mat3(u_NormalMatrix) * a_Normal);
     Output.TexCoord = vec2(a_TexCoord.x, 1.0 - a_TexCoord.y);
 }
 
@@ -46,6 +50,8 @@ layout(location = 0) out vec4 o_Color;
 struct VertexOutput
 {
 	vec3 Color;
+    vec3 FragPos;
+	vec3 Normal;
 	vec2 TexCoord;
 };
 
@@ -68,10 +74,15 @@ layout(std140, binding = 3) uniform SceneData
 
 void main()
 {
-    float ambientStrength = 0.1;
+    float ambientStrength = 0.2;
     vec3 ambient = ambientStrength * u_PointLights[0].Color;
 
-    vec3 result = ambient * Input.Color;
+    vec3 norm = normalize(Input.Normal);
+    vec3 lightDir = normalize(u_PointLights[0].Position - Input.FragPos);
+    float diff = max(dot(norm, lightDir), 0.0);
+    vec3 diffuse = diff * u_PointLights[0].Color;
+
+    vec3 result = (ambient + diffuse) * Input.Color;
     o_Color = vec4(  result , 1.0 );
 
     //FragColor = mix(texture(texture1, TexCoord), texture(texture2, TexCoord), 0.2);
