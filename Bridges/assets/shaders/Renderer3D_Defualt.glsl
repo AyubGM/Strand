@@ -68,8 +68,11 @@ layout(std140, binding = 3) uniform SceneData
 
 void main()
 {
+    float ambientStrength = 0.1;
+    vec3 ambient = ambientStrength * u_PointLights[0].Color;
 
-    o_Color = vec4(u_PointLights[0].Color * Input.Color, 1.0 );
+    vec3 result = ambient * Input.Color;
+    o_Color = vec4(  result , 1.0 );
 
     //FragColor = mix(texture(texture1, TexCoord), texture(texture2, TexCoord), 0.2);
 }
