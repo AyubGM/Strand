@@ -24,9 +24,13 @@ namespace Strand {
 
 	struct Renderer3DData
 	{
+		Ref<Shader> PBRShader;
 		Ref<Shader> PBRSimpleShader;
 		Ref<Shader> PBRTexturedShader;
 		Ref<Shader> DefualtShader;
+
+		// Default white texture
+		Ref<Texture2D> WhiteTexture;
 
 
 		struct CameraData
@@ -38,6 +42,7 @@ namespace Strand {
 		{
 			glm::mat4 u_Model;
 			glm::mat4 u_NormalMatrix;
+			glm::vec3 u_ObjectColor;
 
 		};
 
@@ -58,9 +63,15 @@ namespace Strand {
 		SD_PROFILE_FUNCTION();
 		s_SceneData = CreateScope<SceneData>();
 
+		s_Data.PBRShader = Shader::Create("assets/shaders/Renderer3D_PBR_Simple.glsl");
 		s_Data.PBRSimpleShader = Shader::Create("assets/shaders/Renderer3D_PBR_Simple.glsl");
 		s_Data.PBRTexturedShader = Shader::Create("assets/shaders/Renderer3D_PBR_Textured.glsl");
 		s_Data.DefualtShader = Shader::Create("assets/shaders/Renderer3D_Defualt.glsl");
+
+		// Create a default white texture for untextured materials.
+		s_Data.WhiteTexture = Texture2D::Create(1, 1);
+		uint32_t whiteTextureData = 0xffffffff;
+		s_Data.WhiteTexture->SetData(&whiteTextureData, sizeof(uint32_t));
 
 		s_Data.CameraUniformBuffer = UniformBuffer::Create(sizeof(Renderer3DData::CameraData), 0);
 		s_Data.ObjectUniformBuffer = UniformBuffer::Create(sizeof(Renderer3DData::ObjectData), 1);
@@ -88,7 +99,6 @@ namespace Strand {
 		s_Data.CameraBuffer.ViewProjection = camera.GetViewProjection();
 		s_Data.CameraUniformBuffer->SetData(&s_Data.CameraBuffer, sizeof(Renderer3DData::CameraData));
 
-		//StartBatch();
 	}
 
 	// The new BeginScene function for setting up scene-wide data like lights.
@@ -107,6 +117,8 @@ namespace Strand {
 		for (uint32_t i = 0; i < s_SceneData->NumPointLights; ++i) {
 			s_SceneData->PointLights[i] = pointLights[i];
 		}
+		s_Data.SceneUniformBuffer->SetData(s_SceneData.get(), sizeof(SceneData));
+
 	}
 
 	void Renderer3D::EndScene()
@@ -114,16 +126,20 @@ namespace Strand {
 		SD_PROFILE_FUNCTION();
 	}
 
-	void Renderer3D::DrawCubeMesh(const glm::mat4& transform, const Ref<Mesh> mesh)
+	void Renderer3D::DrawCubeMesh(const glm::mat4& transform, const Ref<Mesh> mesh, glm::vec3& cubeColor, glm::vec3& LightColor)
 	{
 		SD_PROFILE_FUNCTION();
 
-		s_Data.DefualtShader->Bind();
-		s_Data.SceneUniformBuffer->SetData(s_SceneData.get(), sizeof(SceneData));
+		if (!mesh) return;
 
+		s_Data.DefualtShader->Bind();
+
+		s_SceneData->PointLights[0].Color = LightColor;
+		s_Data.SceneUniformBuffer->SetData(s_SceneData.get(), sizeof(SceneData));
 		// Update UBOs
 		s_Data.ObjectBuffer.u_Model = transform;
 		s_Data.ObjectBuffer.u_NormalMatrix = glm::transpose(glm::inverse(transform));
+		s_Data.ObjectBuffer.u_ObjectColor = cubeColor;
 		s_Data.ObjectUniformBuffer->SetData(&s_Data.ObjectBuffer, sizeof(Renderer3DData::ObjectBuffer));
 
 		mesh->GetVertexArray()->Bind();
@@ -139,8 +155,9 @@ namespace Strand {
 	{
 		SD_PROFILE_FUNCTION();
 
+		if (!mesh) return;
+
 		s_Data.PBRSimpleShader->Bind();
-		s_Data.SceneUniformBuffer->SetData(s_SceneData.get(), sizeof(SceneData));
 
 		s_Data.ObjectBuffer.u_Model = transform;
 		s_Data.ObjectBuffer.u_NormalMatrix = glm::transpose(glm::inverse(transform));
@@ -162,12 +179,15 @@ namespace Strand {
 		SD_PROFILE_FUNCTION();
 
 		s_Data.PBRTexturedShader->Bind();
-		s_Data.SceneUniformBuffer->SetData(s_SceneData.get(), sizeof(SceneData));
 
 		// Update UBOs
 		s_Data.ObjectBuffer.u_Model = transform;
 		s_Data.ObjectBuffer.u_NormalMatrix = glm::transpose(glm::inverse(transform));
 		s_Data.ObjectUniformBuffer->SetData(&s_Data.ObjectBuffer, sizeof(Renderer3DData::ObjectBuffer));
+
+		// Use preprocessor directive uniform to switch between textured and simple PBR.
+		bool hasTextures = material && material->AlbedoMap;
+		s_Data.PBRShader->SetInt("u_HasTextures", hasTextures ? 1 : 0);
 
 		// Bind textures to their respective texture units
 		material->AlbedoMap->Bind(0);
