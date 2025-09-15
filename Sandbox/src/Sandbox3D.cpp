@@ -128,7 +128,7 @@ void Sandbox3D::OnUpdate(Strand::Timestep ts)
 		
 
 		Strand::Renderer3D::BeginScene(m_EditorCamera);
-		Strand::Renderer3D::DrawCubeMesh(model, m_CubeMesh, cubeColor, light);
+		Strand::Renderer3D::DrawCubeMesh(model, m_CubeMesh, cubeColor, light, m_EditorCamera.GetPosition());
 		Strand::Renderer3D::EndScene();
 
 		m_EditorCamera.OnUpdate(ts);

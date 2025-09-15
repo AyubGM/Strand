@@ -82,7 +82,14 @@ void main()
     float diff = max(dot(norm, lightDir), 0.0);
     vec3 diffuse = diff * u_PointLights[0].Color;
 
-    vec3 result = (ambient + diffuse) * Input.Color;
+    float specularStrength = 0.5;
+    vec3 viewDir = normalize(u_CameraPosition - Input.FragPos);
+    vec3 reflectDir = reflect(-lightDir, norm); 
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
+
+    vec3 specular = specularStrength * spec * u_PointLights[0].Color;
+
+    vec3 result = (ambient + diffuse + specular) * Input.Color;
     o_Color = vec4(  result , 1.0 );
 
     //FragColor = mix(texture(texture1, TexCoord), texture(texture2, TexCoord), 0.2);

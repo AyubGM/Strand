@@ -126,7 +126,7 @@ namespace Strand {
 		SD_PROFILE_FUNCTION();
 	}
 
-	void Renderer3D::DrawCubeMesh(const glm::mat4& transform, const Ref<Mesh> mesh, const glm::vec3& cubeColor, const PointLight& light)
+	void Renderer3D::DrawCubeMesh(const glm::mat4& transform, const Ref<Mesh> mesh, const glm::vec3& cubeColor, const PointLight& light, const glm::vec3& cameraPosition)
 	{
 		SD_PROFILE_FUNCTION();
 
@@ -134,6 +134,7 @@ namespace Strand {
 
 		s_Data.DefualtShader->Bind();
 
+		s_SceneData->CameraPosition = cameraPosition;
 		s_SceneData->PointLights[0] = light;
 		s_Data.SceneUniformBuffer->SetData(s_SceneData.get(), sizeof(SceneData));
 		// Update UBOs
