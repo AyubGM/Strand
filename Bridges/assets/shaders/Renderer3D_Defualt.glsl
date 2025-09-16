@@ -64,6 +64,19 @@ struct PointLight
 	vec3 Color;
 };
 
+struct Material {
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;
+    float shininess;
+}; 
+
+layout(std140, binding = 2) uniform MaterialData
+{
+    Material u_Material;
+};
+
+
 layout(std140, binding = 3) uniform SceneData
 {
     vec3 u_CameraPosition;
@@ -74,22 +87,24 @@ layout(std140, binding = 3) uniform SceneData
 
 void main()
 {
+    // ambient
     float ambientStrength = 0.2;
-    vec3 ambient = ambientStrength * u_PointLights[0].Color;
+    vec3 ambient = u_PointLights[0].Color * u_Material.ambient;
 
+    // diffuse 
     vec3 norm = normalize(Input.Normal);
     vec3 lightDir = normalize(u_PointLights[0].Position - Input.FragPos);
     float diff = max(dot(norm, lightDir), 0.0);
-    vec3 diffuse = diff * u_PointLights[0].Color;
+    vec3 diffuse =  u_PointLights[0].Color * (diff * u_Material.diffuse);
 
-    float specularStrength = 0.5;
+     // specular
     vec3 viewDir = normalize(u_CameraPosition - Input.FragPos);
     vec3 reflectDir = reflect(-lightDir, norm); 
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), u_Material.shininess);
 
-    vec3 specular = specularStrength * spec * u_PointLights[0].Color;
+    vec3 specular = u_PointLights[0].Color * (spec * u_Material.specular);
 
-    vec3 result = (ambient + diffuse + specular) * Input.Color;
+    vec3 result = ambient + diffuse + specular;
     o_Color = vec4(  result , 1.0 );
 
     //FragColor = mix(texture(texture1, TexCoord), texture(texture2, TexCoord), 0.2);

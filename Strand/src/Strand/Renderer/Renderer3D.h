@@ -17,13 +17,20 @@ namespace Strand {
 		glm::vec3 Color;
 	};
 
-	struct Material
+	struct MaterialT
 	{
 		Ref<Texture2D> AlbedoMap;
 		Ref<Texture2D> NormalMap;
 		Ref<Texture2D> MetallicMap;
 		Ref<Texture2D> RoughnessMap;
 		Ref<Texture2D> AOMap;
+	};
+
+	struct Material {
+		glm::vec3 ambient;
+		glm::vec3 diffuse;
+		glm::vec3 specular;
+		float shininess;
 	};
 
 	class Renderer3D
@@ -44,8 +51,8 @@ namespace Strand {
 
 		// Draws a static mesh.
 		//static void DrawStaticMesh(const glm::mat4& transform, Ref<Mesh> mesh, Ref<Shader> shader);
-		static void DrawCubeMesh(const glm::mat4& transform, const Ref<Mesh> mesh, const glm::vec3& cubeColor, const PointLight& light, const glm::vec3& cameraPosition);
-		static void DrawStaticMesh(const glm::mat4& transform, Ref<Mesh> mesh, Ref<Material> material);
+		static void DrawCubeMesh(const glm::mat4& transform, const Ref<Mesh> mesh, const glm::vec3& cubeColor, const PointLight& light, const glm::vec3& cameraPosition, const Material& material);
+		static void DrawStaticMesh(const glm::mat4& transform, Ref<Mesh> mesh, Ref<MaterialT> material);
 		static void DrawStaticMesh(const glm::mat4& transform, Ref<Mesh> mesh, const glm::vec3& albedo, float metallic, float roughness, float ao);
 
 

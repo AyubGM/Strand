@@ -187,6 +187,7 @@
     <ClInclude Include="src\Strand\Renderer\EditorCamera.h" />
     <ClInclude Include="src\Strand\Renderer\Framebuffer.h" />
     <ClInclude Include="src\Strand\Renderer\GraphicsContext.h" />
+    <ClInclude Include="src\Strand\Renderer\Material.h" />
     <ClInclude Include="src\Strand\Renderer\Mesh.h" />
     <ClInclude Include="src\Strand\Renderer\OrthographicCamera.h" />
     <ClInclude Include="src\Strand\Renderer\OrthographicCameraController.h" />
@@ -653,6 +654,7 @@
     <ClCompile Include="src\Strand\Renderer\EditorCamera.cpp" />
     <ClCompile Include="src\Strand\Renderer\Framebuffer.cpp" />
     <ClCompile Include="src\Strand\Renderer\GraphicsContext.cpp" />
+    <ClCompile Include="src\Strand\Renderer\Material.cpp" />
     <ClCompile Include="src\Strand\Renderer\Mesh.cpp" />
     <ClCompile Include="src\Strand\Renderer\OrthographicCamera.cpp" />
     <ClCompile Include="src\Strand\Renderer\OrthographicCameraController.cpp" />

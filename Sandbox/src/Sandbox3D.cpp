@@ -123,12 +123,13 @@ void Sandbox3D::OnUpdate(Strand::Timestep ts)
 
 		glm::vec3 cubeColor = glm::vec3(1.0f, 0.5f, 0.31f);
 		Strand::PointLight light = { glm::vec3(1.2f, 1.0f, 2.0f), glm::vec3(1.0f, 1.0f, 1.0f)};
+		Strand::Material matrial = { glm::vec3(1.0f, 0.5f, 0.31f), glm::vec3(1.0f, 0.5f, 0.31f), glm::vec3(0.5f, 0.5f, 0.5f ), 32.0f }
 
 		SD_PROFILE_SCOPE("Renderer Draw");
 		
 
 		Strand::Renderer3D::BeginScene(m_EditorCamera);
-		Strand::Renderer3D::DrawCubeMesh(model, m_CubeMesh, cubeColor, light, m_EditorCamera.GetPosition());
+		Strand::Renderer3D::DrawCubeMesh(model, m_CubeMesh, cubeColor, light, m_EditorCamera.GetPosition(), matrial);
 		Strand::Renderer3D::EndScene();
 
 		m_EditorCamera.OnUpdate(ts);

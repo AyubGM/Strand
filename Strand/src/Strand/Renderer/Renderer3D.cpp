@@ -14,6 +14,8 @@ namespace Strand {
 		float AO;
 	};
 
+
+
 	struct SceneData {
 		glm::vec3 CameraPosition;
 		int NumPointLights;
@@ -75,7 +77,9 @@ namespace Strand {
 
 		s_Data.CameraUniformBuffer = UniformBuffer::Create(sizeof(Renderer3DData::CameraData), 0);
 		s_Data.ObjectUniformBuffer = UniformBuffer::Create(sizeof(Renderer3DData::ObjectData), 1);
-		s_Data.MaterialUniformBuffer = UniformBuffer::Create(sizeof(MaterialData), 2);
+		//TODO USe MetrialDATA for PBR
+		//s_Data.MaterialUniformBuffer = UniformBuffer::Create(sizeof(MaterialData), 2);
+		s_Data.MaterialUniformBuffer = UniformBuffer::Create(sizeof(Material), 2);
 		s_Data.SceneUniformBuffer = UniformBuffer::Create(sizeof(SceneData), 3);
 	}
 
@@ -126,7 +130,7 @@ namespace Strand {
 		SD_PROFILE_FUNCTION();
 	}
 
-	void Renderer3D::DrawCubeMesh(const glm::mat4& transform, const Ref<Mesh> mesh, const glm::vec3& cubeColor, const PointLight& light, const glm::vec3& cameraPosition)
+	void Renderer3D::DrawCubeMesh(const glm::mat4& transform, const Ref<Mesh> mesh, const glm::vec3& cubeColor, const PointLight& light, const glm::vec3& cameraPosition, const Material& material)
 	{
 		SD_PROFILE_FUNCTION();
 
@@ -137,6 +141,9 @@ namespace Strand {
 		s_SceneData->CameraPosition = cameraPosition;
 		s_SceneData->PointLights[0] = light;
 		s_Data.SceneUniformBuffer->SetData(s_SceneData.get(), sizeof(SceneData));
+
+		Material matData = material;
+		s_Data.MaterialUniformBuffer->SetData(&matData, sizeof(MaterialData));
 		// Update UBOs
 		s_Data.ObjectBuffer.u_Model = transform;
 		s_Data.ObjectBuffer.u_NormalMatrix = glm::transpose(glm::inverse(transform));
@@ -175,7 +182,7 @@ namespace Strand {
 	}
 
 
-	void Renderer3D::DrawStaticMesh( const glm::mat4& transform, const Ref<Mesh> mesh, const Ref<Material> material)
+	void Renderer3D::DrawStaticMesh( const glm::mat4& transform, const Ref<Mesh> mesh, const Ref<MaterialT> material)
 	{
 		SD_PROFILE_FUNCTION();
 
