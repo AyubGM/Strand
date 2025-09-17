@@ -123,7 +123,7 @@ void Sandbox3D::OnUpdate(Strand::Timestep ts)
 
 		glm::vec3 cubeColor = glm::vec3(1.0f, 0.5f, 0.31f);
 		Strand::PointLight light = { glm::vec3(1.2f, 1.0f, 2.0f), glm::vec3(1.0f, 1.0f, 1.0f)};
-		Strand::Material matrial = { glm::vec3(1.0f, 0.5f, 0.31f), glm::vec3(1.0f, 0.5f, 0.31f), glm::vec3(0.5f, 0.5f, 0.5f ), 32.0f }
+		Strand::MaterialD matrial = { glm::vec3(1.0f, 0.5f, 0.31f), glm::vec3(1.0f, 0.5f, 0.31f), glm::vec3(0.5f, 0.5f, 0.5f ), 32.0f }
 
 		SD_PROFILE_SCOPE("Renderer Draw");
 		

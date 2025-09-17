@@ -16,6 +16,7 @@ namespace Strand {
 		virtual uint32_t GetRendererID() const = 0;
 
 		virtual const std::string& GetPath() const = 0;
+		virtual const uint32_t GetTextureSlot() const = 0;
 
 		virtual void SetData(void* data, uint32_t size) = 0;
 
@@ -33,4 +34,10 @@ namespace Strand {
 		static Ref<Texture2D> Create(const std::string& path);
 	};
 
+	class TextureLoader
+	{
+	public:
+		static Ref<Texture2D> LoadTexture(const std::string& path);
+
+	};
 }

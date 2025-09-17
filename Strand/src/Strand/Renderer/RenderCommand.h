@@ -7,6 +7,7 @@ namespace Strand {
 	class RenderCommand
 	{
 	public:
+
 		inline static void Init()
 		{
 			s_RendererAPI->Init();
