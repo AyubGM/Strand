@@ -65,9 +65,9 @@ struct PointLight
 };
 
 struct Material {
-    vec3 ambient;
-    vec3 diffuse;
-    vec3 specular;
+    vec4 ambient;
+    vec4 diffuse;
+    vec4 specular;
     float shininess;
 }; 
 
@@ -89,20 +89,20 @@ void main()
 {
     // ambient
     float ambientStrength = 0.2;
-    vec3 ambient = u_PointLights[0].Color * u_Material.ambient;
+    vec3 ambient = u_PointLights[0].Color * u_Material.ambient.rgb;
 
     // diffuse 
     vec3 norm = normalize(Input.Normal);
     vec3 lightDir = normalize(u_PointLights[0].Position - Input.FragPos);
     float diff = max(dot(norm, lightDir), 0.0);
-    vec3 diffuse =  u_PointLights[0].Color * (diff * u_Material.diffuse);
+    vec3 diffuse =  u_PointLights[0].Color * (diff * u_Material.diffuse.rgb);
 
      // specular
     vec3 viewDir = normalize(u_CameraPosition - Input.FragPos);
     vec3 reflectDir = reflect(-lightDir, norm); 
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), u_Material.shininess);
 
-    vec3 specular = u_PointLights[0].Color * (spec * u_Material.specular);
+    vec3 specular = u_PointLights[0].Color * (spec * u_Material.specular.rgb);
 
     vec3 result = ambient + diffuse + specular;
     o_Color = vec4(  result , 1.0 );

@@ -25,7 +25,7 @@ glm::vec3 cubePositions[] = {
 };
 
 Sandbox3D::Sandbox3D()
-	: Layer("Sandbox3D"), m_CameraController(1280.0f / 720.0f), m_EditorCamera(30.0f, 1.778f, 0.1f, 1000.0f), m_SquareColor({0.2f, 0.3f, 0.8f, 1.0f})
+	: Layer("Sandbox3D"), m_CameraController(1280.0f / 720.0f), m_EditorCamera(30.0f, 1.778f, 0.1f, 1000.0f)
 {
 	std::vector<Strand::StaticMeshVertex> cubeVertices = {
 	{glm::vec3(-1.0f, -1.0f, 1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f)},
@@ -121,15 +121,16 @@ void Sandbox3D::OnUpdate(Strand::Timestep ts)
 			{ glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f) }
 		};*/
 
-		glm::vec3 cubeColor = glm::vec3(1.0f, 0.5f, 0.31f);
+		
 		Strand::PointLight light = { glm::vec3(1.2f, 1.0f, 2.0f), glm::vec3(1.0f, 1.0f, 1.0f)};
-		Strand::MaterialD matrial = { glm::vec3(1.0f, 0.5f, 0.31f), glm::vec3(1.0f, 0.5f, 0.31f), glm::vec3(0.5f, 0.5f, 0.5f ), 32.0f }
+		
+		Strand::MaterialD matrial = { m_Ambient, m_Diffuse, m_Specular, m_Shininess };
 
 		SD_PROFILE_SCOPE("Renderer Draw");
 		
 
 		Strand::Renderer3D::BeginScene(m_EditorCamera);
-		Strand::Renderer3D::DrawCubeMesh(model, m_CubeMesh, cubeColor, light, m_EditorCamera.GetPosition(), matrial);
+		Strand::Renderer3D::DrawCubeMesh(model, m_CubeMesh, m_CubeColor, light, glm::vec4(m_EditorCamera.GetPosition(), 1.0f), matrial);
 		Strand::Renderer3D::EndScene();
 
 		m_EditorCamera.OnUpdate(ts);
@@ -147,13 +148,17 @@ void Sandbox3D::OnImGuiRender()
 	ImGui::Begin("Settings");
 
 	auto stats = Strand::Renderer3D::GetStats();
-	ImGui::Text("Renderer2D Stats:");
+	ImGui::Text("Renderer3D Stats:");
 	ImGui::Text("Draw Calls: %d", stats.DrawCalls);
 	//ImGui::Text("Quads: %d", stats.QuadCount);
 	//ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
 	//ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
 
-	ImGui::ColorEdit4("Square Color", glm::value_ptr(m_SquareColor));
+	ImGui::ColorEdit3("m_CubeColor Color", glm::value_ptr(m_CubeColor));
+	ImGui::ColorEdit4("m_Ambient Color", glm::value_ptr(m_Ambient));
+	ImGui::ColorEdit4("m_Diffuse Color", glm::value_ptr(m_Diffuse));
+	ImGui::ColorEdit4("m_Specular HighLight", glm::value_ptr(m_Specular));
+	ImGui::DragFloat("m_Shininess", &m_Shininess);
 	ImGui::End();
 
 }

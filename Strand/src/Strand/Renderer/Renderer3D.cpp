@@ -103,6 +103,10 @@ namespace Strand {
 		s_Data.CameraBuffer.ViewProjection = camera.GetViewProjection();
 		s_Data.CameraUniformBuffer->SetData(&s_Data.CameraBuffer, sizeof(Renderer3DData::CameraData));
 
+		s_SceneData->CameraPosition = camera.GetPosition();
+		s_SceneData->PointLights[0] = { glm::vec3(1.2f, 1.0f, 2.0f), glm::vec3(1.0f, 1.0f, 1.0f) };
+		s_Data.SceneUniformBuffer->SetData(s_SceneData.get(), sizeof(SceneData));
+
 	}
 
 	// The new BeginScene function for setting up scene-wide data like lights.
@@ -138,12 +142,12 @@ namespace Strand {
 
 		s_Data.DefualtShader->Bind();
 
-		s_SceneData->CameraPosition = cameraPosition;
+		/*s_SceneData->CameraPosition = cameraPosition;
 		s_SceneData->PointLights[0] = light;
-		s_Data.SceneUniformBuffer->SetData(s_SceneData.get(), sizeof(SceneData));
+		s_Data.SceneUniformBuffer->SetData(s_SceneData.get(), sizeof(SceneData));*/
 
 		MaterialD matData = material;
-		s_Data.MaterialUniformBuffer->SetData(&matData, sizeof(MaterialData));
+		s_Data.MaterialUniformBuffer->SetData(&matData, sizeof(MaterialD));
 		// Update UBOs
 		s_Data.ObjectBuffer.u_Model = transform;
 		s_Data.ObjectBuffer.u_NormalMatrix = glm::transpose(glm::inverse(transform));
@@ -171,6 +175,7 @@ namespace Strand {
 		s_Data.ObjectBuffer.u_NormalMatrix = glm::transpose(glm::inverse(transform));
 		s_Data.ObjectUniformBuffer->SetData(&s_Data.ObjectBuffer, sizeof(Renderer3DData::ObjectBuffer));
 
+		//TODO USE MATERIAL D Or change the name of it
 		MaterialData matData = { albedo, metallic, roughness, ao };
 		s_Data.MaterialUniformBuffer->SetData(&matData, sizeof(MaterialData));
 
