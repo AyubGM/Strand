@@ -6,20 +6,18 @@ namespace Strand {
 	uint32_t Material::s_MaterialCount = 0;
 
 
-
-	Material::Material(const Ref<Shader>& shader)
-		: m_Shader(shader)
+	Ref<Material> Material::Create(const Ref<Shader>& shader)
 	{
-		// Assign the unique ID
-		m_MatiralID = s_MaterialCount++;
+		return CreateRef<Material>(shader, s_MaterialCount++);
 	}
 
-	Material::Material(const Ref<Shader>& shader, const std::string& albedoMap, const std::string& normalMap,
-		const std::string& metallicMap, const std::string& roughnessMap,
-		const std::string& aoMap)
-		: m_Shader(shader), m_HasTextures(true)
+	Material::Material(const Ref<Shader>& shader, uint32_t materialID)
+		: m_Shader(shader), m_MaterialID(materialID)
 	{
-		// Assign the unique ID
+	}
+
+	/* {
+		//// Assign the unique ID
 		m_MatiralID = s_MaterialCount++;
 
 		m_AlbedoMap = TextureLoader::LoadTexture(albedoMap);
@@ -34,31 +32,23 @@ namespace Strand {
 		m_Textures["u_MetallicMap"] = m_MetallicMap;
 		m_Textures["u_RoughnessMap"] = m_RoughnessMap;
 		m_Textures["u_AOMap"] = m_AOMap;
-	}
+	}*/
 
-	Material::Material(const Ref<Shader>& shader, const glm::vec3& albedo, float metallic, float roughness, float ao)
-		: m_Shader(shader), m_Albedo(albedo), m_Metallic(metallic), m_Roughness(roughness), m_AO(ao), m_HasTextures(false)
-	{
-		// Assign the unique ID
-		m_MatiralID = s_MaterialCount++;
-
-		// Store values in the generic maps
-		m_Vec4s["u_Albedo"] = glm::vec4(albedo, 1.0f);
-		m_Floats["u_Metallic"] = metallic;
-		m_Floats["u_Roughness"] = roughness;
-		m_Floats["u_Ao"] = ao;
-	}
 
 	void Material::Bind() const
 	{
 		m_Shader->Bind();
 
-		// Bind all textures
-		uint32_t textureSlot = 0;
-		for (const auto& [name, texture] : m_Textures)
+		// Set all vec3 uniforms
+		for (const auto& [name, value] : m_Vec3s)
 		{
-			texture->Bind(textureSlot++);
-			m_Shader->SetInt(name, texture->GetTextureSlot());
+			m_Shader->SetFloat3(name, value);
+		}
+
+		// Set all vec4 uniforms
+		for (const auto& [name, value] : m_Vec4s)
+		{
+			m_Shader->SetFloat4(name, value);
 		}
 
 		// Set all float uniforms
@@ -67,10 +57,22 @@ namespace Strand {
 			m_Shader->SetFloat(name, value);
 		}
 
-		// Set all vec4 uniforms
-		for (const auto& [name, value] : m_Vec4s)
+		// Set all int uniforms
+		for (const auto& [name, value] : m_Ints)
 		{
-			m_Shader->SetFloat4(name, value);
+			m_Shader->SetInt(name, value);
+		}
+
+		// Bind all textures and set their sampler uniforms
+		uint32_t textureSlot = 0;
+		for (const auto& [name, texture] : m_Textures)
+		{
+			if (texture) // Ensure texture is not null
+			{
+				texture->Bind(textureSlot);
+				m_Shader->SetInt(name, textureSlot);
+				textureSlot++;
+			}
 		}
 	}
 
@@ -79,20 +81,41 @@ namespace Strand {
 		m_Shader->Unbind();
 	}
 
-	template<typename T>
-	void Material::Set(const std::string& name, const T& value)
-	{
-		GetMapForType<T>(this)[name] = value;
-	}
 
-	template void Material::Set<float>(const std::string&, const float&);
-	template void Material::Set<glm::vec4>(const std::string&, const glm::vec4&);
-	template void Material::Set<Ref<Texture2D>>(const std::string&, const Ref<Texture2D>&);
+	// --- Template Specializations for GetMapForType ---
+	// These specializations tell the Set<T> and Get<T> templates which map to use for which type.
 
+	template<>
+	std::unordered_map<std::string, Ref<Texture2D>>& Material::GetMapForType<Ref<Texture2D>>() { return m_Textures; }
 
-	Ref<Material> Material::Create(const Ref<Shader>& shader)
-	{
-		return CreateRef<Material>(shader);
-	}
+	template<>
+	std::unordered_map<std::string, glm::vec4>& Material::GetMapForType<glm::vec4>() { return m_Vec4s; }
+
+	template<>
+	std::unordered_map<std::string, glm::vec3>& Material::GetMapForType<glm::vec3>() { return m_Vec3s; }
+
+	template<>
+	std::unordered_map<std::string, float>& Material::GetMapForType<float>() { return m_Floats; }
+
+	template<>
+	std::unordered_map<std::string, int>& Material::GetMapForType<int>() { return m_Ints; }
+
+	// --- Template Specializations for GetConstMapForType (for const correctness) ---
+
+	template<>
+	const std::unordered_map<std::string, Ref<Texture2D>>& Material::GetConstMapForType<Ref<Texture2D>>() const { return m_Textures; }
+
+	template<>
+	const std::unordered_map<std::string, glm::vec4>& Material::GetConstMapForType<glm::vec4>() const { return m_Vec4s; }
+
+	template<>
+	const std::unordered_map<std::string, glm::vec3>& Material::GetConstMapForType<glm::vec3>() const { return m_Vec3s; }
+
+	template<>
+	const std::unordered_map<std::string, float>& Material::GetConstMapForType<float>() const { return m_Floats; }
+
+	template<>
+	const std::unordered_map<std::string, int>& Material::GetConstMapForType<int>() const { return m_Ints; }
+	
 
 }

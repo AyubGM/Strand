@@ -8,12 +8,12 @@
 namespace Strand
 {
 	struct RenderCommandData {
-		Ref<Material> material;
-		Ref<VertexArray> vertexArray;
-		glm::mat4 transform;
+		Ref<Material> Material;
+		Ref<VertexArray> VertexArray;
+		glm::mat4 Transform;
 
-		RenderCommandData(const Ref<Material>& material, const Ref<VertexArray>& vertexArray, const glm::mat4& transform)
-			: material(material), vertexArray(vertexArray), transform(transform) {
+		RenderCommandData(const Ref<Strand::Material>& material, const Ref<Strand::VertexArray>& vertexArray, const glm::mat4& transform)
+			: Material(material), VertexArray(vertexArray), Transform(transform) {
 		}
 	};
 
@@ -28,6 +28,8 @@ namespace Strand
 		Ref<UniformBuffer> SceneUniformBuffer;
 		SceneData SceneBuffer;
 
+		Scope<MaterialLibrary> Library;
+
 		std::vector<RenderCommandData> CommandQueue;
 	};
 
@@ -38,16 +40,18 @@ namespace Strand
 		SD_PROFILE_FUNCTION();
 
 		RenderCommand::Init();
+		s_Data.SceneUniformBuffer = UniformBuffer::Create(sizeof(SceneData), 0);
 		Renderer2D::Init();
 		//I Understand now why these two lines stop renderer2D TODO THE UNIFORMBUFFER
-		//s_Data.SceneUniformBuffer = UniformBuffer::Create(sizeof(SceneData), 0);
-		//Renderer3D::Init();
+		
+		Renderer3D::Init();
+		s_Data.Library = CreateScope<MaterialLibrary>();
 	}
 
 	void Renderer::Shutdown()
 	{
 		Renderer2D::Shutdown();
-		//Renderer3D::Shutdown();
+		Renderer3D::Shutdown();
 	}
 
 	void Renderer::OnWindowResize(uint32_t width, uint32_t height)
@@ -58,8 +62,10 @@ namespace Strand
 
 	void Renderer::BeginScene(const OrthographicCamera& camera)
 	{
+		SD_PROFILE_FUNCTION();
 		s_Data.SceneBuffer.ViewProjectionMatrix = camera.GetViewProjectionMatrix();
 		s_Data.SceneUniformBuffer->SetData(&s_Data.SceneBuffer, sizeof(SceneData));
+		s_Data.CommandQueue.clear();
 
 	}
 
@@ -69,6 +75,7 @@ namespace Strand
 
 		s_Data.SceneBuffer.ViewProjectionMatrix = camera.GetProjection() * glm::inverse(transform);
 		s_Data.SceneUniformBuffer->SetData(&s_Data.SceneBuffer, sizeof(SceneData));
+		s_Data.CommandQueue.clear();
 	}
 
 	void Renderer::BeginScene(const EditorCamera& camera)
@@ -77,7 +84,7 @@ namespace Strand
 
 		s_Data.SceneBuffer.ViewProjectionMatrix = camera.GetViewProjection();
 		s_Data.SceneUniformBuffer->SetData(&s_Data.SceneBuffer, sizeof(SceneData));
-
+		s_Data.CommandQueue.clear();
 
 	}
 
@@ -95,16 +102,24 @@ namespace Strand
 	{
 		for (const auto& command : s_Data.CommandQueue)
 		{
-			/*command.Material->Bind();
+			command.Material->Bind();
 
 			command.Material->GetShader()->SetMat4("u_Transform", command.Transform);
 
-			command.VertexArray->Bind();
-			RenderCommand::DrawIndexed(command.VertexArray);*/
+			RenderCommand::DrawIndexed(command.VertexArray);
 
 		}
 	}
 
+	void Renderer::AddMaterial(const std::string& name, const Ref<Material>& material)
+	{
+		s_Data.Library->Add(name, material);
+	}
+
+	Ref<Material> Renderer::GetMaterial(const std::string& name)
+	{
+		return s_Data.Library->Get(name);
+	}
 
 
 	//void Renderer::Submit(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray, const glm::mat4& transform)

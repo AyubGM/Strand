@@ -1496,6 +1496,7 @@
     <ClInclude Include="src\Strand\Renderer\Mesh.h" />
     <ClInclude Include="src\Strand\Renderer\Material.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLTextureLoader.h" />
+    <ClInclude Include="src\Strand\Renderer\MaterialLibrary.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp">
@@ -1623,5 +1624,6 @@
     <ClCompile Include="src\Strand\Renderer\Mesh.cpp" />
     <ClCompile Include="src\Strand\Renderer\Material.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLTextureLoader.cpp" />
+    <ClCompile Include="src\Strand\Renderer\MaterialLibrary.cpp" />
   </ItemGroup>
 </Project>

@@ -7,6 +7,7 @@
 #include "Strand/Renderer/Shader.h"
 #include "Strand/Renderer/Mesh.h"
 #include "Strand/Renderer/Material.h"
+#include "Strand/Renderer/MaterialLibrary.h"
 
 namespace Strand
 {
@@ -26,6 +27,9 @@ namespace Strand
 
 
 		static void Submit(const Ref<Material>& material, const Ref<VertexArray>& vertexArray, const glm::mat4& transform = glm::mat4(1.0f));
+
+		static void AddMaterial(const std::string& name, const Ref<Material>& material);
+		static Ref<Material> GetMaterial(const std::string& name);
 
 		inline static RendererAPI::API GetAPI() { return RendererAPI::GetAPI(); }
 
