@@ -28,6 +28,7 @@ namespace Strand {
 	{
 		Ref<Shader> PBRShader;
 		Ref<Shader> DefualtShader;
+		Ref<Shader> LightCubeShader;
 
 		// Default white texture
 		Ref<Texture2D> WhiteTexture;
@@ -65,6 +66,7 @@ namespace Strand {
 
 		s_Data.PBRShader = Shader::Create("assets/shaders/Renderer3D_PBR.glsl");
 		s_Data.DefualtShader = Shader::Create("assets/shaders/Renderer3D_Defualt.glsl");
+		s_Data.LightCubeShader = Shader::Create("assets/shaders/Renderer3D_LightCube.glsl");
 
 		// Create a default white texture for untextured materials.
 		s_Data.WhiteTexture = Texture2D::Create(1, 1);
@@ -132,6 +134,28 @@ namespace Strand {
 	void Renderer3D::EndScene()
 	{
 		SD_PROFILE_FUNCTION();
+	}
+
+	void Renderer3D::DrawLightCube(const glm::mat4& transform, const Ref<Mesh> mesh, const glm::vec3& cubeColor, const glm::vec3& cameraPosition)
+	{
+		SD_PROFILE_FUNCTION();
+
+		if (!mesh) return;
+
+		s_Data.LightCubeShader->Bind();
+
+		// Update UBOs
+		s_Data.ObjectBuffer.u_Model = transform;
+		s_Data.ObjectBuffer.u_NormalMatrix = glm::transpose(glm::inverse(transform));
+		s_Data.ObjectBuffer.u_ObjectColor = cubeColor;
+		s_Data.ObjectUniformBuffer->SetData(&s_Data.ObjectBuffer, sizeof(Renderer3DData::ObjectBuffer));
+
+		mesh->GetVertexArray()->Bind();
+		RenderCommand::DrawIndexed(mesh->GetVertexArray());
+
+		// Update performance statistics.
+		s_Data.Stats.DrawCalls++;
+		s_Data.Stats.MeshCount++;
 	}
 
 	void Renderer3D::DrawCubeMesh(const glm::mat4& transform, const Ref<Mesh> mesh, const glm::vec3& cubeColor, const glm::vec3& cameraPosition, const MaterialD& material, Ref<Texture2D> diffuse, Ref<Texture2D> specular)

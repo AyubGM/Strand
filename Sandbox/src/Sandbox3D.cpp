@@ -117,7 +117,6 @@ void Sandbox3D::OnUpdate(Strand::Timestep ts)
 		static float rotation = 0.0f;
 		rotation += ts * 50.0f;
 
-		glm::mat4 model = glm::mat4(1.0f);
 		//model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
 		/*std::vector<Strand::PointLight> lights = {
 			{ glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f) }
@@ -134,10 +133,22 @@ void Sandbox3D::OnUpdate(Strand::Timestep ts)
 		Strand::MaterialD matrial = { m_Shininess };
 
 		SD_PROFILE_SCOPE("Renderer Draw");
-		
 
 		Strand::Renderer3D::BeginScene(m_EditorCamera, m_Lights);
-		Strand::Renderer3D::DrawCubeMesh(model, m_CubeMesh, m_CubeColor, glm::vec4(m_EditorCamera.GetPosition(), 1.0f), matrial, m_Diffuse, m_Specular);
+		glm::mat4 model = glm::mat4(1.0f);
+		for (unsigned int i = 0; i < 10; i++)
+		{
+			model = glm::translate(model, cubePositions[i]);
+			float angle = 20.0f * i;
+			model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+			Strand::Renderer3D::DrawCubeMesh(model, m_CubeMesh, m_CubeColor, glm::vec4(m_EditorCamera.GetPosition(), 1.0f), matrial, m_Diffuse, m_Specular);
+		}
+		
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(light.Position));
+		model = glm::scale(model, glm::vec3(0.2f));
+		Strand::Renderer3D::DrawLightCube(model, m_CubeMesh, m_CubeColor, glm::vec4(m_EditorCamera.GetPosition(), 1.0f));
+
 		Strand::Renderer3D::EndScene();
 
 		m_EditorCamera.OnUpdate(ts);

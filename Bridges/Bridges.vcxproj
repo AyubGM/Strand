@@ -169,6 +169,9 @@
     <None Include="assets\shaders\Renderer3D_Defualt.glsl" />
     <None Include="assets\shaders\Renderer3D_PBR.glsl" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="assets\shaders\Renderer3D_LightCube.glsl" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -31,4 +31,7 @@
     <None Include="assets\shaders\Renderer3D_Defualt.glsl" />
     <None Include="assets\shaders\Renderer3D_PBR.glsl" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="assets\shaders\Renderer3D_LightCube.glsl" />
+  </ItemGroup>
 </Project>
