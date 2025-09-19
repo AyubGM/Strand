@@ -18,6 +18,11 @@ namespace Strand {
 
 
 	namespace Utils {
+		enum class ShaderFileType {
+			None = 0,
+			Opengl,
+			Vulkan
+		};
 
 		static GLenum ShaderTypeFromString(const std::string& type)
 		{
@@ -52,17 +57,29 @@ namespace Strand {
 			return nullptr;
 		}
 
-		static const char* GetCacheDirectory()
+		static const char* GetCacheDirectory(ShaderFileType fileType)
 		{
 			// TODO: make sure the assets directory is valid
-			return "assets/cache/shader/opengl";
+			if (fileType == ShaderFileType::Opengl)
+			{
+				return "assets/cache/shader/opengl";
+			}
+			else if (fileType == ShaderFileType::Vulkan)
+			{
+				return "assets/cache/shader/vulkan";
+			}
+			
 		}
 
 		static void CreateCacheDirectoryIfNeeded()
 		{
-			std::string cacheDirectory = GetCacheDirectory();
-			if (!std::filesystem::exists(cacheDirectory))
-				std::filesystem::create_directories(cacheDirectory);
+			std::string OpenglcacheDirectory = GetCacheDirectory(ShaderFileType::Opengl);
+			std::string VulkancacheDirectory = GetCacheDirectory(ShaderFileType::Vulkan);
+			if (!std::filesystem::exists(OpenglcacheDirectory))
+				std::filesystem::create_directories(OpenglcacheDirectory);
+
+			if (!std::filesystem::exists(VulkancacheDirectory))
+				std::filesystem::create_directories(VulkancacheDirectory);
 		}
 
 		static const char* GLShaderStageCachedOpenGLFileExtension(uint32_t stage)
@@ -297,7 +314,7 @@ namespace Strand {
 		if (optimize)
 			options.SetOptimizationLevel(shaderc_optimization_level_performance);
 
-		std::filesystem::path cacheDirectory = Utils::GetCacheDirectory();
+		std::filesystem::path cacheDirectory = Utils::GetCacheDirectory(Utils::ShaderFileType::Vulkan);
 
 		auto& shaderData = m_VulkanSPIRV;
 		shaderData.clear();
@@ -354,7 +371,7 @@ namespace Strand {
 		if (optimize)
 			options.SetOptimizationLevel(shaderc_optimization_level_performance);
 
-		std::filesystem::path cacheDirectory = Utils::GetCacheDirectory();
+		std::filesystem::path cacheDirectory = Utils::GetCacheDirectory(Utils::ShaderFileType::Opengl);
 
 		shaderData.clear();
 		m_OpenGLSourceCode.clear();

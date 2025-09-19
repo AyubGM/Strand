@@ -27,8 +27,6 @@ namespace Strand {
 	struct Renderer3DData
 	{
 		Ref<Shader> PBRShader;
-		Ref<Shader> PBRSimpleShader;
-		Ref<Shader> PBRTexturedShader;
 		Ref<Shader> DefualtShader;
 
 		// Default white texture
@@ -65,9 +63,7 @@ namespace Strand {
 		SD_PROFILE_FUNCTION();
 		s_SceneData = CreateScope<SceneData>();
 
-		s_Data.PBRShader = Shader::Create("assets/shaders/Renderer3D_PBR_Simple.glsl");
-		s_Data.PBRSimpleShader = Shader::Create("assets/shaders/Renderer3D_PBR_Simple.glsl");
-		s_Data.PBRTexturedShader = Shader::Create("assets/shaders/Renderer3D_PBR_Textured.glsl");
+		s_Data.PBRShader = Shader::Create("assets/shaders/Renderer3D_PBR.glsl");
 		s_Data.DefualtShader = Shader::Create("assets/shaders/Renderer3D_Defualt.glsl");
 
 		// Create a default white texture for untextured materials.
@@ -172,7 +168,7 @@ namespace Strand {
 
 		if (!mesh) return;
 
-		s_Data.PBRSimpleShader->Bind();
+		s_Data.PBRShader->Bind();
 
 		s_Data.ObjectBuffer.u_Model = transform;
 		s_Data.ObjectBuffer.u_NormalMatrix = glm::transpose(glm::inverse(transform));
@@ -194,7 +190,7 @@ namespace Strand {
 	{
 		SD_PROFILE_FUNCTION();
 
-		s_Data.PBRTexturedShader->Bind();
+		s_Data.PBRShader->Bind();
 
 		// Update UBOs
 		s_Data.ObjectBuffer.u_Model = transform;
@@ -213,11 +209,11 @@ namespace Strand {
 		material->AOMap->Bind(4);
 
 		// Set the sampler uniform integers to the correct texture units
-		s_Data.PBRTexturedShader->SetInt("u_AlbedoMap", 0);
-		s_Data.PBRTexturedShader->SetInt("u_NormalMap", 1);
-		s_Data.PBRTexturedShader->SetInt("u_MetallicMap", 2);
-		s_Data.PBRTexturedShader->SetInt("u_RoughnessMap", 3);
-		s_Data.PBRTexturedShader->SetInt("u_AOMap", 4);
+		s_Data.PBRShader->SetInt("u_AlbedoMap", 0);
+		s_Data.PBRShader->SetInt("u_NormalMap", 1);
+		s_Data.PBRShader->SetInt("u_MetallicMap", 2);
+		s_Data.PBRShader->SetInt("u_RoughnessMap", 3);
+		s_Data.PBRShader->SetInt("u_AOMap", 4);
 
 		mesh->GetVertexArray()->Bind();
 		RenderCommand::DrawIndexed(mesh->GetVertexArray());

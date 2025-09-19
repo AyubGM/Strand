@@ -167,8 +167,7 @@
     <None Include="assets\shaders\Renderer2D_Circle.glsl" />
     <None Include="assets\shaders\Renderer2D_Line.glsl" />
     <None Include="assets\shaders\Renderer3D_Defualt.glsl" />
-    <None Include="assets\shaders\Renderer3D_PBR_Textured.glsl" />
-    <None Include="assets\shaders\Renderer3D_PBR_Simple.glsl" />
+    <None Include="assets\shaders\Renderer3D_PBR.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

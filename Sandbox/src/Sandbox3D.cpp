@@ -123,15 +123,20 @@ void Sandbox3D::OnUpdate(Strand::Timestep ts)
 			{ glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f) }
 		};*/
 
+		glm::vec4 postion = glm::vec4(1.2f, 1.0f, 2.0f, 1.0f);
+		glm::vec4 ambient = glm::vec4(0.2f, 0.2f, 0.2f, 1.0f);
+		glm::vec4 diffuse = glm::vec4(0.5f, 0.5f, 0.5f, 1.0f);
+		glm::vec4 specular = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 		
-		Strand::PointLight light = { glm::vec4(1.2f, 1.0f, 2.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f) };
+		Strand::PointLight light = { postion, ambient, diffuse, specular };
+		m_Lights.emplace_back(light);
 		
 		Strand::MaterialD matrial = { m_Shininess };
 
 		SD_PROFILE_SCOPE("Renderer Draw");
 		
 
-		Strand::Renderer3D::BeginScene(m_EditorCamera);
+		Strand::Renderer3D::BeginScene(m_EditorCamera, m_Lights);
 		Strand::Renderer3D::DrawCubeMesh(model, m_CubeMesh, m_CubeColor, glm::vec4(m_EditorCamera.GetPosition(), 1.0f), matrial, m_Diffuse, m_Specular);
 		Strand::Renderer3D::EndScene();
 
