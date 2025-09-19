@@ -88,6 +88,8 @@ void Sandbox3D::OnAttach()
 	SD_PROFILE_FUNCTION();
 
 	m_CheckerboardTexture = Strand::Texture2D::Create("assets/textures/Checkerboard.png");
+	m_Diffuse = Strand::Texture2D::Create("assets/textures/container2.png");
+	m_Specular = Strand::Texture2D::Create("assets/textures/container2_specular.png");
 }
 
 void Sandbox3D::OnDetach()
@@ -122,15 +124,15 @@ void Sandbox3D::OnUpdate(Strand::Timestep ts)
 		};*/
 
 		
-		Strand::PointLight light = { glm::vec3(1.2f, 1.0f, 2.0f), glm::vec3(1.0f, 1.0f, 1.0f)};
+		Strand::PointLight light = { glm::vec4(1.2f, 1.0f, 2.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f) };
 		
-		Strand::MaterialD matrial = { m_Ambient, m_Diffuse, m_Specular, m_Shininess };
+		Strand::MaterialD matrial = { m_Shininess };
 
 		SD_PROFILE_SCOPE("Renderer Draw");
 		
 
 		Strand::Renderer3D::BeginScene(m_EditorCamera);
-		Strand::Renderer3D::DrawCubeMesh(model, m_CubeMesh, m_CubeColor, light, glm::vec4(m_EditorCamera.GetPosition(), 1.0f), matrial);
+		Strand::Renderer3D::DrawCubeMesh(model, m_CubeMesh, m_CubeColor, glm::vec4(m_EditorCamera.GetPosition(), 1.0f), matrial, m_Diffuse, m_Specular);
 		Strand::Renderer3D::EndScene();
 
 		m_EditorCamera.OnUpdate(ts);
@@ -156,8 +158,8 @@ void Sandbox3D::OnImGuiRender()
 
 	ImGui::ColorEdit3("m_CubeColor Color", glm::value_ptr(m_CubeColor));
 	ImGui::ColorEdit4("m_Ambient Color", glm::value_ptr(m_Ambient));
-	ImGui::ColorEdit4("m_Diffuse Color", glm::value_ptr(m_Diffuse));
-	ImGui::ColorEdit4("m_Specular HighLight", glm::value_ptr(m_Specular));
+	//ImGui::ColorEdit4("m_Diffuse Color", glm::value_ptr(m_Diffuse));
+	//ImGui::ColorEdit4("m_Specular HighLight", glm::value_ptr(m_Specular));
 	ImGui::DragFloat("m_Shininess", &m_Shininess);
 	ImGui::End();
 

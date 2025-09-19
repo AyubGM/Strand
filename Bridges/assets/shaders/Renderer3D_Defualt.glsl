@@ -60,14 +60,14 @@ layout (location = 0) in VertexOutput Input;
 
 struct PointLight
 {
-	vec3 Position;
-	vec3 Color;
+	vec4 Position;
+
+	vec4 ambient;
+    vec4 diffuse;
+    vec4 specular;
 };
 
 struct Material {
-    vec4 ambient;
-    vec4 diffuse;
-    vec4 specular;
     float shininess;
 }; 
 
@@ -76,6 +76,8 @@ layout(std140, binding = 2) uniform MaterialData
     Material u_Material;
 };
 
+layout (binding = 0) uniform sampler2D u_DiffuseTexture;
+layout (binding = 1) uniform sampler2D u_SpecularTexture;
 
 layout(std140, binding = 3) uniform SceneData
 {
@@ -89,20 +91,19 @@ void main()
 {
     // ambient
     float ambientStrength = 0.2;
-    vec3 ambient = u_PointLights[0].Color * u_Material.ambient.rgb;
+    vec3 ambient = u_PointLights[0].ambient.rgb *  vec3(texture(u_DiffuseTexture, Input.TexCoord));
 
     // diffuse 
     vec3 norm = normalize(Input.Normal);
-    vec3 lightDir = normalize(u_PointLights[0].Position - Input.FragPos);
+    vec3 lightDir = normalize(u_PointLights[0].Position.xyz - Input.FragPos);
     float diff = max(dot(norm, lightDir), 0.0);
-    vec3 diffuse =  u_PointLights[0].Color * (diff * u_Material.diffuse.rgb);
+    vec3 diffuse =  u_PointLights[0].diffuse.rgb * diff * vec3(texture(u_DiffuseTexture, Input.TexCoord));
 
      // specular
     vec3 viewDir = normalize(u_CameraPosition - Input.FragPos);
     vec3 reflectDir = reflect(-lightDir, norm); 
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), u_Material.shininess);
-
-    vec3 specular = u_PointLights[0].Color * (spec * u_Material.specular.rgb);
+    vec3 specular = u_PointLights[0].specular.rgb * spec * vec3(texture(u_SpecularTexture, Input.TexCoord));
 
     vec3 result = ambient + diffuse + specular;
     o_Color = vec4(  result , 1.0 );

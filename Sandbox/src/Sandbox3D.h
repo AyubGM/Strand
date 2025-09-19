@@ -1,7 +1,6 @@
 #pragma once
 
 
-
 #include "Strand.h"
 
 class Sandbox3D : public Strand::Layer
@@ -31,8 +30,10 @@ private:
 	glm::vec3 m_CubeColor = glm::vec3(1.0f, 0.5f, 0.31f);
 
 	glm::vec4 m_Ambient = glm::vec4(1.0f, 0.5f, 0.31f, 1.0f);
-	glm::vec4 m_Diffuse = glm::vec4(1.0f, 0.5f, 0.31f, 1.0f);
-	glm::vec4 m_Specular = glm::vec4(0.5f, 0.5f, 0.5f, 1.0f);
+	//glm::vec4 m_Diffuse = glm::vec4(1.0f, 0.5f, 0.31f, 1.0f);
+	Strand::Ref<Strand::Texture2D> m_Diffuse;
+	//glm::vec4 m_Specular = glm::vec4(0.5f, 0.5f, 0.5f, 1.0f);
+	Strand::Ref<Strand::Texture2D> m_Specular;
 	float m_Shininess = 32.0f;
 	
 };

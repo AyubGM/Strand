@@ -13,8 +13,10 @@ namespace Strand {
 
 	struct PointLight
 	{
-		glm::vec3 Position;
-		glm::vec3 Color;
+		glm::vec4 Position;
+		glm::vec4 ambient;
+		glm::vec4 diffuse;
+		glm::vec4 specular;
 	};
 
 	struct MaterialT
@@ -27,9 +29,9 @@ namespace Strand {
 	};
 
 	struct MaterialD {
-		glm::vec4 ambient;
-		glm::vec4 diffuse;
-		glm::vec4 specular;
+		//glm::vec4 ambient;
+		//Ref<Texture2D> diffuse;
+		//glm::vec4 specular;
 		float shininess;
 	};
 
@@ -51,7 +53,7 @@ namespace Strand {
 
 		// Draws a static mesh.
 		//static void DrawStaticMesh(const glm::mat4& transform, Ref<Mesh> mesh, Ref<Shader> shader);
-		static void DrawCubeMesh(const glm::mat4& transform, const Ref<Mesh> mesh, const glm::vec3& cubeColor, const PointLight& light, const glm::vec3& cameraPosition, const MaterialD& material);
+		static void DrawCubeMesh(const glm::mat4& transform, const Ref<Mesh> mesh, const glm::vec3& cubeColor, const glm::vec3& cameraPosition, const MaterialD& material, Ref<Texture2D> diffuse, Ref<Texture2D> specular);
 		static void DrawStaticMesh(const glm::mat4& transform, Ref<Mesh> mesh, Ref<MaterialT> material);
 		static void DrawStaticMesh(const glm::mat4& transform, Ref<Mesh> mesh, const glm::vec3& albedo, float metallic, float roughness, float ao);
 

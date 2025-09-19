@@ -104,7 +104,11 @@ namespace Strand {
 		s_Data.CameraUniformBuffer->SetData(&s_Data.CameraBuffer, sizeof(Renderer3DData::CameraData));
 
 		s_SceneData->CameraPosition = camera.GetPosition();
-		s_SceneData->PointLights[0] = { glm::vec3(1.2f, 1.0f, 2.0f), glm::vec3(1.0f, 1.0f, 1.0f) };
+		glm::vec4 postion = glm::vec4(1.2f, 1.0f, 2.0f, 1.0f);
+		glm::vec4 ambient = glm::vec4(0.2f, 0.2f, 0.2f, 1.0f);
+		glm::vec4 diffuse = glm::vec4(0.5f, 0.5f, 0.5f, 1.0f);
+		glm::vec4 specular = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+		s_SceneData->PointLights[0] = {postion, ambient, diffuse, specular };
 		s_Data.SceneUniformBuffer->SetData(s_SceneData.get(), sizeof(SceneData));
 
 	}
@@ -134,17 +138,16 @@ namespace Strand {
 		SD_PROFILE_FUNCTION();
 	}
 
-	void Renderer3D::DrawCubeMesh(const glm::mat4& transform, const Ref<Mesh> mesh, const glm::vec3& cubeColor, const PointLight& light, const glm::vec3& cameraPosition, const MaterialD& material)
+	void Renderer3D::DrawCubeMesh(const glm::mat4& transform, const Ref<Mesh> mesh, const glm::vec3& cubeColor, const glm::vec3& cameraPosition, const MaterialD& material, Ref<Texture2D> diffuse, Ref<Texture2D> specular)
 	{
 		SD_PROFILE_FUNCTION();
 
 		if (!mesh) return;
+		
+		diffuse->Bind();
+		specular->Bind(1);
 
 		s_Data.DefualtShader->Bind();
-
-		/*s_SceneData->CameraPosition = cameraPosition;
-		s_SceneData->PointLights[0] = light;
-		s_Data.SceneUniformBuffer->SetData(s_SceneData.get(), sizeof(SceneData));*/
 
 		MaterialD matData = material;
 		s_Data.MaterialUniformBuffer->SetData(&matData, sizeof(MaterialD));
