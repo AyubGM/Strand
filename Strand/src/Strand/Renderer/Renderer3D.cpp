@@ -20,6 +20,8 @@ namespace Strand {
 		glm::vec3 CameraPosition;
 		int NumPointLights;
 		PointLight PointLights[4];
+		DirectLight DirectLight;
+		Spotlight Spotlight;
 	};
 
 	static Scope<SceneData> s_SceneData;
@@ -112,7 +114,7 @@ namespace Strand {
 	}
 
 	// The new BeginScene function for setting up scene-wide data like lights.
-	void Renderer3D::BeginScene(const EditorCamera& camera, const std::vector<PointLight>& pointLights)
+	void Renderer3D::BeginScene(const EditorCamera& camera, const std::vector<PointLight>& pointLights, const DirectLight& directLight, const Spotlight& spotLight)
 	{
 		SD_PROFILE_FUNCTION();
 
@@ -127,6 +129,8 @@ namespace Strand {
 		for (uint32_t i = 0; i < s_SceneData->NumPointLights; ++i) {
 			s_SceneData->PointLights[i] = pointLights[i];
 		}
+		s_SceneData->DirectLight = directLight;
+		s_SceneData->Spotlight = spotLight;
 		s_Data.SceneUniformBuffer->SetData(s_SceneData.get(), sizeof(SceneData));
 
 	}
@@ -184,70 +188,6 @@ namespace Strand {
 		s_Data.Stats.DrawCalls++;
 		s_Data.Stats.MeshCount++;
 	}
-
-	void Renderer3D::DrawStaticMesh(const glm::mat4& transform, const Ref<Mesh> mesh,
-		const glm::vec3& albedo, float metallic, float roughness, float ao)
-	{
-		SD_PROFILE_FUNCTION();
-
-		if (!mesh) return;
-
-		s_Data.PBRShader->Bind();
-
-		s_Data.ObjectBuffer.u_Model = transform;
-		s_Data.ObjectBuffer.u_NormalMatrix = glm::transpose(glm::inverse(transform));
-		s_Data.ObjectUniformBuffer->SetData(&s_Data.ObjectBuffer, sizeof(Renderer3DData::ObjectBuffer));
-
-		//TODO USE MATERIAL D Or change the name of it
-		MaterialData matData = { albedo, metallic, roughness, ao };
-		s_Data.MaterialUniformBuffer->SetData(&matData, sizeof(MaterialData));
-
-		mesh->GetVertexArray()->Bind();
-		RenderCommand::DrawIndexed(mesh->GetVertexArray());
-
-		s_Data.Stats.DrawCalls++;
-		s_Data.Stats.MeshCount++;
-	}
-
-
-	void Renderer3D::DrawStaticMesh( const glm::mat4& transform, const Ref<Mesh> mesh, const Ref<MaterialT> material)
-	{
-		SD_PROFILE_FUNCTION();
-
-		s_Data.PBRShader->Bind();
-
-		// Update UBOs
-		s_Data.ObjectBuffer.u_Model = transform;
-		s_Data.ObjectBuffer.u_NormalMatrix = glm::transpose(glm::inverse(transform));
-		s_Data.ObjectUniformBuffer->SetData(&s_Data.ObjectBuffer, sizeof(Renderer3DData::ObjectBuffer));
-
-		// Use preprocessor directive uniform to switch between textured and simple PBR.
-		bool hasTextures = material && material->AlbedoMap;
-		s_Data.PBRShader->SetInt("u_HasTextures", hasTextures ? 1 : 0);
-
-		// Bind textures to their respective texture units
-		material->AlbedoMap->Bind(0);
-		material->NormalMap->Bind(1);
-		material->MetallicMap->Bind(2);
-		material->RoughnessMap->Bind(3);
-		material->AOMap->Bind(4);
-
-		// Set the sampler uniform integers to the correct texture units
-		s_Data.PBRShader->SetInt("u_AlbedoMap", 0);
-		s_Data.PBRShader->SetInt("u_NormalMap", 1);
-		s_Data.PBRShader->SetInt("u_MetallicMap", 2);
-		s_Data.PBRShader->SetInt("u_RoughnessMap", 3);
-		s_Data.PBRShader->SetInt("u_AOMap", 4);
-
-		mesh->GetVertexArray()->Bind();
-		RenderCommand::DrawIndexed(mesh->GetVertexArray());
-
-		// Update performance statistics.
-		s_Data.Stats.DrawCalls++;
-		s_Data.Stats.MeshCount++;
-	}
-
-
 
 	//-------------------------------------------------------------------------------------------------
 	// Statistics

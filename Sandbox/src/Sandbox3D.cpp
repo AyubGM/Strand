@@ -24,6 +24,13 @@ glm::vec3 cubePositions[] = {
 	glm::vec3(-1.3f,  1.0f, -1.5f)
 };
 
+std::vector< glm::vec4> pointLightPositions = {
+	  glm::vec4(0.7f,  0.2f,  2.0f, 1.0f),
+	  glm::vec4(2.3f, -3.3f, -4.0f, 1.0f),
+	  glm::vec4(-4.0f,  2.0f, -12.0f, 1.0f),
+	  glm::vec4(0.0f,  0.0f, -3.0f, 1.0f)
+};
+
 Sandbox3D::Sandbox3D()
 	: Layer("Sandbox3D"), m_CameraController(1280.0f / 720.0f), m_EditorCamera(30.0f, 1.778f, 0.1f, 1000.0f)
 {
@@ -122,21 +129,48 @@ void Sandbox3D::OnUpdate(Strand::Timestep ts)
 			{ glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f) }
 		};*/
 
-		glm::vec4 postion = glm::vec4(1.2f, 1.0f, 2.0f, 1.0f);
-		glm::vec4 ambient = glm::vec4(0.2f, 0.2f, 0.2f, 1.0f);
-		glm::vec4 diffuse = glm::vec4(0.5f, 0.5f, 0.5f, 1.0f);
-		glm::vec4 specular = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+		glm::vec4 pointPostion = glm::vec4(1.2f, 1.0f, 2.0f, 1.0f);
+		glm::vec4 pointAmbient = glm::vec4(0.2f, 0.2f, 0.2f, 1.0f);
+		glm::vec4 pointDiffuse = glm::vec4(0.5f, 0.5f, 0.5f, 1.0f);
+		glm::vec4 pointSpecular = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+		float pointConstant = 1.0f;
+		float pointLinear = 0.09f;
+		float pointQuadratic = 0.032f;
 		
-		Strand::PointLight light = { postion, ambient, diffuse, specular };
-		m_Lights.emplace_back(light);
+		for (uint32_t i = 0; i < pointLightPositions.size(); ++i)
+		{
+			Strand::PointLight light = { pointLightPositions[i], pointAmbient, pointDiffuse, pointSpecular, pointConstant, pointLinear, pointQuadratic };
+			m_Lights.emplace_back(light);
+		}
+
+		glm::vec4 directLightDirection = glm::vec4(-0.2f, -1.0f, -0.3f, 1.0f);
+		glm::vec4 directLightAmbient = glm::vec4(0.05f, 0.05f, 0.05f, 1.0f);
+		glm::vec4 directLightDiffuse = glm::vec4(0.4f, 0.4f, 0.4f, 1.0f);
+		glm::vec4 directLightSpecular = glm::vec4(0.5f, 0.5f, 0.5f, 1.0f);
+
+		Strand::DirectLight directLight = { directLightDirection, directLightAmbient, directLightDiffuse, directLightSpecular };
+
+		glm::vec4 spotLightPostion = glm::vec4(m_EditorCamera.GetPosition(), 1.0f);
+		glm::vec4 spotLightDirection = glm::vec4(m_EditorCamera.GetForwardDirection(), 1.0f);
+		glm::vec4 spotLightAmbient = glm::vec4(0.2f, 0.2f, 0.2f, 1.0f);
+		glm::vec4 spotLightDiffuse = glm::vec4(0.5f, 0.5f, 0.5f, 1.0f);
+		glm::vec4 spotLightSpecular = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+		float spotLightConstant = 1.0f;
+		float spotLightLinear = 0.09f;
+		float spotLightQuadratic = 0.032f;
+		float spotLightCutOff = glm::cos(glm::radians(12.5f));
+		float spotLightOuterCutOff = glm::cos(glm::radians(15.0f));
+
+		Strand::Spotlight spotLight = { spotLightPostion, spotLightDirection, spotLightAmbient, spotLightDiffuse, spotLightSpecular, spotLightConstant, spotLightLinear, spotLightQuadratic, spotLightCutOff, spotLightOuterCutOff };
+		
 		
 		Strand::MaterialD matrial = { m_Shininess };
 
 		SD_PROFILE_SCOPE("Renderer Draw");
 
-		Strand::Renderer3D::BeginScene(m_EditorCamera, m_Lights);
+		Strand::Renderer3D::BeginScene(m_EditorCamera, m_Lights, directLight, spotLight);
 		glm::mat4 model = glm::mat4(1.0f);
-		for (unsigned int i = 0; i < 10; i++)
+		for (uint32_t i = 0; i < 10; i++)
 		{
 			model = glm::translate(model, cubePositions[i]);
 			float angle = 20.0f * i;
@@ -144,10 +178,15 @@ void Sandbox3D::OnUpdate(Strand::Timestep ts)
 			Strand::Renderer3D::DrawCubeMesh(model, m_CubeMesh, m_CubeColor, glm::vec4(m_EditorCamera.GetPosition(), 1.0f), matrial, m_Diffuse, m_Specular);
 		}
 		
-		model = glm::mat4(1.0f);
-		model = glm::translate(model, glm::vec3(light.Position));
-		model = glm::scale(model, glm::vec3(0.2f));
-		Strand::Renderer3D::DrawLightCube(model, m_CubeMesh, m_CubeColor, glm::vec4(m_EditorCamera.GetPosition(), 1.0f));
+		for (uint32_t i = 0; i < pointLightPositions.size(); ++i)
+		{
+			model = glm::mat4(1.0f);
+			model = glm::translate(model, glm::vec3(pointLightPositions[i]));
+			model = glm::scale(model, glm::vec3(0.2f));
+			Strand::Renderer3D::DrawLightCube(model, m_CubeMesh, m_CubeColor, glm::vec4(m_EditorCamera.GetPosition(), 1.0f));
+		}
+
+	
 
 		Strand::Renderer3D::EndScene();
 
@@ -168,6 +207,7 @@ void Sandbox3D::OnImGuiRender()
 	auto stats = Strand::Renderer3D::GetStats();
 	ImGui::Text("Renderer3D Stats:");
 	ImGui::Text("Draw Calls: %d", stats.DrawCalls);
+	ImGui::Text("Mesh Count: %d", stats.GetTotalMeshCount());
 	//ImGui::Text("Quads: %d", stats.QuadCount);
 	//ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
 	//ImGui::Text("Indices: %d", stats.GetTotalIndexCount());

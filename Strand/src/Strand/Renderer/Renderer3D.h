@@ -14,9 +14,34 @@ namespace Strand {
 	struct PointLight
 	{
 		glm::vec4 Position;
-		glm::vec4 ambient;
-		glm::vec4 diffuse;
-		glm::vec4 specular;
+		glm::vec4 Ambient;
+		glm::vec4 Diffuse;
+		glm::vec4 Specular;
+		float Constant;
+		float Linear;
+		float Quadratic;
+	};
+
+	struct DirectLight
+	{
+		glm::vec4 Direction;
+		glm::vec4 Ambient;
+		glm::vec4 Diffuse;
+		glm::vec4 Specular;
+	};
+
+	struct Spotlight
+	{
+		glm::vec4 Position;
+		glm::vec4 Direction;
+		glm::vec4 Ambient;
+		glm::vec4 Diffuse;
+		glm::vec4 Specular;
+		float CutOff;
+		float OuterCutOff;
+		float Constant;
+		float Linear;
+		float Quadratic;
 	};
 
 	struct MaterialT
@@ -46,7 +71,7 @@ namespace Strand {
 		// Begins the 3D scene, setting up the camera and starting a new render batch.
 		static void BeginScene(const Camera& camera, const glm::mat4& transform);
 		static void BeginScene(const EditorCamera& camera);
-		static void BeginScene(const EditorCamera& camera, const std::vector<PointLight>& pointLights);
+		static void BeginScene(const EditorCamera& camera, const std::vector<PointLight>& pointLights, const DirectLight& directLight, const Spotlight& spotLight);
 
 		// Ends the 3D scene and flushes the remaining render data to the GPU.
 		static void EndScene();
@@ -55,9 +80,6 @@ namespace Strand {
 		//static void DrawStaticMesh(const glm::mat4& transform, Ref<Mesh> mesh, Ref<Shader> shader);
 		static void DrawLightCube(const glm::mat4& transform, const Ref<Mesh> mesh, const glm::vec3& cubeColor, const glm::vec3& cameraPosition);
 		static void DrawCubeMesh(const glm::mat4& transform, const Ref<Mesh> mesh, const glm::vec3& cubeColor, const glm::vec3& cameraPosition, const MaterialD& material, Ref<Texture2D> diffuse, Ref<Texture2D> specular);
-		static void DrawStaticMesh(const glm::mat4& transform, Ref<Mesh> mesh, Ref<MaterialT> material);
-		static void DrawStaticMesh(const glm::mat4& transform, Ref<Mesh> mesh, const glm::vec3& albedo, float metallic, float roughness, float ao);
-
 
 		// Stats
 		struct Statistics
