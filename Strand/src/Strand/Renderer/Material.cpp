@@ -14,6 +14,16 @@ namespace Strand {
 	Material::Material(const Ref<Shader>& shader, uint32_t materialID)
 		: m_Shader(shader), m_MaterialID(materialID)
 	{
+		const auto& materialBlock = shader->FindUniformBlock("MaterialData");
+		if (materialBlock.Size > 0)
+		{
+			// Create the GPU uniform buffer
+			m_UniformBuffer = UniformBuffer::Create(materialBlock.Size, materialBlock.BindingPoint);
+
+			// Allocate the CPU-side staging buffer
+			m_CPUBuffer.resize(materialBlock.Size);
+			memset(m_CPUBuffer.data(), 0, materialBlock.Size);
+		}
 	}
 
 	/* {
@@ -38,7 +48,27 @@ namespace Strand {
 	void Material::Bind() const
 	{
 		m_Shader->Bind();
+		m_NextTextureSlot = 0;
 
+		// 1. Update the Uniform Buffer if data has changed
+		if (m_UniformBuffer && m_IsDirty)
+		{
+			m_UniformBuffer->SetData(m_CPUBuffer.data(), m_CPUBuffer.size());
+			m_IsDirty = false;
+		}
+
+		for (const auto& [name, texture] : m_Textures)
+		{
+			if (texture)
+			{
+				texture->Bind(m_NextTextureSlot);
+				// The shader needs to be told which slot to sample from
+				m_Shader->SetInt(name, m_NextTextureSlot);
+				m_NextTextureSlot++;
+			}
+		}
+
+	/*
 		// Set all vec3 uniforms
 		for (const auto& [name, value] : m_Vec3s)
 		{
@@ -63,17 +93,8 @@ namespace Strand {
 			m_Shader->SetInt(name, value);
 		}
 
-		// Bind all textures and set their sampler uniforms
-		uint32_t textureSlot = 0;
-		for (const auto& [name, texture] : m_Textures)
-		{
-			if (texture) // Ensure texture is not null
-			{
-				texture->Bind(textureSlot);
-				m_Shader->SetInt(name, textureSlot);
-				textureSlot++;
-			}
-		}
+		*/
+		
 	}
 
 	void Material::UnBind() const

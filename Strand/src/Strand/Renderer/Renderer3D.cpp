@@ -189,6 +189,30 @@ namespace Strand {
 		s_Data.Stats.MeshCount++;
 	}
 
+	void Renderer3D::DrawCubeMesh(const glm::mat4& transform, const Ref<Mesh> mesh, const glm::vec3& cubeColor, const glm::vec3& cameraPosition, const Ref<Material> materail)
+	{
+		SD_PROFILE_FUNCTION();
+
+		if (!mesh) return;
+		
+		materail->Bind();
+
+		//MaterialD matData = material;
+		//s_Data.MaterialUniformBuffer->SetData(&matData, sizeof(MaterialD));
+		// Update UBOs
+		s_Data.ObjectBuffer.u_Model = transform;
+		s_Data.ObjectBuffer.u_NormalMatrix = glm::transpose(glm::inverse(transform));
+		s_Data.ObjectBuffer.u_ObjectColor = cubeColor;
+		s_Data.ObjectUniformBuffer->SetData(&s_Data.ObjectBuffer, sizeof(Renderer3DData::ObjectBuffer));
+
+		mesh->GetVertexArray()->Bind();
+		RenderCommand::DrawIndexed(mesh->GetVertexArray());
+
+		// Update performance statistics.
+		s_Data.Stats.DrawCalls++;
+		s_Data.Stats.MeshCount++;
+	}
+
 	//-------------------------------------------------------------------------------------------------
 	// Statistics
 	//-------------------------------------------------------------------------------------------------

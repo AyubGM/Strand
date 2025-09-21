@@ -97,6 +97,29 @@ void Sandbox3D::OnAttach()
 	m_CheckerboardTexture = Strand::Texture2D::Create("assets/textures/Checkerboard.png");
 	m_Diffuse = Strand::Texture2D::Create("assets/textures/container2.png");
 	m_Specular = Strand::Texture2D::Create("assets/textures/container2_specular.png");
+	m_PhongShader = Strand::Shader::Create("assets/shaders/Renderer3D_Defualt.glsl");
+	m_Material = Strand::Material::Create(m_PhongShader);
+	m_Material->Set("u_Material", m_Shininess);
+	m_Material->Set("u_DiffuseTexture", m_Diffuse);
+	m_Material->Set("u_SpecularTexture", m_Specular);
+
+	/*
+	//TEST
+	
+	m_PbrShader = Strand::Shader::Create("assets/shaders/PBR.glsl");
+	m_RustedIronMaterial = Strand::Material::Create(m_PbrShader);
+	m_AlbedoTexture = Strand::Texture2D::Create("assets/textures/rusted_iron_albedo.png");
+	// Set UBO data
+	m_RustedIronMaterial->Set("u_Albedo", glm::vec3(1.0f, 1.0f, 1.0f)); // Use a white tint
+	m_RustedIronMaterial->Set("u_Metallic", 1.0f);   // It's a metal
+	m_RustedIronMaterial->Set("u_Roughness", 0.8f);  // It's not very shiny
+	m_RustedIronMaterial->Set("u_AO", 1.0f);
+	m_RustedIronMaterial->Set("u_AlbedoMap", m_AlbedoTexture);
+	// rustedIronMaterial->Set("u_NormalMap", normalTexture); // etc.
+
+	 
+	//TEST
+	*/
 }
 
 void Sandbox3D::OnDetach()
@@ -107,6 +130,7 @@ void Sandbox3D::OnDetach()
 void Sandbox3D::OnUpdate(Strand::Timestep ts)
 {
 	SD_PROFILE_FUNCTION();
+
 
 	// Update
 	m_CameraController.OnUpdate(ts);
@@ -175,9 +199,12 @@ void Sandbox3D::OnUpdate(Strand::Timestep ts)
 			model = glm::translate(model, cubePositions[i]);
 			float angle = 20.0f * i;
 			model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
-			Strand::Renderer3D::DrawCubeMesh(model, m_CubeMesh, m_CubeColor, glm::vec4(m_EditorCamera.GetPosition(), 1.0f), matrial, m_Diffuse, m_Specular);
+			Strand::Renderer3D::DrawCubeMesh(model, m_CubeMesh, m_CubeColor, glm::vec4(m_EditorCamera.GetPosition(), 1.0f), m_Material);
+
+			//Strand::Renderer3D::DrawCubeMesh(model, m_CubeMesh, m_CubeColor, glm::vec4(m_EditorCamera.GetPosition(), 1.0f), matrial, m_Diffuse, m_Specular);
 		}
 		
+
 		for (uint32_t i = 0; i < pointLightPositions.size(); ++i)
 		{
 			model = glm::mat4(1.0f);

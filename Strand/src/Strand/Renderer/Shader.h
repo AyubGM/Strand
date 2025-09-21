@@ -6,6 +6,23 @@
 
 namespace Strand {
 
+	struct ShaderUniform
+	{
+		std::string Name;
+		uint32_t Size = 0;
+		uint32_t Offset = 0;
+		// We could also store GLenum Type here if needed
+	};
+
+	// Struct to hold information about a uniform block (UBO)
+	struct ShaderUniformBlock
+	{
+		std::string Name;
+		uint32_t Size = 0;
+		uint32_t BindingPoint = 0;
+		std::vector<ShaderUniform> Uniforms;
+	};
+
 	class Shader
 	{
 	public:
@@ -23,6 +40,9 @@ namespace Strand {
 
 		virtual const std::string& GetName() const = 0;
 		virtual const uint32_t GetShaderID() const = 0; 
+
+		virtual const ShaderUniform& FindUniform(const std::string& name) const = 0;
+		virtual const ShaderUniformBlock& FindUniformBlock(const std::string& name) const = 0;
 
 		static Ref<Shader> Create(const std::string& filepath);
 		static Ref<Shader> Create(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc);

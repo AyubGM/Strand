@@ -3,6 +3,9 @@
 #include "Strand/Core/Base.h"
 #include "Strand/Renderer/Shader.h"
 #include "Strand/Renderer/Texture.h"
+#include "Strand/Renderer/UniformBuffer.h"
+
+
 
 #include <glm/glm.hpp>
 #include <unordered_map>
@@ -93,7 +96,15 @@ namespace Strand {
         uint32_t  m_MaterialID;
         Ref<Shader> m_Shader;
 
+        // --- UBO-related members ---
+        Ref<UniformBuffer> m_UniformBuffer;
+        std::vector<uint8_t> m_CPUBuffer; // CPU-side buffer to stage data
+        mutable bool m_IsDirty = true;    // Track if UBO needs updating
+
+
         std::unordered_map<std::string, Ref<Texture2D>> m_Textures;
+        mutable uint32_t m_NextTextureSlot = 0;
+
         std::unordered_map<std::string, glm::vec4> m_Vec4s;
         std::unordered_map<std::string, glm::vec3> m_Vec3s;
         std::unordered_map<std::string, float> m_Floats;
@@ -105,8 +116,30 @@ namespace Strand {
     template<typename T>
     void Material::Set(const std::string& name, const T& value)
     {
-        auto& map = GetMapForType<T>();
-        map[name] = value;
+       // auto& map = GetMapForType<T>();
+       //map[name] = value;
+        // Handle Textures(samplers) separately as they are not part of the UBO
+        if constexpr (std::is_same_v<T, Ref<Texture2D>>)
+        {
+            m_Textures[name] = value;
+        }
+        else // Handle all UBO data
+        {
+             //auto& map = GetMapForType<T>();
+             //map[name] = value;
+            // Get the uniform's offset and size from the shader's reflection data
+            const auto& uniform = m_Shader->FindUniform(name);
+            if (uniform.Size == 0) // Uniform not found or not in a UBO
+            {
+                // Log a warning: uniform 'name' not found in material shader
+                SD_CORE_ERROR("Uinform: {0} not found in the {1} Shader", name, m_Shader->GetName());
+                return;
+            }
+
+            // Write the data into our CPU-side buffer at the correct offset
+            memcpy(m_CPUBuffer.data() + uniform.Offset, &value, uniform.Size);
+            m_IsDirty = true;
+        }
     }
 
     template<typename T>

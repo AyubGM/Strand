@@ -28,6 +28,9 @@ namespace Strand {
 		virtual const std::string& GetName() const override { return m_Name; }
 		virtual const uint32_t GetShaderID() const override { return m_RendererID; }
 
+		virtual const ShaderUniform& FindUniform(const std::string& name) const override;
+		virtual const ShaderUniformBlock& FindUniformBlock(const std::string& name) const override;
+
 		void UploadUniformInt(const std::string& name, int value);
 		void UploadUniformIntArray(const std::string& name, int* values, uint32_t count);
 
@@ -56,6 +59,15 @@ namespace Strand {
 		std::unordered_map<GLenum, std::vector<uint32_t>> m_OpenGLSPIRV;
 
 		std::unordered_map<GLenum, std::string> m_OpenGLSourceCode;
+
+		// --- Reflection Data Storage ---
+		std::unordered_map<std::string, ShaderUniform> m_Uniforms;
+		std::unordered_map<std::string, ShaderUniformBlock> m_UniformBlocks;
+
+		// Dummy structs to return when a uniform/block is not found
+		ShaderUniform m_NotFoundUniform;
+		ShaderUniformBlock m_NotFoundUniformBlock;
+
 	};
 
 }

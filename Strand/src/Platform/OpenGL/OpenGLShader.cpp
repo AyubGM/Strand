@@ -227,82 +227,6 @@ namespace Strand {
 		return shaderSources;
 	}
 
-	/*void OpenGLShader::Compile(const std::unordered_map<GLenum, std::string>& shaderSources)
-	{
-		SD_PROFILE_FUNCTION();
-
-		GLuint program = glCreateProgram();
-		SD_CORE_ASSERT(shaderSources.size() <= 2, "We only support 2 shaders for now");
-		std::array<GLenum, 2> glShaderIDs;
-		int glShaderIDIndex = 0;
-		for (auto& kv : shaderSources)
-		{
-			GLenum type = kv.first;
-			const std::string& source = kv.second;
-
-			GLuint shader = glCreateShader(type);
-
-			const GLchar* sourceCStr = source.c_str();
-			glShaderSource(shader, 1, &sourceCStr, 0);
-
-			glCompileShader(shader);
-
-			GLint isCompiled = 0;
-			glGetShaderiv(shader, GL_COMPILE_STATUS, &isCompiled);
-			if (isCompiled == GL_FALSE)
-			{
-				GLint maxLength = 0;
-				glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &maxLength);
-
-				std::vector<GLchar> infoLog(maxLength);
-				glGetShaderInfoLog(shader, maxLength, &maxLength, &infoLog[0]);
-
-				glDeleteShader(shader);
-
-				SD_CORE_ERROR("{0}", infoLog.data());
-				SD_CORE_ASSERT(false, "Shader compilation failure!");
-				break;
-			}
-
-			glAttachShader(program, shader);
-			glShaderIDs[glShaderIDIndex++] = shader;
-		}
-
-		m_RendererID = program;
-
-		// Link our program
-		glLinkProgram(program);
-
-		// Note the different functions here: glGetProgram* instead of glGetShader*.
-		GLint isLinked = 0;
-		glGetProgramiv(program, GL_LINK_STATUS, (int*)&isLinked);
-		if (isLinked == GL_FALSE)
-		{
-			GLint maxLength = 0;
-			glGetProgramiv(program, GL_INFO_LOG_LENGTH, &maxLength);
-
-			// The maxLength includes the NULL character
-			std::vector<GLchar> infoLog(maxLength);
-			glGetProgramInfoLog(program, maxLength, &maxLength, &infoLog[0]);
-
-			// We don't need the program anymore.
-			glDeleteProgram(program);
-
-			for (auto id : glShaderIDs)
-				glDeleteShader(id);
-
-			SD_CORE_ERROR("{0}", infoLog.data());
-			SD_CORE_ASSERT(false, "Shader link failure!");
-			return;
-		}
-
-		for (auto id : glShaderIDs)
-		{
-			glDetachShader(program, id);
-			glDeleteShader(id);
-		}
-	}*/
-
 	void OpenGLShader::CompileOrGetVulkanBinaries(const std::unordered_map<GLenum, std::string>& shaderSources)
 	{
 		GLuint program = glCreateProgram();
@@ -310,6 +234,7 @@ namespace Strand {
 		shaderc::Compiler compiler;
 		shaderc::CompileOptions options;
 		options.SetTargetEnvironment(shaderc_target_env_vulkan, shaderc_env_version_vulkan_1_2);
+		
 		const bool optimize = true;
 		if (optimize)
 			options.SetOptimizationLevel(shaderc_optimization_level_performance);
@@ -367,6 +292,8 @@ namespace Strand {
 		shaderc::Compiler compiler;
 		shaderc::CompileOptions options;
 		options.SetTargetEnvironment(shaderc_target_env_opengl, shaderc_env_version_opengl_4_5);
+		
+		
 		const bool optimize = false;
 		if (optimize)
 			options.SetOptimizationLevel(shaderc_optimization_level_performance);
@@ -474,14 +401,103 @@ namespace Strand {
 			const auto& bufferType = compiler.get_type(resource.base_type_id);
 			uint32_t bufferSize = compiler.get_declared_struct_size(bufferType);
 			uint32_t binding = compiler.get_decoration(resource.id, spv::DecorationBinding);
+
+			//TEST
+
+			// If the UBO is already in our map, skip it (it was processed by another shader stage)
+			if (m_UniformBlocks.count(resource.name))
+				continue;
+
+			ShaderUniformBlock& ubo = m_UniformBlocks[resource.name];
+			ubo.Name = resource.name;
+			ubo.Size = bufferSize;
+			ubo.BindingPoint = binding;
+
+           //TEST
+
 			int memberCount = bufferType.member_types.size();
 
 			SD_CORE_TRACE("  {0}", resource.name);
 			SD_CORE_TRACE("    Size = {0}", bufferSize);
 			SD_CORE_TRACE("    Binding = {0}", binding);
 			SD_CORE_TRACE("    Members = {0}", memberCount);
+
+			//TEST
+			for (int i = 0; i < memberCount; i++)
+			{
+				auto& memberType = compiler.get_type(bufferType.member_types[i]);
+				const std::string& memberName = compiler.get_member_name(bufferType.self, i);
+				size_t memberSize = compiler.get_declared_struct_member_size(bufferType, i);
+				size_t offset = compiler.get_member_decoration(bufferType.self, i, spv::DecorationOffset);
+
+				// If member name is empty, generate a fallback name
+				std::string finalMemberName = memberName;
+				if (finalMemberName.empty())
+				{
+					// Try to infer the name from the UBO name and member index
+					// This works well for common patterns like MaterialData -> u_Material
+					if (resource.name.find("u_Material") != std::string::npos && i == 0)
+						finalMemberName = "u_Material";
+					else if (resource.name.find("u_Camera") != std::string::npos && i == 0)
+						finalMemberName = "u_Camera";
+					else if (resource.name.find("u_Transform") != std::string::npos && i == 0)
+						finalMemberName = "u_Transform";
+					else
+						finalMemberName = "member_" + std::to_string(i);
+						
+					SD_CORE_WARN("Member {0} in UBO {1} has no name, using fallback: {2}", i, resource.name, finalMemberName);
+				}
+
+				// Create the uniform info and add it to the block's list
+				ShaderUniform uniform(finalMemberName, (uint32_t)memberSize, (uint32_t)offset);
+				ubo.Uniforms.push_back(uniform);
+
+				// Also add it to the global uniform map for fast lookups
+				m_Uniforms[finalMemberName] = uniform;
+
+				SD_CORE_TRACE("     Name: {0} (Size={1}, Offset={2})", finalMemberName, memberSize, offset);
+			}
+			 
+			//TEST
+
 		}
+
+		//TEST
+		// --- Process Samplers (Textures) ---
+		SD_CORE_TRACE("Sampled Images (Textures):");
+		for (const auto& resource : resources.sampled_images)
+		{
+			const auto& type = compiler.get_type(resource.type_id);
+			uint32_t binding = compiler.get_decoration(resource.id, spv::DecorationBinding);
+
+			// You might want to store sampler info if your material system needs it,
+			// but for now, we'll just trace it as the Material class handles textures by name.
+			SD_CORE_TRACE("  {0} - Binding = {1}", resource.name, binding);
+		}
+
+		//TEST
 	}
+	//TEST
+	const ShaderUniform& OpenGLShader::FindUniform(const std::string& name) const
+	{
+		auto it = m_Uniforms.find(name);
+		if (it != m_Uniforms.end())
+		{
+			return it->second;
+		}
+		return m_NotFoundUniform;
+	}
+
+	const ShaderUniformBlock& OpenGLShader::FindUniformBlock(const std::string& name) const
+	{
+		auto it = m_UniformBlocks.find(name);
+		if (it != m_UniformBlocks.end())
+		{
+			return it->second;
+		}
+		return m_NotFoundUniformBlock;
+	}
+	//TEST
 
 	void OpenGLShader::Bind() const
 	{

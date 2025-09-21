@@ -36,5 +36,16 @@ private:
 	//glm::vec4 m_Specular = glm::vec4(0.5f, 0.5f, 0.5f, 1.0f);
 	Strand::Ref<Strand::Texture2D> m_Specular;
 	float m_Shininess = 32.0f;
+	Strand::Ref<Strand::Shader> m_PhongShader;
+	Strand::Ref<Strand::Material> m_Material;
+
+
+	//TEST
+	Strand::Ref<Strand::Shader> m_PbrShader;
+	Strand::Ref<Strand::Material> m_RustedIronMaterial;
+	Strand::Ref<Strand::Mesh> m_SphereMesh;
+	Strand::Ref<Strand::Texture2D> m_AlbedoTexture;
+	//TEST
+
 	
 };

@@ -7,6 +7,7 @@
 #include "Strand/Renderer/UniformBuffer.h"
 #include "Strand/Renderer/Camera.h"
 #include "Strand/Renderer/EditorCamera.h"
+#include "Strand/Renderer/Material.h"
 #include "Strand/Renderer/Mesh.h"
 
 namespace Strand {
@@ -80,6 +81,7 @@ namespace Strand {
 		//static void DrawStaticMesh(const glm::mat4& transform, Ref<Mesh> mesh, Ref<Shader> shader);
 		static void DrawLightCube(const glm::mat4& transform, const Ref<Mesh> mesh, const glm::vec3& cubeColor, const glm::vec3& cameraPosition);
 		static void DrawCubeMesh(const glm::mat4& transform, const Ref<Mesh> mesh, const glm::vec3& cubeColor, const glm::vec3& cameraPosition, const MaterialD& material, Ref<Texture2D> diffuse, Ref<Texture2D> specular);
+		static void DrawCubeMesh(const glm::mat4& transform, const Ref<Mesh> mesh, const glm::vec3& cubeColor, const glm::vec3& cameraPosition, const Ref<Material> materail);
 
 		// Stats
 		struct Statistics
