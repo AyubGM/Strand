@@ -61,6 +61,26 @@ namespace Strand {
 
 	void EditorCamera::OnUpdate(Timestep ts)
 	{
+
+
+		if (Input::IsKeyPressed(SD_KEY_LEFT))
+		{
+			m_FocalPoint -= GetRightDirection() * (m_MoveSpeed * ts);
+		}
+		else if (Input::IsKeyPressed(SD_KEY_RIGHT))
+		{
+			m_FocalPoint += GetRightDirection() * (m_MoveSpeed * ts);
+		}
+
+		if (Input::IsKeyPressed(SD_KEY_UP))
+		{
+			m_FocalPoint += GetForwardDirection() * (m_MoveSpeed * ts);
+		}
+		else if (Input::IsKeyPressed(SD_KEY_DOWN))
+		{
+			m_FocalPoint -= GetForwardDirection() * (m_MoveSpeed * ts);
+		}
+
 		if (Input::IsKeyPressed(Key::LeftAlt))
 		{
 			const glm::vec2& mouse{ Input::GetMouseX(), Input::GetMouseY() };

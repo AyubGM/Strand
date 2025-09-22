@@ -6,15 +6,6 @@ namespace Strand {
 
 
 
-	// Material
-	struct MaterialData {
-		glm::vec3 Albedo;
-		float Metallic;
-		float Roughness;
-		float AO;
-	};
-
-
 
 	struct SceneData {
 		glm::vec3 CameraPosition;
@@ -63,12 +54,21 @@ namespace Strand {
 
 	void Renderer3D::Init()
 	{
+	
 		SD_PROFILE_FUNCTION();
 		s_SceneData = CreateScope<SceneData>();
 
 		s_Data.PBRShader = Shader::Create("assets/shaders/Renderer3D_PBR.glsl");
 		s_Data.DefualtShader = Shader::Create("assets/shaders/Renderer3D_Defualt.glsl");
 		s_Data.LightCubeShader = Shader::Create("assets/shaders/Renderer3D_LightCube.glsl");
+
+		if (SD_DEBUG)
+		{
+			SD_CORE_INFO("Size of SceneData Struct In Renderer3D {0}", sizeof(SceneData));
+			SD_CORE_INFO("Size of CameraData Struct In Renderer3D {0}", sizeof(Renderer3DData::CameraData));
+			SD_CORE_INFO("Size of ObjectData Struct In Renderer3D {0}", sizeof(Renderer3DData::ObjectData));
+		}
+
 
 		// Create a default white texture for untextured materials.
 		s_Data.WhiteTexture = Texture2D::Create(1, 1);
@@ -116,6 +116,8 @@ namespace Strand {
 	// The new BeginScene function for setting up scene-wide data like lights.
 	void Renderer3D::BeginScene(const EditorCamera& camera, const std::vector<PointLight>& pointLights, const DirectLight& directLight, const Spotlight& spotLight)
 	{
+		
+
 		SD_PROFILE_FUNCTION();
 
 		//s_Data.PBRSimpleShader->Bind();
