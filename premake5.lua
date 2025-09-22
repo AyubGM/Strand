@@ -35,6 +35,7 @@ IncludeDir["ImGuizmo"] = "Strand/vendor/ImGuizmo"
 IncludeDir["shaderc"] = "Strand/vendor/shaderc/include"
 IncludeDir["SPIRV_Cross"] = "Strand/vendor/SPIRV-Cross"
 IncludeDir["VulkanSDK"] = "%{VULKAN_SDK}/Include"
+IncludeDir["assimp"] = "Strand/vendor/assimp/include"
 --TODO Debug libs for vulkan
 LibraryDir = {}
 
@@ -113,7 +114,8 @@ project "Strand"
 		"%{IncludeDir.entt}",
 		"%{IncludeDir.yaml_cpp}",
 		"%{IncludeDir.ImGuizmo}",
-		"%{IncludeDir.VulkanSDK}"
+		"%{IncludeDir.VulkanSDK}",
+		"%{IncludeDir.Assimp}"
 
 	}
 
@@ -125,7 +127,7 @@ project "Strand"
 		"ImGui",
 		"yaml-cpp",
 		"opengl32.lib",
-		
+		"assimp"
 	}
 
 	filter "files:Strand/vendor/ImGuizmo/**.cpp"
@@ -205,7 +207,8 @@ project "Sandbox"
 		"Strand/src",
 		"Strand/vendor",
 		"%{IncludeDir.glm}",
-		"%{IncludeDir.entt}"
+		"%{IncludeDir.entt}",
+		"%{IncludeDir.Assimp}"
 	}
 
 	links
@@ -265,6 +268,7 @@ project "Bridges"
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.entt}",
 		"%{IncludeDir.ImGuizmo}",
+		"%{IncludeDir.Assimp}"
 	}
 
 	links

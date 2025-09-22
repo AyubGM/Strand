@@ -125,8 +125,6 @@ namespace Strand {
         }
         else // Handle all UBO data
         {
-             //auto& map = GetMapForType<T>();
-             //map[name] = value;
             // Get the uniform's offset and size from the shader's reflection data
             const auto& uniform = m_Shader->FindUniform(name);
             if (uniform.Size == 0) // Uniform not found or not in a UBO

@@ -11,18 +11,32 @@ namespace Strand {
 		glm::vec2 TexCoord;
 	};
 
+	struct StaticMeshTexture {
+		uint32_t id;
+		std::string type;
+	};
+
 	class Mesh
 	{
 	public:
 		Mesh() = default;
 		Mesh(const std::vector<StaticMeshVertex>& vertices, const std::vector<uint32_t>& indices);
+		Mesh(const std::vector<StaticMeshVertex>& vertices, const std::vector<uint32_t>& indices, const std::vector<StaticMeshTexture> textures);
+		//void Draw(Shader& shader);
 
 		~Mesh() = default;
+
+		std::vector<StaticMeshVertex>  m_Vertices;
+		std::vector<uint32_t> m_Indices;
+		std::vector<StaticMeshTexture> m_Textures;
+
 
 		//virtual void Bind() const = 0;
 		//virtual void Unbind() const = 0;
 
 		const Ref<VertexArray>& GetVertexArray() const { return m_VertexArray; }
+	private:
+		void setupMesh();
 
 	private:
 		Ref<VertexArray> m_VertexArray;

@@ -24,14 +24,4 @@
       <Filter>Panels</Filter>
     </ClCompile>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="assets\shaders\Renderer2D_Circle.glsl" />
-    <None Include="assets\shaders\Renderer2D_Line.glsl" />
-    <None Include="assets\scenes\Example.strand" />
-    <None Include="assets\shaders\Renderer3D_Defualt.glsl" />
-    <None Include="assets\shaders\Renderer3D_PBR.glsl" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="assets\shaders\Renderer3D_LightCube.glsl" />
-  </ItemGroup>
 </Project>

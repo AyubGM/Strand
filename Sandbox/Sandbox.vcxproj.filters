@@ -46,11 +46,7 @@
       <Filter>Game1</Filter>
     </ClCompile>
     <ClCompile Include="src\Sandbox2D.cpp" />
-    <ClCompile Include="src\SandboxApp.cpp" />
     <ClCompile Include="src\Sandbox3D.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="assets\shaders\Renderer3D_PBR.glsl" />
-    <None Include="assets\shaders\Renderer3D_Defualt.glsl" />
+    <ClCompile Include="src\SandboxApp.cpp" />
   </ItemGroup>
 </Project>
