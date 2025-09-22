@@ -173,6 +173,7 @@ namespace Strand {
 
 		s_Data.DefualtShader->Bind();
 
+
 		MaterialD matData = material;
 		s_Data.MaterialUniformBuffer->SetData(&matData, sizeof(MaterialD));
 		// Update UBOs
@@ -197,8 +198,6 @@ namespace Strand {
 		
 		materail->Bind();
 
-		//MaterialD matData = material;
-		//s_Data.MaterialUniformBuffer->SetData(&matData, sizeof(MaterialD));
 		// Update UBOs
 		s_Data.ObjectBuffer.u_Model = transform;
 		s_Data.ObjectBuffer.u_NormalMatrix = glm::transpose(glm::inverse(transform));

@@ -99,27 +99,11 @@ void Sandbox3D::OnAttach()
 	m_Specular = Strand::Texture2D::Create("assets/textures/container2_specular.png");
 	m_PhongShader = Strand::Shader::Create("assets/shaders/Renderer3D_Defualt.glsl");
 	m_Material = Strand::Material::Create(m_PhongShader);
-	m_Material->Set("u_Material", m_Shininess);
+	m_Material->Set("u_MaterialData", m_Shininess);
 	m_Material->Set("u_DiffuseTexture", m_Diffuse);
 	m_Material->Set("u_SpecularTexture", m_Specular);
 
-	/*
-	//TEST
-	
-	m_PbrShader = Strand::Shader::Create("assets/shaders/PBR.glsl");
-	m_RustedIronMaterial = Strand::Material::Create(m_PbrShader);
-	m_AlbedoTexture = Strand::Texture2D::Create("assets/textures/rusted_iron_albedo.png");
-	// Set UBO data
-	m_RustedIronMaterial->Set("u_Albedo", glm::vec3(1.0f, 1.0f, 1.0f)); // Use a white tint
-	m_RustedIronMaterial->Set("u_Metallic", 1.0f);   // It's a metal
-	m_RustedIronMaterial->Set("u_Roughness", 0.8f);  // It's not very shiny
-	m_RustedIronMaterial->Set("u_AO", 1.0f);
-	m_RustedIronMaterial->Set("u_AlbedoMap", m_AlbedoTexture);
-	// rustedIronMaterial->Set("u_NormalMap", normalTexture); // etc.
 
-	 
-	//TEST
-	*/
 }
 
 void Sandbox3D::OnDetach()
@@ -145,6 +129,7 @@ void Sandbox3D::OnUpdate(Strand::Timestep ts)
 	}
 
 	{
+		m_Lights.clear();
 		static float rotation = 0.0f;
 		rotation += ts * 50.0f;
 
@@ -185,7 +170,11 @@ void Sandbox3D::OnUpdate(Strand::Timestep ts)
 		float spotLightCutOff = glm::cos(glm::radians(12.5f));
 		float spotLightOuterCutOff = glm::cos(glm::radians(15.0f));
 
-		Strand::Spotlight spotLight = { spotLightPostion, spotLightDirection, spotLightAmbient, spotLightDiffuse, spotLightSpecular, spotLightConstant, spotLightLinear, spotLightQuadratic, spotLightCutOff, spotLightOuterCutOff };
+		Strand::Spotlight spotLight = {
+		spotLightPostion, spotLightDirection, spotLightAmbient, spotLightDiffuse,
+		spotLightSpecular, spotLightCutOff, spotLightOuterCutOff, spotLightConstant,
+		spotLightLinear, spotLightQuadratic
+		};
 		
 		
 		Strand::MaterialD matrial = { m_Shininess };
@@ -201,8 +190,8 @@ void Sandbox3D::OnUpdate(Strand::Timestep ts)
 			model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
 			Strand::Renderer3D::DrawCubeMesh(model, m_CubeMesh, m_CubeColor, glm::vec4(m_EditorCamera.GetPosition(), 1.0f), m_Material);
 
-			//Strand::Renderer3D::DrawCubeMesh(model, m_CubeMesh, m_CubeColor, glm::vec4(m_EditorCamera.GetPosition(), 1.0f), matrial, m_Diffuse, m_Specular);
 		}
+			//Strand::Renderer3D::DrawCubeMesh(glm::mat4(1), m_CubeMesh, m_CubeColor, glm::vec4(m_EditorCamera.GetPosition(), 1.0f), matrial, m_Diffuse, m_Specular);
 		
 
 		for (uint32_t i = 0; i < pointLightPositions.size(); ++i)

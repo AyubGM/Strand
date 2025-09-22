@@ -21,6 +21,7 @@ namespace Strand {
 		float Constant;
 		float Linear;
 		float Quadratic;
+		float _padding_1;
 	};
 
 	struct DirectLight
@@ -43,6 +44,7 @@ namespace Strand {
 		float Constant;
 		float Linear;
 		float Quadratic;
+		float _padding_2[3];
 	};
 
 	struct MaterialT

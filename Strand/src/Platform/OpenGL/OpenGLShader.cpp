@@ -235,6 +235,10 @@ namespace Strand {
 		shaderc::CompileOptions options;
 		options.SetTargetEnvironment(shaderc_target_env_vulkan, shaderc_env_version_vulkan_1_2);
 		
+		#if defined(SD_DEBUG)
+		options.SetGenerateDebugInfo();
+		#endif
+
 		const bool optimize = true;
 		if (optimize)
 			options.SetOptimizationLevel(shaderc_optimization_level_performance);
@@ -292,8 +296,8 @@ namespace Strand {
 		shaderc::Compiler compiler;
 		shaderc::CompileOptions options;
 		options.SetTargetEnvironment(shaderc_target_env_opengl, shaderc_env_version_opengl_4_5);
-		
-		
+
+
 		const bool optimize = false;
 		if (optimize)
 			options.SetOptimizationLevel(shaderc_optimization_level_performance);
@@ -394,6 +398,7 @@ namespace Strand {
 		SD_CORE_TRACE("OpenGLShader::Reflect - {0} {1}", Utils::GLShaderStageToString(stage), m_FilePath);
 		SD_CORE_TRACE("    {0} uniform buffers", resources.uniform_buffers.size());
 		SD_CORE_TRACE("    {0} resources", resources.sampled_images.size());
+		
 
 		SD_CORE_TRACE("Uniform buffers:");
 		for (const auto& resource : resources.uniform_buffers)
@@ -430,32 +435,16 @@ namespace Strand {
 				size_t memberSize = compiler.get_declared_struct_member_size(bufferType, i);
 				size_t offset = compiler.get_member_decoration(bufferType.self, i, spv::DecorationOffset);
 
-				// If member name is empty, generate a fallback name
-				std::string finalMemberName = memberName;
-				if (finalMemberName.empty())
-				{
-					// Try to infer the name from the UBO name and member index
-					// This works well for common patterns like MaterialData -> u_Material
-					if (resource.name.find("u_Material") != std::string::npos && i == 0)
-						finalMemberName = "u_Material";
-					else if (resource.name.find("u_Camera") != std::string::npos && i == 0)
-						finalMemberName = "u_Camera";
-					else if (resource.name.find("u_Transform") != std::string::npos && i == 0)
-						finalMemberName = "u_Transform";
-					else
-						finalMemberName = "member_" + std::to_string(i);
 						
-					SD_CORE_WARN("Member {0} in UBO {1} has no name, using fallback: {2}", i, resource.name, finalMemberName);
-				}
 
 				// Create the uniform info and add it to the block's list
-				ShaderUniform uniform(finalMemberName, (uint32_t)memberSize, (uint32_t)offset);
+				ShaderUniform uniform(memberName, (uint32_t)memberSize, (uint32_t)offset);
 				ubo.Uniforms.push_back(uniform);
 
 				// Also add it to the global uniform map for fast lookups
-				m_Uniforms[finalMemberName] = uniform;
+				m_Uniforms[memberName] = uniform;
 
-				SD_CORE_TRACE("     Name: {0} (Size={1}, Offset={2})", finalMemberName, memberSize, offset);
+				SD_CORE_TRACE("     Name: {0} (Size={1}, Offset={2})", memberName, memberSize, offset);
 			}
 			 
 			//TEST

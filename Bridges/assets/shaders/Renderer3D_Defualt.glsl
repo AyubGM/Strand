@@ -4,20 +4,18 @@
 layout(location = 0) in vec3 a_Position;
 layout(location = 1) in vec3 a_Normal;
 layout(location = 2) in vec2 a_TexCoord;
-//layout(location = 1) in vec4 a_Color;
 
 layout(std140, binding = 0) uniform Camera
 {
 	mat4 u_ViewProjection;
-};
+} u_Camera;
 
 layout(std140, binding = 1) uniform ObjectData
 {
     mat4 u_Model;
-    mat4 u_NormalMatrix; 
+    mat4 u_NormalMatrix;
     vec3 u_objectColor;
-
-};
+} u_ObjectData;
 
 struct VertexOutput
 {
@@ -25,20 +23,16 @@ struct VertexOutput
     vec3 FragPos;
 	vec3 Normal;
 	vec2 TexCoord;
-
 };
 
 layout (location = 0) out VertexOutput Output;
-//layout (location = 2) out flat float v_TexIndex;
-
 
 void main()
 {
-   // Output.a_Color = a_Color
-    gl_Position = u_ViewProjection * u_Model * vec4(a_Position, 1.0f);
-    Output.Color = u_objectColor;
-    Output.FragPos = vec3(u_Model * vec4(a_Position, 1.0f));
-    Output.Normal = normalize(mat3(u_NormalMatrix) * a_Normal);
+    gl_Position = u_Camera.u_ViewProjection * u_ObjectData.u_Model * vec4(a_Position, 1.0f);
+    Output.Color = u_ObjectData.u_objectColor;
+    Output.FragPos = vec3(u_ObjectData.u_Model * vec4(a_Position, 1.0f));
+    Output.Normal = normalize(mat3(u_ObjectData.u_NormalMatrix) * a_Normal);
     Output.TexCoord = vec2(a_TexCoord.x, 1.0 - a_TexCoord.y);
 }
 
@@ -99,12 +93,12 @@ struct Spotlight {
 
 struct Material {
     float Shininess;
-}; 
+} ; 
 
 layout(std140, binding = 2) uniform MaterialData
 {
-    Material u_Material;
-};
+    Material u_MaterialData;
+} u_Material;
 
 layout (binding = 0) uniform sampler2D u_DiffuseTexture;
 layout (binding = 1) uniform sampler2D u_SpecularTexture;
@@ -113,7 +107,7 @@ layout(std140, binding = 3) uniform SceneData
 {
     vec3 u_CameraPosition;
     int u_NumPointLights;
-    PointLight u_PointLights[u_NumPointLights];
+    PointLight u_PointLights[4];
     DirectLight u_DirectLight;
     Spotlight u_Spotlight;
 };
@@ -134,7 +128,7 @@ void main()
     vec3 result = CalcDirLight(u_DirectLight, norm, viewDir);
 
     // phase 2: Point lights
-    for(int i = 0; i < NR_POINT_LIGHTS; i++)
+    for(int i = 0; i < u_NumPointLights; i++)
         result += CalcPointLight(u_PointLights[i], norm, Input.FragPos, viewDir); 
 
     // phase 3: Spot light
@@ -153,7 +147,7 @@ vec3 CalcDirLight(DirectLight light, vec3 normal, vec3 viewDir)
     float diff = max(dot(normal, lightDir), 0.0);
     // specular shading
     vec3 reflectDir = reflect(-lightDir, normal);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), u_Material.Shininess);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), u_Material.u_MaterialData.Shininess);
     // combine results
     vec3 ambient  = light.Ambient.rgb  * vec3(texture(u_DiffuseTexture, Input.TexCoord));
     vec3 diffuse  = light.Diffuse.rgb  * diff * vec3(texture(u_DiffuseTexture, Input.TexCoord));
@@ -169,7 +163,7 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
 
     // specular shading
     vec3 reflectDir = reflect(-lightDir, normal);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0),  u_Material.Shininess);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), u_Material.u_MaterialData.Shininess);
 
     // attenuation
     float distance    = length(light.Position.xyz - fragPos);
@@ -197,11 +191,11 @@ vec3 CalcSpotLight(Spotlight light, vec3 normal, vec3 fragPos, vec3 viewDir)
     
     // specular
     vec3 reflectDir = reflect(-lightDir, normal);  
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0),  u_Material.Shininess);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), u_Material.u_MaterialData.Shininess);
     vec3 specular = light.Specular.rgb * spec *  vec3(texture(u_SpecularTexture, Input.TexCoord));  
     
     // spotlight (soft edges)
-    float theta = dot(lightDir, normalize(-light.direction)); 
+    float theta = dot(lightDir, normalize(-light.Direction.xyz)); 
     float epsilon = (light.CutOff - light.OuterCutOff);
     float intensity = clamp((theta - light.OuterCutOff) / epsilon, 0.0, 1.0);
     diffuse  *= intensity;

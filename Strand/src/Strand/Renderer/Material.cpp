@@ -64,38 +64,42 @@ namespace Strand {
 				texture->Bind(m_NextTextureSlot);
 				// The shader needs to be told which slot to sample from
 				m_Shader->SetInt(name, m_NextTextureSlot);
+
 				m_NextTextureSlot++;
 			}
 		}
 
-	/*
-		// Set all vec3 uniforms
-		for (const auto& [name, value] : m_Vec3s)
-		{
-			m_Shader->SetFloat3(name, value);
-		}
 
-		// Set all vec4 uniforms
-		for (const auto& [name, value] : m_Vec4s)
-		{
-			m_Shader->SetFloat4(name, value);
-		}
-
-		// Set all float uniforms
-		for (const auto& [name, value] : m_Floats)
-		{
-			m_Shader->SetFloat(name, value);
-		}
-
-		// Set all int uniforms
-		for (const auto& [name, value] : m_Ints)
-		{
-			m_Shader->SetInt(name, value);
-		}
-
-		*/
 		
 	}
+
+	/*
+	 INSIDE OF BIND FUNCTION
+	// Set all vec3 uniforms
+	for (const auto& [name, value] : m_Vec3s)
+	{
+		m_Shader->SetFloat3(name, value);
+	}
+
+	// Set all vec4 uniforms
+	for (const auto& [name, value] : m_Vec4s)
+	{
+		m_Shader->SetFloat4(name, value);
+	}
+
+	// Set all float uniforms
+	for (const auto& [name, value] : m_Floats)
+	{
+		m_Shader->SetFloat(name, value);
+	}
+
+	// Set all int uniforms
+	for (const auto& [name, value] : m_Ints)
+	{
+		m_Shader->SetInt(name, value);
+	}
+
+	*/
 
 	void Material::UnBind() const
 	{
