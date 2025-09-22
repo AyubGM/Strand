@@ -24,3 +24,6 @@
 [submodule "Strand/vendor/Box2D"]
 	path = Strand/vendor/Box2D
 	url = https://github.com/AyubGM/box2d
+[submodule "Strand/vendor/assimp"]
+	path = Strand/vendor/assimp
+	url = https://github.com/AyubGM/assimp
