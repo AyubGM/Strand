@@ -26,6 +26,7 @@ C:\dev\Strand\Strand\src\Strand\Renderer\GraphicsContext.cpp;C:\dev\Strand\bin-i
 C:\dev\Strand\Strand\src\Strand\Renderer\Material.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\Material.obj
 C:\dev\Strand\Strand\src\Strand\Renderer\MaterialLibrary.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\MaterialLibrary.obj
 C:\dev\Strand\Strand\src\Strand\Renderer\Mesh.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\Mesh.obj
+C:\dev\Strand\Strand\src\Strand\Renderer\Model.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\Model.obj
 C:\dev\Strand\Strand\src\Strand\Renderer\OrthographicCamera.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\OrthographicCamera.obj
 C:\dev\Strand\Strand\src\Strand\Renderer\OrthographicCameraController.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\OrthographicCameraController.obj
 C:\dev\Strand\Strand\src\Strand\Renderer\RenderCommand.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\RenderCommand.obj

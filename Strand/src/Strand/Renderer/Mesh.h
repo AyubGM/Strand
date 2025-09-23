@@ -8,43 +8,47 @@ namespace Strand {
 	{
 		glm::vec3 Position;
 		glm::vec3 Normal;
-		glm::vec2 TexCoord;
+		glm::vec2 TexCoords;
+		//glm::vec3 Tangent;
+		//glm::vec3 Bitangent;
 	};
 
 	struct StaticMeshTexture {
 		uint32_t id;
 		std::string type;
+		std::string path;
 	};
 
 	class Mesh
 	{
 	public:
+
 		Mesh() = default;
 		Mesh(const std::vector<StaticMeshVertex>& vertices, const std::vector<uint32_t>& indices);
-		Mesh(const std::vector<StaticMeshVertex>& vertices, const std::vector<uint32_t>& indices, const std::vector<StaticMeshTexture> textures);
-		//void Draw(Shader& shader);
+		Mesh(std::vector<StaticMeshVertex>&& vertices, std::vector<uint32_t>&& indices, uint32_t materialIndex);
 
 		~Mesh() = default;
 
-		std::vector<StaticMeshVertex>  m_Vertices;
-		std::vector<uint32_t> m_Indices;
-		std::vector<StaticMeshTexture> m_Textures;
-
-
-		//virtual void Bind() const = 0;
-		//virtual void Unbind() const = 0;
-
 		const Ref<VertexArray>& GetVertexArray() const { return m_VertexArray; }
+		const uint32_t GetMaterialIndex() const { return m_MaterialIndex; }
+
+
 	private:
 		void setupMesh();
 
 	private:
+		// CPU-side data
+		std::vector<StaticMeshVertex> m_Vertices;
+		std::vector<uint32_t> m_Indices;
+
+		// GPU resources
 		Ref<VertexArray> m_VertexArray;
+
 		Ref<VertexBuffer> m_VertexBuffer;
 		Ref<IndexBuffer> m_IndexBuffer;
 
-		// The number of indices in the mesh.
-		uint32_t m_IndexCount = 0;
+		// Link to the material used by this mesh
+		uint32_t m_MaterialIndex;
 	};
 
 }

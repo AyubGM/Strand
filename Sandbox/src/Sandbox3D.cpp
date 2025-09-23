@@ -8,9 +8,6 @@
 
 #include <chrono>
 
-
-
-
 glm::vec3 cubePositions[] = {
 	glm::vec3(0.0f,  0.0f,  0.0f),
 	glm::vec3(2.0f,  5.0f, -15.0f),
@@ -103,6 +100,7 @@ void Sandbox3D::OnAttach()
 	m_Material->Set("u_DiffuseTexture", m_Diffuse);
 	m_Material->Set("u_SpecularTexture", m_Specular);
 
+	m_Backpack = Strand::CreateRef<Strand::Model>("assets/models/backpack", m_PhongShader);
 
 }
 
@@ -188,11 +186,21 @@ void Sandbox3D::OnUpdate(Strand::Timestep ts)
 			model = glm::translate(model, cubePositions[i]);
 			float angle = 20.0f * i;
 			model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
-			Strand::Renderer3D::DrawCubeMesh(model, m_CubeMesh, m_CubeColor, glm::vec4(m_EditorCamera.GetPosition(), 1.0f), m_Material);
+			//Strand::Renderer3D::DrawCubeMesh(model, m_CubeMesh, m_CubeColor, glm::vec4(m_EditorCamera.GetPosition(), 1.0f), m_Material);
 
 		}
 			//Strand::Renderer3D::DrawCubeMesh(glm::mat4(1), m_CubeMesh, m_CubeColor, glm::vec4(m_EditorCamera.GetPosition(), 1.0f), matrial, m_Diffuse, m_Specular);
 		
+		for (const auto& mesh : m_Backpack->GetMeshes())
+		{
+			// 5. Get the material for the current mesh using its material index
+			uint32_t materialIndex = mesh->GetMaterialIndex();
+			Strand::Ref<Strand::Material> material = m_Backpack->GetMaterials()[materialIndex];
+
+			// 6. Submit the mesh and its corresponding material to the renderer
+			Strand::Renderer3D::DrawCubeMesh(modelTransform, mesh, material);
+		}
+
 
 		for (uint32_t i = 0; i < pointLightPositions.size(); ++i)
 		{

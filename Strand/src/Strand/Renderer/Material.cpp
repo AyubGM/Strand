@@ -26,27 +26,10 @@ namespace Strand {
 		}
 	}
 
-	/* {
-		//// Assign the unique ID
-		m_MatiralID = s_MaterialCount++;
-
-		m_AlbedoMap = TextureLoader::LoadTexture(albedoMap);
-		m_NormalMap = TextureLoader::LoadTexture(normalMap);
-		m_MetallicMap = TextureLoader::LoadTexture(metallicMap);
-		m_RoughnessMap = TextureLoader::LoadTexture(roughnessMap);
-		m_AOMap = TextureLoader::LoadTexture(aoMap);
-
-		// Store textures in the generic map as well for the template Set/Get functions
-		m_Textures["u_AlbedoMap"] = m_AlbedoMap;
-		m_Textures["u_NormalMap"] = m_NormalMap;
-		m_Textures["u_MetallicMap"] = m_MetallicMap;
-		m_Textures["u_RoughnessMap"] = m_RoughnessMap;
-		m_Textures["u_AOMap"] = m_AOMap;
-	}*/
-
 
 	void Material::Bind() const
 	{
+
 		m_Shader->Bind();
 		m_NextTextureSlot = 0;
 
@@ -68,38 +51,9 @@ namespace Strand {
 				m_NextTextureSlot++;
 			}
 		}
-
-
 		
 	}
 
-	/*
-	 INSIDE OF BIND FUNCTION
-	// Set all vec3 uniforms
-	for (const auto& [name, value] : m_Vec3s)
-	{
-		m_Shader->SetFloat3(name, value);
-	}
-
-	// Set all vec4 uniforms
-	for (const auto& [name, value] : m_Vec4s)
-	{
-		m_Shader->SetFloat4(name, value);
-	}
-
-	// Set all float uniforms
-	for (const auto& [name, value] : m_Floats)
-	{
-		m_Shader->SetFloat(name, value);
-	}
-
-	// Set all int uniforms
-	for (const auto& [name, value] : m_Ints)
-	{
-		m_Shader->SetInt(name, value);
-	}
-
-	*/
 
 	void Material::UnBind() const
 	{
@@ -144,3 +98,51 @@ namespace Strand {
 	
 
 }
+
+
+/*
+ INSIDE OF BIND FUNCTION
+// Set all vec3 uniforms
+for (const auto& [name, value] : m_Vec3s)
+{
+	m_Shader->SetFloat3(name, value);
+}
+
+// Set all vec4 uniforms
+for (const auto& [name, value] : m_Vec4s)
+{
+	m_Shader->SetFloat4(name, value);
+}
+
+// Set all float uniforms
+for (const auto& [name, value] : m_Floats)
+{
+	m_Shader->SetFloat(name, value);
+}
+
+// Set all int uniforms
+for (const auto& [name, value] : m_Ints)
+{
+	m_Shader->SetInt(name, value);
+}
+
+*/
+
+
+/* {
+	//// Assign the unique ID
+	m_MatiralID = s_MaterialCount++;
+
+	m_AlbedoMap = TextureLoader::LoadTexture(albedoMap);
+	m_NormalMap = TextureLoader::LoadTexture(normalMap);
+	m_MetallicMap = TextureLoader::LoadTexture(metallicMap);
+	m_RoughnessMap = TextureLoader::LoadTexture(roughnessMap);
+	m_AOMap = TextureLoader::LoadTexture(aoMap);
+
+	// Store textures in the generic map as well for the template Set/Get functions
+	m_Textures["u_AlbedoMap"] = m_AlbedoMap;
+	m_Textures["u_NormalMap"] = m_NormalMap;
+	m_Textures["u_MetallicMap"] = m_MetallicMap;
+	m_Textures["u_RoughnessMap"] = m_RoughnessMap;
+	m_Textures["u_AOMap"] = m_AOMap;
+}*/

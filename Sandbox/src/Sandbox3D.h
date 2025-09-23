@@ -21,6 +21,7 @@ private:
 	Strand::EditorCamera m_EditorCamera;
 	//Strand::Mesh m_CubeMesh;
 	Strand::Ref<Strand::Mesh> m_CubeMesh;
+	Strand::Ref<Strand::Model> m_Backpack;
 
 	// Temp
 	Strand::Ref<Strand::VertexArray> m_SquareVA;

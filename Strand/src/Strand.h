@@ -36,6 +36,11 @@
 
 #include "Strand/Renderer/OrthographicCamera.h"
 // -
+// --------TEMP-----------------------
+#include "Strand/Renderer/Model.h"
+#include "Strand/Renderer/Mesh.h"
+#include "Strand/Renderer/Material.h"
+// --------TEMP-----------------------
 
 // ---Entry Point--------------------
 //#include "Strand/Core/EntryPoint.h"
