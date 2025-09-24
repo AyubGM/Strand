@@ -36,7 +36,9 @@ IncludeDir["shaderc"] = "Strand/vendor/shaderc/include"
 IncludeDir["SPIRV_Cross"] = "Strand/vendor/SPIRV-Cross"
 IncludeDir["VulkanSDK"] = "%{VULKAN_SDK}/Include"
 IncludeDir["assimp"] = "Strand/vendor/assimp/include"
---TODO Debug libs for vulkan
+
+
+-----VULKAN------------
 LibraryDir = {}
 
 LibraryDir["VulkanSDK"] = "%{VULKAN_SDK}/Lib"
@@ -55,7 +57,12 @@ Library["SPIRV_Tools_Debug"] = "%{LibraryDir.VulkanSDK_Debug}/SPIRV-Toolsd.lib"
 Library["ShaderC_Release"] = "%{LibraryDir.VulkanSDK}/shaderc_shared.lib"
 Library["SPIRV_Cross_Release"] = "%{LibraryDir.VulkanSDK}/spirv-cross-core.lib"
 Library["SPIRV_Cross_GLSL_Release"] = "%{LibraryDir.VulkanSDK}/spirv-cross-glsl.lib"
+---------------------
 
+-----ASSIMP------------
+LibraryDir["assimp"] = "vendor/assimp"
+Library["assimp_Debug"] = "%{LibraryDir.assimp}/lib/Debug/assimp-vc143-mtd.lib"
+Library["zlibstaticd_Debug"] = "%{LibraryDir.assimp}/contrib/zlib//Debug/zlibstaticd.lib"
 --  Strand Dependencies --------
 
 group "Dependencies"
@@ -115,7 +122,7 @@ project "Strand"
 		"%{IncludeDir.yaml_cpp}",
 		"%{IncludeDir.ImGuizmo}",
 		"%{IncludeDir.VulkanSDK}",
-		"%{IncludeDir.Assimp}"
+		"%{IncludeDir.assimp}",
 
 	}
 
@@ -127,7 +134,7 @@ project "Strand"
 		"ImGui",
 		"yaml-cpp",
 		"opengl32.lib",
-		"assimp"
+		
 	}
 
 	filter "files:Strand/vendor/ImGuizmo/**.cpp"
@@ -153,7 +160,10 @@ project "Strand"
 		{
 			"%{Library.ShaderC_Debug}",
 			"%{Library.SPIRV_Cross_Debug}",
-			"%{Library.SPIRV_Cross_GLSL_Debug}"
+			"%{Library.SPIRV_Cross_GLSL_Debug}",
+			"%{Library.assimp_Debug}",
+			"%{Library.zlibstaticd_Debug}"
+			
 		}
 
 		filter "configurations:Release"
@@ -208,7 +218,7 @@ project "Sandbox"
 		"Strand/vendor",
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.entt}",
-		"%{IncludeDir.Assimp}"
+		"%{IncludeDir.assimp}",
 	}
 
 	links
@@ -268,7 +278,7 @@ project "Bridges"
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.entt}",
 		"%{IncludeDir.ImGuizmo}",
-		"%{IncludeDir.Assimp}"
+		"%{IncludeDir.assimp}",
 	}
 
 	links

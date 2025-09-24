@@ -100,7 +100,7 @@ void Sandbox3D::OnAttach()
 	m_Material->Set("u_DiffuseTexture", m_Diffuse);
 	m_Material->Set("u_SpecularTexture", m_Specular);
 
-	m_Backpack = Strand::CreateRef<Strand::Model>("assets/models/backpack", m_PhongShader);
+	m_Backpack = Strand::CreateRef<Strand::Model>("assets/models/backpack/backpack.obj", m_PhongShader);
 
 }
 
@@ -198,7 +198,7 @@ void Sandbox3D::OnUpdate(Strand::Timestep ts)
 			Strand::Ref<Strand::Material> material = m_Backpack->GetMaterials()[materialIndex];
 
 			// 6. Submit the mesh and its corresponding material to the renderer
-			Strand::Renderer3D::DrawCubeMesh(modelTransform, mesh, material);
+			Strand::Renderer3D::DrawCubeMesh(glm::mat4(1), mesh, m_CubeColor, glm::vec4(m_EditorCamera.GetPosition(), 1.0f), material);
 		}
 
 

@@ -79,7 +79,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>SD_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\Strand\vendor\spdlog\include;..\Strand\vendor\Box2D\include;..\Strand\src;..\Strand\vendor;..\Strand\vendor\glm;..\Strand\vendor\entt\include;..\Strand\vendor\ImGuizmo;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Strand\vendor\spdlog\include;..\Strand\vendor\Box2D\include;..\Strand\src;..\Strand\vendor;..\Strand\vendor\glm;..\Strand\vendor\entt\include;..\Strand\vendor\ImGuizmo;..\Strand\vendor\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <MinimalRebuild>false</MinimalRebuild>
@@ -102,7 +102,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>SD_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\Strand\vendor\spdlog\include;..\Strand\vendor\Box2D\include;..\Strand\src;..\Strand\vendor;..\Strand\vendor\glm;..\Strand\vendor\entt\include;..\Strand\vendor\ImGuizmo;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Strand\vendor\spdlog\include;..\Strand\vendor\Box2D\include;..\Strand\src;..\Strand\vendor;..\Strand\vendor\glm;..\Strand\vendor\entt\include;..\Strand\vendor\ImGuizmo;..\Strand\vendor\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -125,7 +125,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>SD_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\Strand\vendor\spdlog\include;..\Strand\vendor\Box2D\include;..\Strand\src;..\Strand\vendor;..\Strand\vendor\glm;..\Strand\vendor\entt\include;..\Strand\vendor\ImGuizmo;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Strand\vendor\spdlog\include;..\Strand\vendor\Box2D\include;..\Strand\src;..\Strand\vendor;..\Strand\vendor\glm;..\Strand\vendor\entt\include;..\Strand\vendor\ImGuizmo;..\Strand\vendor\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>

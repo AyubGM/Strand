@@ -192,6 +192,9 @@
     <ClInclude Include="src\Strand\Renderer\Mesh.h">
       <Filter>src\Strand\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="src\Strand\Renderer\Model.h">
+      <Filter>src\Strand\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="src\Strand\Renderer\OrthographicCamera.h">
       <Filter>src\Strand\Renderer</Filter>
     </ClInclude>
@@ -1509,7 +1512,6 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="src\Strand\Renderer\Model.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp">
@@ -1596,6 +1598,9 @@
     <ClCompile Include="src\Strand\Renderer\Mesh.cpp">
       <Filter>src\Strand\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="src\Strand\Renderer\Model.cpp">
+      <Filter>src\Strand\Renderer</Filter>
+    </ClCompile>
     <ClCompile Include="src\Strand\Renderer\OrthographicCamera.cpp">
       <Filter>src\Strand\Renderer</Filter>
     </ClCompile>
@@ -1650,6 +1655,5 @@
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="src\Strand\Renderer\Model.cpp" />
   </ItemGroup>
 </Project>
