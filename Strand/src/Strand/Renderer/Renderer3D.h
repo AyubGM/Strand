@@ -87,6 +87,7 @@ namespace Strand {
 		static void DrawLightCube(const glm::mat4& transform, const Ref<Mesh> mesh, const glm::vec3& cubeColor, const glm::vec3& cameraPosition);
 		static void DrawCubeMesh(const glm::mat4& transform, const Ref<Mesh> mesh, const glm::vec3& cubeColor, const glm::vec3& cameraPosition, const MaterialD& material, Ref<Texture2D> diffuse, Ref<Texture2D> specular);
 		static void DrawCubeMesh(const glm::mat4& transform, const Ref<Mesh> mesh, const glm::vec3& cubeColor, const glm::vec3& cameraPosition, const Ref<Material> materail);
+		static void DrawMesh(const glm::mat4& transform, const Ref<Mesh> mesh, const Ref<Material> material);
 
 		// Stats
 		struct Statistics

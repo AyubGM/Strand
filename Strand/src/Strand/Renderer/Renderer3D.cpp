@@ -214,6 +214,28 @@ namespace Strand {
 		s_Data.Stats.MeshCount++;
 	}
 
+	void Renderer3D::DrawMesh(const glm::mat4& transform, const Ref<Mesh> mesh, const Ref<Material> material)
+	{
+		SD_PROFILE_FUNCTION();
+
+		if (!mesh || !material) return;
+
+		material->Bind();
+
+		// Set the per-object data (transform matrices)
+		s_Data.ObjectBuffer.u_Model = transform;
+		s_Data.ObjectBuffer.u_NormalMatrix = glm::transpose(glm::inverse(transform));
+		// We no longer set u_ObjectColor here, the material handles all appearance
+		s_Data.ObjectUniformBuffer->SetData(&s_Data.ObjectBuffer, sizeof(Renderer3DData::ObjectBuffer));
+
+		mesh->GetVertexArray()->Bind();
+		RenderCommand::DrawIndexed(mesh->GetVertexArray());
+
+		// Update performance statistics.
+		s_Data.Stats.DrawCalls++;
+		s_Data.Stats.MeshCount++;
+	}
+
 	//-------------------------------------------------------------------------------------------------
 	// Statistics
 	//-------------------------------------------------------------------------------------------------
