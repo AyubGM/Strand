@@ -54,5 +54,5 @@ layout (binding = 0) uniform sampler2D u_DiffuseTexture;
 
 void main()
 {    
-    o_Color = texture(u_DiffuseTexture, Input.TexCoord);
+    o_Color = vec4(vec3(texture(u_DiffuseTexture, Input.TexCoord)), 1.0);
 }

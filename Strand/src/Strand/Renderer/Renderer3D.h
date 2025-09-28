@@ -50,14 +50,6 @@ namespace Strand {
 		float _padding_3;
 	};
 
-	struct MaterialT
-	{
-		Ref<Texture2D> AlbedoMap;
-		Ref<Texture2D> NormalMap;
-		Ref<Texture2D> MetallicMap;
-		Ref<Texture2D> RoughnessMap;
-		Ref<Texture2D> AOMap;
-	};
 
 	struct MaterialD {
 		//glm::vec4 ambient;
@@ -69,24 +61,21 @@ namespace Strand {
 	class Renderer3D
 	{
 	public:
-		// Initializes the 3D renderer's data, including vertex buffers, shaders, and other resources.
+
 		static void Init();
-		// Cleans up all the resources allocated by the renderer.
 		static void Shutdown();
 
-		// Begins the 3D scene, setting up the camera and starting a new render batch.
 		static void BeginScene(const Camera& camera, const glm::mat4& transform);
 		static void BeginScene(const EditorCamera& camera);
 		static void BeginScene(const EditorCamera& camera, const std::vector<PointLight>& pointLights, const DirectLight& directLight, const Spotlight& spotLight);
 
-		// Ends the 3D scene and flushes the remaining render data to the GPU.
 		static void EndScene();
 
 		// Draws a static mesh.
 		//static void DrawStaticMesh(const glm::mat4& transform, Ref<Mesh> mesh, Ref<Shader> shader);
-		static void DrawLightCube(const glm::mat4& transform, const Ref<Mesh> mesh, const glm::vec3& cubeColor, const glm::vec3& cameraPosition);
-		static void DrawCubeMesh(const glm::mat4& transform, const Ref<Mesh> mesh, const glm::vec3& cubeColor, const glm::vec3& cameraPosition, const MaterialD& material, Ref<Texture2D> diffuse, Ref<Texture2D> specular);
-		static void DrawCubeMesh(const glm::mat4& transform, const Ref<Mesh> mesh, const glm::vec3& cubeColor, const glm::vec3& cameraPosition, const Ref<Material> materail);
+		static void DrawLightCube(const glm::mat4& transform, const Ref<Mesh> mesh, const glm::vec3& cubeColor);
+		static void DrawCubeMesh(const glm::mat4& transform, const Ref<Mesh> mesh, const glm::vec3& cubeColor, const Ref<Material> materail);
+		static void DrawCubeMap( const Ref<Mesh> mesh, const Ref<Texture3D> texture, const Ref<Shader> shader);
 		static void DrawMesh(const glm::mat4& transform, const Ref<Mesh> mesh, const Ref<Material> material);
 
 		// Stats
@@ -112,9 +101,7 @@ namespace Strand {
 
 		static Scope<SceneData> s_SceneData;*/
 
-		// Flushes the current render batch to the GPU.
 		static void Flush();
-		// Starts a new render batch after the current one is full.
 		static void NextBatch();
 
 	};

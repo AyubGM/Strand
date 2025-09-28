@@ -111,14 +111,16 @@ namespace Strand {
     void Model::LoadMaterialTextures(aiMaterial* mat, aiTextureType type, const std::string& typeName, Ref<Material>& material)
     {
         // A simple cache could be added here to avoid loading the same texture multiple times
-        for (uint32_t i = 0; i < mat->GetTextureCount(type); i++)
-        {
-            aiString str;
-            mat->GetTexture(type, i, &str);
-            std::string texturePath = m_Directory + '/' + std::string(str.C_Str());
 
-            Ref<Texture2D> texture = Texture2D::Create(texturePath);
-            material->Set(typeName, texture);
-        }
+            for (uint32_t i = 0; i < mat->GetTextureCount(type); i++)
+            {
+                aiString str;
+                mat->GetTexture(type, i, &str);
+                std::string texturePath = m_Directory + '/' + std::string(str.C_Str());
+                SD_CORE_TRACE("TexturePath: {0}", texturePath);
+                Ref<Texture2D> texture = Texture2D::Create(texturePath);
+                material->Set(typeName, texture);
+            }
+
     }
 }

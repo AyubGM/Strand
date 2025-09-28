@@ -107,16 +107,6 @@ namespace Strand {
 
 	}
 
-	static GLenum ShaderTypeFromString(const std::string& type)
-	{
-		if (type == "vertex")
-			return GL_VERTEX_SHADER;
-		if (type == "fragment" || type == "pixel")
-			return GL_FRAGMENT_SHADER;
-
-		SD_CORE_ASSERT(false, "Unknown shader type!");
-		return 0;
-	}
 
 	OpenGLShader::OpenGLShader(const std::string& filepath)
 		: m_FilePath(filepath)
@@ -136,7 +126,6 @@ namespace Strand {
 			SD_CORE_WARN("Shader creation took {0} ms", timer.ElapsedMillis());
 		}
 
-
 		//Compile(shaderSources); OLD
 		// Extract name from filepath
 		/*auto lastSlash = filepath.find_last_of("/\\");
@@ -144,10 +133,12 @@ namespace Strand {
 		auto lastDot = filepath.rfind('.');
 		auto count = lastDot == std::string::npos ? filepath.size() - lastSlash : lastDot - lastSlash;
 		m_Name = filepath.substr(lastSlash, count);*/
+		
 
 		std::filesystem::path path = filepath;
 		m_Name = path.stem().string(); // Returns the file's name stripped of the extension.
 	}
+	
 
 	OpenGLShader::OpenGLShader(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc)
 		: m_Name(name)

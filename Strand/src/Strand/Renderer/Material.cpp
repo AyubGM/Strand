@@ -46,7 +46,7 @@ namespace Strand {
 			{
 				texture->Bind(m_NextTextureSlot);
 				// The shader needs to be told which slot to sample from
-				m_Shader->SetInt(name, m_NextTextureSlot);
+				//m_Shader->SetInt(name, m_NextTextureSlot);
 
 				m_NextTextureSlot++;
 			}

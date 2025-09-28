@@ -5,6 +5,7 @@ namespace Strand {
 
 
 	Mesh::Mesh(const std::vector<StaticMeshVertex>& vertices, const std::vector<uint32_t>& indices)
+		:m_Vertices(vertices), m_Indices(indices)
 	{
 		setupMesh();
 	}

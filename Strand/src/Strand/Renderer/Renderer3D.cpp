@@ -116,11 +116,8 @@ namespace Strand {
 	// The new BeginScene function for setting up scene-wide data like lights.
 	void Renderer3D::BeginScene(const EditorCamera& camera, const std::vector<PointLight>& pointLights, const DirectLight& directLight, const Spotlight& spotLight)
 	{
-		
 
 		SD_PROFILE_FUNCTION();
-
-		//s_Data.PBRSimpleShader->Bind();
 
 		s_Data.CameraBuffer.ViewProjection = camera.GetViewProjection();
 		s_Data.CameraUniformBuffer->SetData(&s_Data.CameraBuffer, sizeof(Renderer3DData::CameraData));
@@ -142,21 +139,21 @@ namespace Strand {
 		SD_PROFILE_FUNCTION();
 	}
 
-	void Renderer3D::DrawLightCube(const glm::mat4& transform, const Ref<Mesh> mesh, const glm::vec3& cubeColor, const glm::vec3& cameraPosition)
+	void Renderer3D::DrawMesh(const glm::mat4& transform, const Ref<Mesh> mesh, const Ref<Material> material)
 	{
 		SD_PROFILE_FUNCTION();
 
-		if (!mesh) return;
+		if (!mesh || !material) return;
 
-		s_Data.LightCubeShader->Bind();
+		material->Bind();
 
-		// Update UBOs
+		// Set the per-object data (transform matrices)
 		s_Data.ObjectBuffer.u_Model = transform;
 		s_Data.ObjectBuffer.u_NormalMatrix = glm::transpose(glm::inverse(transform));
-		s_Data.ObjectBuffer.u_ObjectColor = cubeColor;
+		s_Data.ObjectBuffer.u_ObjectColor = glm::vec3(1);
+		// We no longer set u_ObjectColor here, the material handles all appearance
 		s_Data.ObjectUniformBuffer->SetData(&s_Data.ObjectBuffer, sizeof(Renderer3DData::ObjectBuffer));
 
-		mesh->GetVertexArray()->Bind();
 		RenderCommand::DrawIndexed(mesh->GetVertexArray());
 
 		// Update performance statistics.
@@ -164,35 +161,9 @@ namespace Strand {
 		s_Data.Stats.MeshCount++;
 	}
 
-	void Renderer3D::DrawCubeMesh(const glm::mat4& transform, const Ref<Mesh> mesh, const glm::vec3& cubeColor, const glm::vec3& cameraPosition, const MaterialD& material, Ref<Texture2D> diffuse, Ref<Texture2D> specular)
-	{
-		SD_PROFILE_FUNCTION();
-
-		if (!mesh) return;
-		
-		diffuse->Bind();
-		specular->Bind(1);
-
-		s_Data.DefualtShader->Bind();
 
 
-		MaterialD matData = material;
-		s_Data.MaterialUniformBuffer->SetData(&matData, sizeof(MaterialD));
-		// Update UBOs
-		s_Data.ObjectBuffer.u_Model = transform;
-		s_Data.ObjectBuffer.u_NormalMatrix = glm::transpose(glm::inverse(transform));
-		s_Data.ObjectBuffer.u_ObjectColor = cubeColor;
-		s_Data.ObjectUniformBuffer->SetData(&s_Data.ObjectBuffer, sizeof(Renderer3DData::ObjectBuffer));
-
-		mesh->GetVertexArray()->Bind();
-		RenderCommand::DrawIndexed(mesh->GetVertexArray());
-
-		// Update performance statistics.
-		s_Data.Stats.DrawCalls++;
-		s_Data.Stats.MeshCount++;
-	}
-
-	void Renderer3D::DrawCubeMesh(const glm::mat4& transform, const Ref<Mesh> mesh, const glm::vec3& cubeColor, const glm::vec3& cameraPosition, const Ref<Material> materail)
+	void Renderer3D::DrawCubeMesh(const glm::mat4& transform, const Ref<Mesh> mesh, const glm::vec3& cubeColor, const Ref<Material> materail)
 	{
 		SD_PROFILE_FUNCTION();
 
@@ -214,27 +185,44 @@ namespace Strand {
 		s_Data.Stats.MeshCount++;
 	}
 
-	void Renderer3D::DrawMesh(const glm::mat4& transform, const Ref<Mesh> mesh, const Ref<Material> material)
+	 void Renderer3D::DrawCubeMap( const Ref<Mesh> mesh, const Ref<Texture3D> texture, const Ref<Shader> shader)
 	{
 		SD_PROFILE_FUNCTION();
 
-		if (!mesh || !material) return;
+		if (!mesh) return;
 
-		material->Bind();
+		shader->Bind();
+		texture->Bind();
 
-		// Set the per-object data (transform matrices)
-		s_Data.ObjectBuffer.u_Model = transform;
-		s_Data.ObjectBuffer.u_NormalMatrix = glm::transpose(glm::inverse(transform));
-		// We no longer set u_ObjectColor here, the material handles all appearance
-		s_Data.ObjectUniformBuffer->SetData(&s_Data.ObjectBuffer, sizeof(Renderer3DData::ObjectBuffer));
-
-		mesh->GetVertexArray()->Bind();
 		RenderCommand::DrawIndexed(mesh->GetVertexArray());
 
 		// Update performance statistics.
 		s_Data.Stats.DrawCalls++;
 		s_Data.Stats.MeshCount++;
 	}
+
+	 void Renderer3D::DrawLightCube(const glm::mat4& transform, const Ref<Mesh> mesh, const glm::vec3& cubeColor)
+	 {
+		 SD_PROFILE_FUNCTION();
+
+		 if (!mesh) return;
+
+		 s_Data.LightCubeShader->Bind();
+
+		 // Update UBOs
+		 s_Data.ObjectBuffer.u_Model = transform;
+		 s_Data.ObjectBuffer.u_NormalMatrix = glm::transpose(glm::inverse(transform));
+		 s_Data.ObjectBuffer.u_ObjectColor = cubeColor;
+		 s_Data.ObjectUniformBuffer->SetData(&s_Data.ObjectBuffer, sizeof(Renderer3DData::ObjectBuffer));
+
+		 RenderCommand::DrawIndexed(mesh->GetVertexArray());
+
+		 // Update performance statistics.
+		 s_Data.Stats.DrawCalls++;
+		 s_Data.Stats.MeshCount++;
+	 }
+
+
 
 	//-------------------------------------------------------------------------------------------------
 	// Statistics

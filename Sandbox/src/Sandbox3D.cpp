@@ -27,6 +27,15 @@ std::vector< glm::vec4> pointLightPositions = {
 	  glm::vec4(-4.0f,  2.0f, -12.0f, 1.0f),
 	  glm::vec4(0.0f,  0.0f, -3.0f, 1.0f)
 };
+std::vector<std::string> paths
+{
+	    "assets/textures/skybox/right.jpg",
+		"assets/textures/skybox/left.jpg",
+		"assets/textures/skybox/top.jpg",
+		"assets/textures/skybox/bottom.jpg",
+		"assets/textures/skybox/front.jpg",
+		"assets/textures/skybox/back.jpg"
+};
 
 Sandbox3D::Sandbox3D()
 	: Layer("Sandbox3D"), m_CameraController(1280.0f / 720.0f), m_EditorCamera(30.0f, 1.778f, 0.1f, 1000.0f)
@@ -85,13 +94,15 @@ Sandbox3D::Sandbox3D()
 
 	//m_CubeMesh = Strand::Mesh(cubeVertices, cubeindces);
 	m_CubeMesh = Strand::CreateRef<Strand::Mesh>(cubeVertices, cubeindces);
+
+	//m_SkyBoxMesh = Strand::CreateRef<Strand::Mesh>(cubeVertices, cubeindces);
+	
 }
 
 void Sandbox3D::OnAttach()
 {
 	SD_PROFILE_FUNCTION();
 
-	m_CheckerboardTexture = Strand::Texture2D::Create("assets/textures/Checkerboard.png");
 	m_Diffuse = Strand::Texture2D::Create("assets/textures/container2.png");
 	m_Specular = Strand::Texture2D::Create("assets/textures/container2_specular.png");
 	m_PhongShader = Strand::Shader::Create("assets/shaders/Renderer3D_Defualt.glsl");
@@ -100,7 +111,11 @@ void Sandbox3D::OnAttach()
 	m_Material->Set("u_DiffuseTexture", m_Diffuse);
 	m_Material->Set("u_SpecularTexture", m_Specular);
 
-	m_Backpack = Strand::CreateRef<Strand::Model>("assets/models/planet/planet.obj", m_PhongShader);
+	m_ModelShader = Strand::Shader::Create("assets/shaders/Renderer3D_Model.glsl");
+	m_Backpack = Strand::CreateRef<Strand::Model>("assets/models/backpack/backpack.obj", m_PhongShader);
+
+	//m_CubeMapShader = Strand::Shader::Create("assets/shaders/Renderer3D_CubeMap.glsl");
+	//m_CubeMapTextur = Strand::Texture3D::Create(paths);
 
 }
 
@@ -130,11 +145,6 @@ void Sandbox3D::OnUpdate(Strand::Timestep ts)
 		m_Lights.clear();
 		static float rotation = 0.0f;
 		rotation += ts * 50.0f;
-
-		//model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
-		/*std::vector<Strand::PointLight> lights = {
-			{ glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f) }
-		};*/
 
 		glm::vec4 pointPostion = glm::vec4(1.2f, 1.0f, 2.0f, 1.0f);
 		glm::vec4 pointAmbient = glm::vec4(0.2f, 0.2f, 0.2f, 1.0f);
@@ -173,32 +183,28 @@ void Sandbox3D::OnUpdate(Strand::Timestep ts)
 		spotLightSpecular, spotLightCutOff, spotLightOuterCutOff, spotLightConstant,
 		spotLightLinear, spotLightQuadratic
 		};
-		
-		
-		Strand::MaterialD matrial = { m_Shininess };
 
 		SD_PROFILE_SCOPE("Renderer Draw");
 
 		Strand::Renderer3D::BeginScene(m_EditorCamera, m_Lights, directLight, spotLight);
 		glm::mat4 model = glm::mat4(1.0f);
+
 		for (uint32_t i = 0; i < 10; i++)
 		{
 			model = glm::translate(model, cubePositions[i]);
 			float angle = 20.0f * i;
 			model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
-			//Strand::Renderer3D::DrawCubeMesh(model, m_CubeMesh, m_CubeColor, glm::vec4(m_EditorCamera.GetPosition(), 1.0f), m_Material);
+			Strand::Renderer3D::DrawCubeMesh(model, m_CubeMesh, m_CubeColor, m_Material);
 
 		}
-			//Strand::Renderer3D::DrawCubeMesh(glm::mat4(1), m_CubeMesh, m_CubeColor, glm::vec4(m_EditorCamera.GetPosition(), 1.0f), matrial, m_Diffuse, m_Specular);
 		
 		for (const auto& mesh : m_Backpack->GetMeshes())
 		{
-			// Get the material for the current mesh using its material index
-			uint32_t materialIndex = mesh->GetMaterialIndex();
-			Strand::Ref<Strand::Material> material = m_Backpack->GetMaterials()[materialIndex];
+			//uint32_t materialIndex = mesh->GetMaterialIndex();
+			//Strand::Ref<Strand::Material> material = m_Backpack->GetMaterials()[materialIndex];
 
 			
-			Strand::Renderer3D::DrawMesh(glm::mat4(1), mesh, material);
+			//Strand::Renderer3D::DrawMesh(glm::mat4(1), mesh, material);
 		}
 
 
@@ -207,9 +213,10 @@ void Sandbox3D::OnUpdate(Strand::Timestep ts)
 			model = glm::mat4(1.0f);
 			model = glm::translate(model, glm::vec3(pointLightPositions[i]));
 			model = glm::scale(model, glm::vec3(0.2f));
-			Strand::Renderer3D::DrawLightCube(model, m_CubeMesh, m_CubeColor, glm::vec4(m_EditorCamera.GetPosition(), 1.0f));
+			Strand::Renderer3D::DrawLightCube(model, m_CubeMesh, m_CubeColor);
 		}
 
+		//Strand::Renderer3D::DrawCubeMap( m_SkyBoxMesh, m_CubeMapTextur, m_CubeMapShader);
 	
 
 		Strand::Renderer3D::EndScene();

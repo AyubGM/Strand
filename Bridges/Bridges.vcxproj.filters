@@ -26,5 +26,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\shaders\Renderer3D_Model.glsl" />
+    <None Include="assets\shaders\Renderer3D_CubeMap.glsl" />
   </ItemGroup>
 </Project>

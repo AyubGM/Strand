@@ -38,6 +38,7 @@ private:
 	Strand::Ref<Strand::Texture2D> m_Specular;
 	float m_Shininess = 32.0f;
 	Strand::Ref<Strand::Shader> m_PhongShader;
+	Strand::Ref<Strand::Shader> m_ModelShader;
 	Strand::Ref<Strand::Material> m_Material;
 
 
@@ -46,6 +47,10 @@ private:
 	Strand::Ref<Strand::Material> m_RustedIronMaterial;
 	Strand::Ref<Strand::Mesh> m_SphereMesh;
 	Strand::Ref<Strand::Texture2D> m_AlbedoTexture;
+
+	Strand::Ref<Strand::Shader> m_CubeMapShader;
+	Strand::Ref<Strand::Texture3D> m_CubeMapTextur;
+	Strand::Ref<Strand::Mesh> m_SkyBoxMesh;
 	//TEST
 
 	

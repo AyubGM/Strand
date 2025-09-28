@@ -367,7 +367,10 @@ FodyWeavers.xsd
 **/bin/
 !vendor/bin/premake/
 bin-int/
+Intermediates/
 
+# Strand files
+*.log
 
 # Ignore profiles
 Sandbox/StrandProfile-Runtime.json
