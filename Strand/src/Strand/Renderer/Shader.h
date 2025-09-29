@@ -23,6 +23,18 @@ namespace Strand {
 		std::vector<ShaderUniform> Uniforms;
 	};
 
+	// Struct to hold info about non-UBO resources like samplers
+	struct ShaderResourceDeclaration
+	{
+		std::string Name;
+		uint32_t BindingPoint = 0;
+
+		ShaderResourceDeclaration() = default;
+		ShaderResourceDeclaration(const std::string& name, uint32_t binding)
+			: Name(name), BindingPoint(binding) {
+		}
+	};
+
 	class Shader
 	{
 	public:
@@ -36,6 +48,7 @@ namespace Strand {
 
 		virtual const ShaderUniform& FindUniform(const std::string& name) const = 0;
 		virtual const ShaderUniformBlock& FindUniformBlock(const std::string& name) const = 0;
+		virtual const ShaderResourceDeclaration& FindSampler(const std::string& name) const = 0; // TODO FIND A BETTER NAME FOR THE FUCNTION
 
 		virtual void SetInt(const std::string& name, int value) = 0;
 		virtual void SetIntArray(const std::string& name, int* values, uint32_t count) = 0;

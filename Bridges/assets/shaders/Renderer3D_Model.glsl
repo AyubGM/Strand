@@ -50,9 +50,9 @@ struct VertexOutput
 
 layout (location = 0) in VertexOutput Input;
 
-layout (binding = 0) uniform sampler2D u_DiffuseTexture;
+layout (binding = 1) uniform sampler2D u_ModelDiffuseTexture;
 
 void main()
 {    
-    o_Color = vec4(vec3(texture(u_DiffuseTexture, Input.TexCoord)), 1.0);
+    o_Color = vec4(vec3(texture(u_ModelDiffuseTexture, Input.TexCoord)), 1.0);
 }

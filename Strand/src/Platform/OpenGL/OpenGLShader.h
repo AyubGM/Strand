@@ -24,6 +24,7 @@ namespace Strand {
 
 		virtual const ShaderUniform& FindUniform(const std::string& name) const override;
 		virtual const ShaderUniformBlock& FindUniformBlock(const std::string& name) const override;
+		virtual const ShaderResourceDeclaration& FindSampler(const std::string& name) const override;
 
 		virtual void SetInt(const std::string& name, int value) override;
 		virtual void SetIntArray(const std::string& name, int* values, uint32_t count) override;
@@ -65,10 +66,12 @@ namespace Strand {
 		// --- Reflection Data Storage ---
 		std::unordered_map<std::string, ShaderUniform> m_Uniforms;
 		std::unordered_map<std::string, ShaderUniformBlock> m_UniformBlocks;
+		std::unordered_map<std::string, ShaderResourceDeclaration> m_Resources;
 
 		// Dummy structs to return when a uniform/block is not found
 		ShaderUniform m_NotFoundUniform;
 		ShaderUniformBlock m_NotFoundUniformBlock;
+		ShaderResourceDeclaration m_NotFoundResource;
 
 	};
 

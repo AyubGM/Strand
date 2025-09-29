@@ -23,7 +23,6 @@ namespace Strand {
 		virtual bool IsLoaded() const override { return m_IsLoaded; }
 
 		virtual const std::string& GetPath() const override { return m_Path; }
-		virtual const uint32_t GetTextureSlot() const override { return m_TextureSlot; }
 
 		virtual bool operator==(const Texture& other) const override
 		{
@@ -34,7 +33,6 @@ namespace Strand {
 		bool m_IsLoaded = false;
 		uint32_t m_Width, m_Height;
 		uint32_t m_RendererID;
-		uint32_t m_TextureSlot; //IDK About this IF it is actully needed
 		GLenum m_InternalFormat, m_DataFormat;
 	};
 
@@ -58,7 +56,6 @@ namespace Strand {
 		virtual bool IsLoaded() const override { return m_IsLoaded; }
 
 		virtual const std::vector<std::string>& GetPaths() const override { return m_Paths; }
-		virtual const uint32_t GetTextureSlot() const override { return m_TextureSlot; }
 
 		virtual bool operator==(const Texture& other) const override
 		{
@@ -69,7 +66,6 @@ namespace Strand {
 		bool m_IsLoaded = false;
 		uint32_t m_Width, m_Height, m_Depth;
 		uint32_t m_RendererID;
-		uint32_t m_TextureSlot; //IDK About this IF it is actully needed
 		GLenum m_InternalFormat, m_DataFormat;
 	};
 

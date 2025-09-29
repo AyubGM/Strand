@@ -31,7 +31,7 @@ namespace Strand {
 	{
 
 		m_Shader->Bind();
-		m_NextTextureSlot = 0;
+		//m_NextTextureSlot = 0;
 
 		// 1. Update the Uniform Buffer if data has changed
 		if (m_UniformBuffer && m_IsDirty)
@@ -44,11 +44,17 @@ namespace Strand {
 		{
 			if (texture)
 			{
-				texture->Bind(m_NextTextureSlot);
-				// The shader needs to be told which slot to sample from
-				//m_Shader->SetInt(name, m_NextTextureSlot);
+				const auto& resource = m_Shader->FindSampler(name);
 
-				m_NextTextureSlot++;
+				if (resource.Name.empty())
+				{
+					SD_CORE_WARN("Texture '{0}' not found in shader '{1}'", name, m_Shader->GetName());
+					continue;
+				}
+
+				texture->Bind(resource.BindingPoint);
+
+				//m_NextTextureSlot++;
 			}
 		}
 		

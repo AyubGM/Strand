@@ -53,7 +53,7 @@ namespace Strand {
 
             // This is a simplified example. A full PBR material would load
             // Albedo, Normal, Metallic, Roughness, AO maps.
-            LoadMaterialTextures(material, aiTextureType_DIFFUSE, "u_DiffuseTexture", newMaterial);
+            LoadMaterialTextures(material, aiTextureType_DIFFUSE, "u_ModelDiffuseTexture", newMaterial);
             LoadMaterialTextures(material, aiTextureType_SPECULAR, "u_SpecularTexture", newMaterial);
             // You could also load colors and float values here
             // aiColor3D color;

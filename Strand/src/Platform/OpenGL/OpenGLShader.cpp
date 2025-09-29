@@ -450,8 +450,12 @@ namespace Strand {
 			const auto& type = compiler.get_type(resource.type_id);
 			uint32_t binding = compiler.get_decoration(resource.id, spv::DecorationBinding);
 
-			// You might want to store sampler info if your material system needs it,
-			// but for now, we'll just trace it as the Material class handles textures by name.
+			if (m_Resources.count(resource.name))
+				continue;
+
+			ShaderResourceDeclaration decl(resource.name, binding);
+			m_Resources[resource.name] = decl;
+
 			SD_CORE_TRACE("  {0} - Binding = {1}", resource.name, binding);
 		}
 
@@ -476,6 +480,16 @@ namespace Strand {
 			return it->second;
 		}
 		return m_NotFoundUniformBlock;
+	}
+
+	const ShaderResourceDeclaration& OpenGLShader::FindSampler(const std::string& name) const
+	{
+		auto it = m_Resources.find(name);
+		if (it != m_Resources.end())
+		{
+			return it->second;
+		}
+		return m_NotFoundResource;
 	}
 	//TEST
 

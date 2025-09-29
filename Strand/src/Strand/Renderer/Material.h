@@ -103,7 +103,7 @@ namespace Strand {
 
 
         std::unordered_map<std::string, Ref<Texture2D>> m_Textures;
-        mutable uint32_t m_NextTextureSlot = 0;
+       // mutable uint32_t m_NextTextureSlot = 0;
 
         std::unordered_map<std::string, glm::vec4> m_Vec4s;
         std::unordered_map<std::string, glm::vec3> m_Vec3s;

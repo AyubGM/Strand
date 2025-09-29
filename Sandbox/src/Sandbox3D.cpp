@@ -112,10 +112,10 @@ void Sandbox3D::OnAttach()
 	m_Material->Set("u_SpecularTexture", m_Specular);
 
 	m_ModelShader = Strand::Shader::Create("assets/shaders/Renderer3D_Model.glsl");
-	m_Backpack = Strand::CreateRef<Strand::Model>("assets/models/backpack/backpack.obj", m_PhongShader);
+	m_Backpack = Strand::CreateRef<Strand::Model>("assets/models/backpack/backpack.obj", m_ModelShader);
 
 	//m_CubeMapShader = Strand::Shader::Create("assets/shaders/Renderer3D_CubeMap.glsl");
-	//m_CubeMapTextur = Strand::Texture3D::Create(paths);
+	m_CubeMapTextur = Strand::Texture3D::Create(paths);
 
 }
 
@@ -194,17 +194,17 @@ void Sandbox3D::OnUpdate(Strand::Timestep ts)
 			model = glm::translate(model, cubePositions[i]);
 			float angle = 20.0f * i;
 			model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
-			Strand::Renderer3D::DrawCubeMesh(model, m_CubeMesh, m_CubeColor, m_Material);
+			//Strand::Renderer3D::DrawCubeMesh(model, m_CubeMesh, m_CubeColor, m_Material);
 
 		}
 		
 		for (const auto& mesh : m_Backpack->GetMeshes())
 		{
-			//uint32_t materialIndex = mesh->GetMaterialIndex();
-			//Strand::Ref<Strand::Material> material = m_Backpack->GetMaterials()[materialIndex];
+			uint32_t materialIndex = mesh->GetMaterialIndex();
+			Strand::Ref<Strand::Material> material = m_Backpack->GetMaterials()[materialIndex];
 
 			
-			//Strand::Renderer3D::DrawMesh(glm::mat4(1), mesh, material);
+			Strand::Renderer3D::DrawMesh(glm::mat4(1), mesh, material);
 		}
 
 
