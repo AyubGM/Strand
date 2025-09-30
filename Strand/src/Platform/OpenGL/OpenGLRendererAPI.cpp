@@ -5,6 +5,25 @@
 
 namespace Strand {
 
+	static GLenum OpenGLDepthFunc(RendererAPI::DepthFunc func)
+	{
+		switch (func)
+		{
+		case RendererAPI::DepthFunc::Never: return GL_NEVER;
+		case RendererAPI::DepthFunc::Less: return GL_LESS;
+		case RendererAPI::DepthFunc::Equal: return GL_EQUAL;
+		case RendererAPI::DepthFunc::LessEqual: return GL_LEQUAL;
+		case RendererAPI::DepthFunc::Greater: return GL_GREATER;
+		case RendererAPI::DepthFunc::NotEqual: return GL_NOTEQUAL;
+		case RendererAPI::DepthFunc::GreaterEqual: return GL_GEQUAL;
+		case RendererAPI::DepthFunc::Always: return GL_ALWAYS;
+		case RendererAPI::DepthFunc::None:
+		default:
+			SD_CORE_ASSERT(false, "Unknown Depth Function!");
+			return GL_LEQUAL;
+		}
+	}
+
 	void OpenGLMessageCallback(
 		unsigned source,
 		unsigned type,
@@ -75,6 +94,16 @@ namespace Strand {
 	void OpenGLRendererAPI::SetLineWidth(float width)
 	{
 		glLineWidth(width);
+	}
+
+	void OpenGLRendererAPI::SetDepthFunc(DepthFunc func)
+	{
+		glDepthFunc(OpenGLDepthFunc(func));
+	}
+
+	void OpenGLRendererAPI::SetDepthMask(bool enable)
+	{
+		glDepthMask(enable ? GL_TRUE : GL_FALSE);
 	}
 
 }

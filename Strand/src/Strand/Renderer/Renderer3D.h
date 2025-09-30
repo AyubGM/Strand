@@ -75,7 +75,7 @@ namespace Strand {
 		//static void DrawStaticMesh(const glm::mat4& transform, Ref<Mesh> mesh, Ref<Shader> shader);
 		static void DrawLightCube(const glm::mat4& transform, const Ref<Mesh> mesh, const glm::vec3& cubeColor);
 		static void DrawCubeMesh(const glm::mat4& transform, const Ref<Mesh> mesh, const glm::vec3& cubeColor, const Ref<Material> materail);
-		static void DrawCubeMap( const Ref<Mesh> mesh, const Ref<Texture3D> texture, const Ref<Shader> shader);
+		static void DrawCubeMap( const Ref<Mesh> mesh, const Ref<TextureCube> texture, const Ref<Shader> shader);
 		static void DrawMesh(const glm::mat4& transform, const Ref<Mesh> mesh, const Ref<Material> material);
 
 		// Stats

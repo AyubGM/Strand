@@ -95,7 +95,7 @@ Sandbox3D::Sandbox3D()
 	//m_CubeMesh = Strand::Mesh(cubeVertices, cubeindces);
 	m_CubeMesh = Strand::CreateRef<Strand::Mesh>(cubeVertices, cubeindces);
 
-	//m_SkyBoxMesh = Strand::CreateRef<Strand::Mesh>(cubeVertices, cubeindces);
+	m_SkyBoxMesh = Strand::CreateRef<Strand::Mesh>(cubeVertices, cubeindces);
 	
 }
 
@@ -111,11 +111,17 @@ void Sandbox3D::OnAttach()
 	m_Material->Set("u_DiffuseTexture", m_Diffuse);
 	m_Material->Set("u_SpecularTexture", m_Specular);
 
-	m_ModelShader = Strand::Shader::Create("assets/shaders/Renderer3D_Model.glsl");
-	m_Backpack = Strand::CreateRef<Strand::Model>("assets/models/backpack/backpack.obj", m_ModelShader);
+	//m_ModelShader = Strand::Shader::Create("assets/shaders/Renderer3D_Model.glsl");
+	//m_Backpack = Strand::CreateRef<Strand::Model>("assets/models/backpack/backpack.obj", m_ModelShader);
+	
 
-	//m_CubeMapShader = Strand::Shader::Create("assets/shaders/Renderer3D_CubeMap.glsl");
-	m_CubeMapTextur = Strand::Texture3D::Create(paths);
+
+	m_CubeMapShader = Strand::Shader::Create("assets/shaders/Renderer3D_CubeMap.glsl");
+	m_CubeMapTextur = Strand::TextureCube::Create(paths);
+
+	m_ReflectShader = Strand::Shader::Create("assets/shaders/Renderer3D_Reflection.glsl");
+	m_ReflectiveMaterial = Strand::Material::Create(m_ReflectShader);
+	m_ReflectiveMaterial->Set("skybox", m_CubeMapTextur);
 
 }
 
@@ -198,14 +204,16 @@ void Sandbox3D::OnUpdate(Strand::Timestep ts)
 
 		}
 		
-		for (const auto& mesh : m_Backpack->GetMeshes())
+		Strand::Renderer3D::DrawCubeMesh(glm::mat4(1), m_CubeMesh, m_CubeColor, m_ReflectiveMaterial);
+
+	/*	for (const auto& mesh : m_Backpack->GetMeshes())
 		{
 			uint32_t materialIndex = mesh->GetMaterialIndex();
 			Strand::Ref<Strand::Material> material = m_Backpack->GetMaterials()[materialIndex];
 
 			
 			Strand::Renderer3D::DrawMesh(glm::mat4(1), mesh, material);
-		}
+		}*/
 
 
 		for (uint32_t i = 0; i < pointLightPositions.size(); ++i)
@@ -216,7 +224,7 @@ void Sandbox3D::OnUpdate(Strand::Timestep ts)
 			Strand::Renderer3D::DrawLightCube(model, m_CubeMesh, m_CubeColor);
 		}
 
-		//Strand::Renderer3D::DrawCubeMap( m_SkyBoxMesh, m_CubeMapTextur, m_CubeMapShader);
+		Strand::Renderer3D::DrawCubeMap( m_SkyBoxMesh, m_CubeMapTextur, m_CubeMapShader);
 	
 
 		Strand::Renderer3D::EndScene();

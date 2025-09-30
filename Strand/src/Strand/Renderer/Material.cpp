@@ -57,6 +57,24 @@ namespace Strand {
 				//m_NextTextureSlot++;
 			}
 		}
+
+		for (const auto& [name, texture] : m_CubeTextures)
+		{
+			if (texture)
+			{
+				const auto& resource = m_Shader->FindSampler(name);
+
+				if (resource.Name.empty())
+				{
+					SD_CORE_WARN("CubeTexture '{0}' not found in shader '{1}'", name, m_Shader->GetName());
+					continue;
+				}
+
+				texture->Bind(resource.BindingPoint);
+
+				//m_NextTextureSlot++;
+			}
+		}
 		
 	}
 

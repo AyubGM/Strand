@@ -17,6 +17,9 @@ namespace Strand {
 		virtual void DrawLines(const Ref<VertexArray>& vertexArray, uint32_t vertexCount) override;
 
 		virtual void SetLineWidth(float width) override;
+
+		virtual void SetDepthFunc(DepthFunc func) override;
+		virtual void SetDepthMask(bool enable) override;
 	};
 
 

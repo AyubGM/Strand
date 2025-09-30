@@ -51,6 +51,7 @@ struct VertexOutput
 layout (location = 0) in VertexOutput Input;
 
 layout (binding = 1) uniform sampler2D u_ModelDiffuseTexture;
+layout (binding = 2) uniform sampler2D u_ModelSpecularTexture;
 
 void main()
 {    

@@ -7,6 +7,14 @@
 
 namespace Strand {
 
+	namespace Utils {
+
+		static GLenum GetCubemapTarget(uint32_t faceIndex)
+		{
+			return GL_TEXTURE_CUBE_MAP_POSITIVE_X + faceIndex;
+		}
+	}
+
 	OpenGLTexture2D::OpenGLTexture2D(uint32_t width, uint32_t height)
 		: m_Width(width), m_Height(height)
 	{
@@ -247,6 +255,108 @@ namespace Strand {
 		SD_PROFILE_FUNCTION();
 		glBindTextureUnit(slot, m_RendererID);
 	}
+
+
+	//--------TEXTURECUBE---------------------//
+
+	OpenGLTextureCube::OpenGLTextureCube(const std::vector<std::string>& faces)
+		: m_Paths(faces)
+	{
+		SD_PROFILE_FUNCTION();
+
+		SD_CORE_ASSERT(faces.size() == 6, "A cubemap requires exactly 6 texture paths.");
+
+		stbi_set_flip_vertically_on_load(0);
+
+		int width, height, channels;
+		stbi_uc* firstFaceData = stbi_load(faces[0].c_str(), &width, &height, &channels, 0);
+		if (!firstFaceData)
+		{
+			SD_CORE_ERROR("Failed to load cubemap face: {0}", faces[0]);
+			stbi_image_free(firstFaceData);
+			return;
+		}
+
+		m_Width = width;
+		m_Height = height;
+
+		if (channels == 4)
+		{
+			m_InternalFormat = GL_RGBA8;
+			m_DataFormat = GL_RGBA;
+		}
+		else if (channels == 3)
+		{
+			m_InternalFormat = GL_RGB8;
+			m_DataFormat = GL_RGB;
+		}
+		else
+		{
+			SD_CORE_ERROR("Unsupported image format (channels={0}) for cubemap face: {1}", channels, faces[0]);
+			stbi_image_free(firstFaceData);
+			return;
+		}
+
+
+		glCreateTextures(GL_TEXTURE_CUBE_MAP, 1, &m_RendererID);
+		glTextureStorage2D(m_RendererID, 1, m_InternalFormat, m_Width, m_Height);
+
+		glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+
+		glTextureSubImage3D(m_RendererID, 0, 0, 0, Utils::GetCubemapTarget(0), m_Width, m_Height, 1, m_DataFormat, GL_UNSIGNED_BYTE, firstFaceData);
+		stbi_image_free(firstFaceData);
+
+		for (uint32_t i = 1; i < faces.size(); i++)
+		{
+			int faceWidth, faceHeight, faceChannels;
+			stbi_uc* faceData = stbi_load(faces[i].c_str(), &faceWidth, &faceHeight, &faceChannels, 0);
+			if (!faceData)
+			{
+				SD_CORE_ERROR("Failed to load cubemap face: {0}", faces[i]);
+				free(faceData);
+				return;
+			}
+
+			if (faceWidth != m_Width || faceHeight != m_Height || faceChannels != channels)
+			{
+				SD_CORE_WARN("Cubemap face '{0}' has mismatched dimensions/format. Skipping.", faces[i]);
+				stbi_image_free(faceData);
+				return;
+			}
+
+			glTextureSubImage3D(m_RendererID, 0, 0, 0, Utils::GetCubemapTarget(i), m_Width, m_Height, 1, m_DataFormat, GL_UNSIGNED_BYTE, faceData);
+			stbi_image_free(faceData);
+		}
+
+		m_IsLoaded = true;
+	}
+
+	OpenGLTextureCube::~OpenGLTextureCube()
+	{
+		SD_PROFILE_FUNCTION();
+		glDeleteTextures(1, &m_RendererID);
+	}
+
+	void OpenGLTextureCube::SetData(void* data, uint32_t size)
+	{
+		SD_PROFILE_FUNCTION();
+		// This function is less common for cubemaps loaded from files, as it would need
+		// data for all 6 faces. We assert to indicate it's not a typical use case.
+		uint32_t bpp = (m_DataFormat == GL_RGBA) ? 4 : 3;
+		SD_CORE_ASSERT(size == m_Width * m_Height * 6 * bpp, "SetData for cubemap requires data for all 6 faces!");
+		// If you needed to implement this, you would call glTextureSubImage3D here.
+	}
+
+	void OpenGLTextureCube::Bind(uint32_t slot) const
+	{
+		SD_PROFILE_FUNCTION();
+		glBindTextureUnit(slot, m_RendererID);
+	}
+
 
 }
 

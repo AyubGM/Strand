@@ -41,6 +41,9 @@ private:
 	Strand::Ref<Strand::Shader> m_ModelShader;
 	Strand::Ref<Strand::Material> m_Material;
 
+	Strand::Ref<Strand::Shader> m_ReflectShader;
+	Strand::Ref<Strand::Material> m_ReflectiveMaterial;
+
 
 	//TEST
 	Strand::Ref<Strand::Shader> m_PbrShader;
@@ -49,7 +52,7 @@ private:
 	Strand::Ref<Strand::Texture2D> m_AlbedoTexture;
 
 	Strand::Ref<Strand::Shader> m_CubeMapShader;
-	Strand::Ref<Strand::Texture3D> m_CubeMapTextur;
+	Strand::Ref<Strand::TextureCube> m_CubeMapTextur;
 	Strand::Ref<Strand::Mesh> m_SkyBoxMesh;
 	//TEST
 

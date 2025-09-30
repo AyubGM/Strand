@@ -13,6 +13,20 @@ namespace Strand
 		{
 			None = 0, OpenGL = 1
 		};
+
+		enum class DepthFunc
+		{
+			None = 0,
+			Never,
+			Less, 
+			Equal,
+			LessEqual,
+			Greater,
+			NotEqual,
+			GreaterEqual,
+			Always
+		};
+
 	public:
 		virtual ~RendererAPI() = default;
 
@@ -25,6 +39,9 @@ namespace Strand
 		virtual void DrawLines(const Ref<VertexArray>& vertexArray, uint32_t vertexCount) = 0;
 
 		virtual void SetLineWidth(float width) = 0;
+
+		virtual void SetDepthFunc(DepthFunc func) = 0;
+		virtual void SetDepthMask(bool enable ) = 0;
 
 		inline static API GetAPI() { return s_API; }
 	private:

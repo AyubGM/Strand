@@ -46,6 +46,14 @@ namespace Strand {
 
 	};
 
+	class TextureCube : public Texture
+	{
+	public:
+
+		static Ref<TextureCube> Create(const std::vector<std::string>& paths);
+		virtual const std::vector<std::string>& GetPaths() const = 0;
+	};
+
 	class TextureLoader
 	{
 	public:

@@ -61,12 +61,6 @@ namespace Strand {
         template<typename T>
         T Get(const std::string& name) const;
 
-     /*   const Ref<Texture2D>& GetAlbedoMap() const { return m_AlbedoMap; }
-        const Ref<Texture2D>& GetNormalMap() const { return m_NormalMap; }
-        const Ref<Texture2D>& GetMetallicMap() const { return m_MetallicMap; }
-        const Ref<Texture2D>& GetRoughnessMap() const { return m_RoughnessMap; }
-        const Ref<Texture2D>& GetAOMap() const { return m_AOMap; }*/
-
         Ref<Texture2D> GetAlbedoMap() const { return Get<Ref<Texture2D>>("u_AlbedoMap"); }
         Ref<Texture2D> GetNormalMap() const { return Get<Ref<Texture2D>>("u_NormalMap"); }
         Ref<Texture2D> GetMetallicMap() const { return Get<Ref<Texture2D>>("u_MetallicMap"); }
@@ -103,6 +97,7 @@ namespace Strand {
 
 
         std::unordered_map<std::string, Ref<Texture2D>> m_Textures;
+        std::unordered_map<std::string, Ref<TextureCube>> m_CubeTextures;
        // mutable uint32_t m_NextTextureSlot = 0;
 
         std::unordered_map<std::string, glm::vec4> m_Vec4s;
@@ -116,12 +111,15 @@ namespace Strand {
     template<typename T>
     void Material::Set(const std::string& name, const T& value)
     {
-       // auto& map = GetMapForType<T>();
-       //map[name] = value;
+      
         // Handle Textures(samplers) separately as they are not part of the UBO
         if constexpr (std::is_same_v<T, Ref<Texture2D>>)
         {
             m_Textures[name] = value;
+        }
+        else if constexpr (std::is_same_v<T, Ref<TextureCube>>)
+        {
+            m_CubeTextures[name] = value;
         }
         else // Handle all UBO data
         {

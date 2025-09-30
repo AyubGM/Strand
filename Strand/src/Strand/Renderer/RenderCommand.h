@@ -42,6 +42,16 @@ namespace Strand {
 		{
 			s_RendererAPI->SetLineWidth(width);
 		}
+
+		inline static void SetDepthFunc(RendererAPI::DepthFunc func)
+		{
+			s_RendererAPI->SetDepthFunc(func);
+		}
+
+		inline static void SetDepthMask(bool enable)
+		{
+			s_RendererAPI->SetDepthMask(enable);
+		}
 	private:
 		static Scope<RendererAPI> s_RendererAPI;
 	};

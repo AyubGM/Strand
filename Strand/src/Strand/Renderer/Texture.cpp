@@ -55,6 +55,18 @@ namespace Strand {
 		return nullptr;
 	}
 
+	Ref<TextureCube> TextureCube::Create(const std::vector<std::string>& paths)
+	{
+		switch (Renderer::GetAPI())
+		{
+		case RendererAPI::API::None:    SD_CORE_ASSERT(false, "RendererAPI::None is currently not supported!"); return nullptr;
+		case RendererAPI::API::OpenGL:  return std::make_shared<OpenGLTextureCube>(paths);
+		}
+
+		SD_CORE_ASSERT(false, "Unknown RendererAPI!");
+		return nullptr;
+	}
+
 	Ref<Texture2D> TextureLoader::LoadTexture(const std::string& path)
 	{
 		switch (Renderer::GetAPI())

@@ -5,8 +5,6 @@
 namespace Strand {
 
 
-
-
 	struct SceneData {
 		glm::vec3 CameraPosition;
 		int NumPointLights;
@@ -113,7 +111,6 @@ namespace Strand {
 
 	}
 
-	// The new BeginScene function for setting up scene-wide data like lights.
 	void Renderer3D::BeginScene(const EditorCamera& camera, const std::vector<PointLight>& pointLights, const DirectLight& directLight, const Spotlight& spotLight)
 	{
 
@@ -177,7 +174,6 @@ namespace Strand {
 		s_Data.ObjectBuffer.u_ObjectColor = cubeColor;
 		s_Data.ObjectUniformBuffer->SetData(&s_Data.ObjectBuffer, sizeof(Renderer3DData::ObjectBuffer));
 
-		mesh->GetVertexArray()->Bind();
 		RenderCommand::DrawIndexed(mesh->GetVertexArray());
 
 		// Update performance statistics.
@@ -185,16 +181,22 @@ namespace Strand {
 		s_Data.Stats.MeshCount++;
 	}
 
-	 void Renderer3D::DrawCubeMap( const Ref<Mesh> mesh, const Ref<Texture3D> texture, const Ref<Shader> shader)
+	 void Renderer3D::DrawCubeMap( const Ref<Mesh> mesh, const Ref<TextureCube> texture, const Ref<Shader> shader)
 	{
 		SD_PROFILE_FUNCTION();
 
 		if (!mesh) return;
+		
+		RenderCommand::SetDepthFunc(RendererAPI::DepthFunc::LessEqual);
+		RenderCommand::SetDepthMask(false);
 
 		shader->Bind();
-		texture->Bind();
+		texture->Bind(5);
 
 		RenderCommand::DrawIndexed(mesh->GetVertexArray());
+
+		RenderCommand::SetDepthMask(true);
+		RenderCommand::SetDepthFunc(RendererAPI::DepthFunc::Less);
 
 		// Update performance statistics.
 		s_Data.Stats.DrawCalls++;
