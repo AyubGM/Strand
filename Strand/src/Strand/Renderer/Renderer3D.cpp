@@ -4,26 +4,23 @@
 
 namespace Strand {
 
+	struct DrawCommand
+	{
+		Ref<Mesh> Mesh;
+		Ref<Material> Material;
+		glm::mat4 Transform;
 
-	struct SceneData {
-		glm::vec3 CameraPosition;
-		int NumPointLights;
-		PointLight PointLights[4];
-		DirectLight DirectLight;
-		Spotlight Spotlight;
 	};
+
+
 
 	static Scope<SceneData> s_SceneData;
 
 	struct Renderer3DData
 	{
-		Ref<Shader> PBRShader;
-		Ref<Shader> DefualtShader;
 		Ref<Shader> LightCubeShader;
 
-		// Default white texture
-		Ref<Texture2D> WhiteTexture;
-
+		std::vector<DrawCommand> OpaqueRenderQueue;
 
 		struct CameraData
 		{
@@ -38,12 +35,17 @@ namespace Strand {
 
 		};
 
+		struct SkyboxData {
+			Ref<Shader> SkyboxShader;
+			Ref<Mesh> CubeMesh;
+			Ref<TextureCube> SkyboxTexture;
+		} Skybox;
+
 		CameraData CameraBuffer;
 		ObjectData ObjectBuffer;
 		Ref<UniformBuffer> CameraUniformBuffer;
 		Ref<UniformBuffer> ObjectUniformBuffer; // binding = 1
-		Ref<UniformBuffer> MaterialUniformBuffer; // binding = 2
-		Ref<UniformBuffer> SceneUniformBuffer; // binding = 3
+		Ref<UniformBuffer> SceneUniformBuffer; // binding = 2
 
 		Renderer3D::Statistics Stats;
 	};
@@ -56,9 +58,8 @@ namespace Strand {
 		SD_PROFILE_FUNCTION();
 		s_SceneData = CreateScope<SceneData>();
 
-		s_Data.PBRShader = Shader::Create("assets/shaders/Renderer3D_PBR.glsl");
-		s_Data.DefualtShader = Shader::Create("assets/shaders/Renderer3D_Defualt.glsl");
 		s_Data.LightCubeShader = Shader::Create("assets/shaders/Renderer3D_LightCube.glsl");
+		s_Data.Skybox.SkyboxShader = Shader::Create("assets/shaders/Renderer3D_CubeMap.glsl");
 
 		if (SD_DEBUG)
 		{
@@ -67,18 +68,63 @@ namespace Strand {
 			SD_CORE_INFO("Size of ObjectData Struct In Renderer3D {0}", sizeof(Renderer3DData::ObjectData));
 		}
 
-
-		// Create a default white texture for untextured materials.
-		s_Data.WhiteTexture = Texture2D::Create(1, 1);
-		uint32_t whiteTextureData = 0xffffffff;
-		s_Data.WhiteTexture->SetData(&whiteTextureData, sizeof(uint32_t));
-
 		s_Data.CameraUniformBuffer = UniformBuffer::Create(sizeof(Renderer3DData::CameraData), 0);
 		s_Data.ObjectUniformBuffer = UniformBuffer::Create(sizeof(Renderer3DData::ObjectData), 1);
-		//TODO USe MetrialDATA for PBR
-		//s_Data.MaterialUniformBuffer = UniformBuffer::Create(sizeof(MaterialData), 2);
-		s_Data.MaterialUniformBuffer = UniformBuffer::Create(sizeof(MaterialD), 2);
-		s_Data.SceneUniformBuffer = UniformBuffer::Create(sizeof(SceneData), 3);
+		s_Data.SceneUniformBuffer = UniformBuffer::Create(sizeof(SceneData), 2);
+
+		std::vector<Strand::StaticMeshVertex> cubeVertices = {
+	{glm::vec3(-1.0f, -1.0f, 1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f)},
+	{glm::vec3(1.0f, -1.0f, 1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 0.0f)},
+	{glm::vec3(1.0f,  1.0f, 1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 1.0f)},
+	{glm::vec3(-1.0f,  1.0f, 1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 1.0f)},
+
+	// Back face
+	{glm::vec3(-1.0f, -1.0f, -1.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec2(0.0f, 0.0f)},
+	{glm::vec3(1.0f, -1.0f, -1.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec2(1.0f, 0.0f)},
+	{glm::vec3(1.0f,  1.0f, -1.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec2(1.0f, 1.0f)},
+	{glm::vec3(-1.0f,  1.0f, -1.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec2(0.0f, 1.0f)},
+
+	// Right face
+	{glm::vec3(1.0f, -1.0f,  1.0f), glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f)},
+	{glm::vec3(1.0f, -1.0f, -1.0f), glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(1.0f, 0.0f)},
+	{glm::vec3(1.0f,  1.0f, -1.0f), glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(1.0f, 1.0f)},
+	{glm::vec3(1.0f,  1.0f,  1.0f), glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(0.0f, 1.0f)},
+
+	// Left face
+	{glm::vec3(-1.0f, -1.0f, -1.0f), glm::vec3(-1.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f)},
+	{glm::vec3(-1.0f, -1.0f,  1.0f), glm::vec3(-1.0f, 0.0f, 0.0f), glm::vec2(1.0f, 0.0f)},
+	{glm::vec3(-1.0f,  1.0f,  1.0f), glm::vec3(-1.0f, 0.0f, 0.0f), glm::vec2(1.0f, 1.0f)},
+	{glm::vec3(-1.0f,  1.0f, -1.0f), glm::vec3(-1.0f, 0.0f, 0.0f), glm::vec2(0.0f, 1.0f)},
+
+	// Top face
+	{glm::vec3(-1.0f,  1.0f,  1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(0.0f, 0.0f)},
+	{glm::vec3(1.0f,  1.0f,  1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(1.0f, 0.0f)},
+	{glm::vec3(1.0f,  1.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(1.0f, 1.0f)},
+	{glm::vec3(-1.0f,  1.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(0.0f, 1.0f)},
+
+	// Bottom face
+	{glm::vec3(-1.0f, -1.0f, -1.0f), glm::vec3(0.0f, -1.0f, 0.0f), glm::vec2(0.0f, 0.0f)},
+	{glm::vec3(1.0f, -1.0f, -1.0f), glm::vec3(0.0f, -1.0f, 0.0f), glm::vec2(1.0f, 0.0f)},
+	{glm::vec3(1.0f, -1.0f,  1.0f), glm::vec3(0.0f, -1.0f, 0.0f), glm::vec2(1.0f, 1.0f)},
+	{glm::vec3(-1.0f, -1.0f,  1.0f), glm::vec3(0.0f, -1.0f, 0.0f), glm::vec2(0.0f, 1.0f)}
+		};
+
+		std::vector<uint32_t> cubeindces = {
+			0, 1, 2,  // Front
+			0, 2, 3,
+			4, 5, 6,  // Back
+			4, 6, 7,
+			8, 9, 10, // Right
+			8, 10, 11,
+			12, 13, 14, // Left
+			12, 14, 15,
+			16, 17, 18, // Top
+			16, 18, 19,
+			20, 21, 22, // Bottom
+			20, 22, 23
+		};
+
+		s_Data.Skybox.CubeMesh = Strand::CreateRef<Strand::Mesh>(cubeVertices, cubeindces);
 	}
 
 	void Renderer3D::Shutdown()
@@ -131,9 +177,96 @@ namespace Strand {
 
 	}
 
+	void Renderer3D::BeginScene(const EditorCamera& camera, const SceneData& sceneData)
+	{
+		SD_PROFILE_FUNCTION();
+
+		s_Data.CameraBuffer.ViewProjection = camera.GetViewProjection();
+		s_Data.CameraUniformBuffer->SetData(&s_Data.CameraBuffer, sizeof(Renderer3DData::CameraData));
+		s_Data.SceneUniformBuffer->SetData(&sceneData, sizeof(SceneData));
+
+		// Clear the queue for the new frame
+		s_Data.OpaqueRenderQueue.clear();
+		ResetStats();
+
+	}
+
 	void Renderer3D::EndScene()
 	{
 		SD_PROFILE_FUNCTION();
+	}
+
+	void Renderer3D::FlushOpaqueQueue()
+	{
+	
+		SD_PROFILE_FUNCTION();
+
+		std::sort(s_Data.OpaqueRenderQueue.begin(), s_Data.OpaqueRenderQueue.end(),
+			[](const DrawCommand& a, const DrawCommand& b) {
+				return a.Material->GetID() < b.Material->GetID();
+			});
+
+		Ref<Material> currentMaterail = nullptr;
+
+		for (const auto& command : s_Data.OpaqueRenderQueue)
+		{
+			if (command.Material != currentMaterail)
+			{
+				command.Material->Bind();
+				currentMaterail = command.Material;
+			}
+
+			s_Data.ObjectBuffer.u_Model = command.Transform;
+			s_Data.ObjectBuffer.u_NormalMatrix = glm::transpose(glm::inverse(command.Transform));
+			s_Data.ObjectUniformBuffer->SetData(&s_Data.ObjectBuffer, sizeof(Renderer3DData::ObjectBuffer));
+
+			RenderCommand::DrawIndexed(command.Mesh->GetVertexArray());
+
+			s_Data.Stats.DrawCalls++;
+			s_Data.Stats.MeshCount++;
+		}
+			
+		
+	}
+
+	void Renderer3D::Submit(const Ref<Mesh>& mesh, const Ref<Material>& material, const glm::mat4& transform)
+	{
+		SD_PROFILE_FUNCTION();
+		if (!mesh || !material) return;
+
+		//  Add a command to the Queue.
+		s_Data.OpaqueRenderQueue.emplace_back(DrawCommand{ mesh, material, transform });
+	}
+
+	void Renderer3D::BeginSkyboxPass(const Ref<TextureCube>& skyboxTexture)
+	{
+		SD_PROFILE_FUNCTION();
+
+		s_Data.Skybox.SkyboxTexture = skyboxTexture;
+
+		RenderCommand::SetDepthFunc(RendererAPI::DepthFunc::LessEqual);
+		RenderCommand::SetDepthMask(false);
+	}
+
+	void Renderer3D::SubmitSkybox()
+	{
+		SD_PROFILE_FUNCTION();
+		if (!s_Data.Skybox.SkyboxTexture || !s_Data.Skybox.CubeMesh) return;
+
+		s_Data.Skybox.SkyboxShader->Bind();
+		s_Data.Skybox.SkyboxTexture->Bind(0); 
+
+		RenderCommand::DrawIndexed(s_Data.Skybox.CubeMesh->GetVertexArray());
+
+		s_Data.Stats.DrawCalls++;
+	}
+
+	void Renderer3D::EndSkyboxPass()
+	{
+		SD_PROFILE_FUNCTION();
+
+		RenderCommand::SetDepthMask(true);
+		RenderCommand::SetDepthFunc(RendererAPI::DepthFunc::Less);
 	}
 
 	void Renderer3D::DrawMesh(const glm::mat4& transform, const Ref<Mesh> mesh, const Ref<Material> material)

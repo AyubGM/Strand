@@ -51,6 +51,14 @@ namespace Strand {
 	};
 
 
+	struct SceneData {
+		glm::vec3 CameraPosition;
+		int NumPointLights;
+		PointLight PointLights[4];
+		DirectLight DirectLight;
+		Spotlight Spotlight;
+	};
+
 	struct MaterialD {
 		//glm::vec4 ambient;
 		//Ref<Texture2D> diffuse;
@@ -68,15 +76,20 @@ namespace Strand {
 		static void BeginScene(const Camera& camera, const glm::mat4& transform);
 		static void BeginScene(const EditorCamera& camera);
 		static void BeginScene(const EditorCamera& camera, const std::vector<PointLight>& pointLights, const DirectLight& directLight, const Spotlight& spotLight);
+		static void BeginScene(const EditorCamera& camera, const SceneData& sceneData);
 
 		static void EndScene();
 
 		// Draws a static mesh.
-		//static void DrawStaticMesh(const glm::mat4& transform, Ref<Mesh> mesh, Ref<Shader> shader);
+		static void Submit(const Ref<Mesh>& mesh, const Ref<Material>& material, const glm::mat4& transform);
 		static void DrawLightCube(const glm::mat4& transform, const Ref<Mesh> mesh, const glm::vec3& cubeColor);
 		static void DrawCubeMesh(const glm::mat4& transform, const Ref<Mesh> mesh, const glm::vec3& cubeColor, const Ref<Material> materail);
 		static void DrawCubeMap( const Ref<Mesh> mesh, const Ref<TextureCube> texture, const Ref<Shader> shader);
 		static void DrawMesh(const glm::mat4& transform, const Ref<Mesh> mesh, const Ref<Material> material);
+
+		static void BeginSkyboxPass(const Ref<TextureCube>& skyboxTexture);
+		static void SubmitSkybox();
+		static void EndSkyboxPass();
 
 		// Stats
 		struct Statistics
@@ -93,15 +106,8 @@ namespace Strand {
 		static void ResetStats();
 		static Statistics GetStats();
 	private:
-	
-	/*	struct SceneData
-		{
-			glm::mat4 ViewProjectionMatrix;
-		};
 
-		static Scope<SceneData> s_SceneData;*/
-
-		static void Flush();
+		static void FlushOpaqueQueue();
 		static void NextBatch();
 
 	};
