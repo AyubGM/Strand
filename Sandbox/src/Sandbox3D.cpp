@@ -111,6 +111,9 @@ void Sandbox3D::OnAttach()
 	m_Material->Set("u_DiffuseTexture", m_Diffuse);
 	m_Material->Set("u_SpecularTexture", m_Specular);
 
+	m_LightShader = Strand::Shader::Create("assets/shaders/Renderer3D_LightCube.glsl");
+	m_LightMaterial = Strand::Material::Create(m_LightShader);
+
 	//m_ModelShader = Strand::Shader::Create("assets/shaders/Renderer3D_Model.glsl");
 	//m_Backpack = Strand::CreateRef<Strand::Model>("assets/models/backpack/backpack.obj", m_ModelShader);
 	
@@ -141,6 +144,7 @@ void Sandbox3D::OnUpdate(Strand::Timestep ts)
 
 	// Render
 	Strand::Renderer3D::ResetStats();
+
 	{
 		SD_PROFILE_SCOPE("Renderer Prep");
 		Strand::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
@@ -192,7 +196,13 @@ void Sandbox3D::OnUpdate(Strand::Timestep ts)
 
 		SD_PROFILE_SCOPE("Renderer Draw");
 
-		Strand::Renderer3D::BeginScene(m_EditorCamera, m_Lights, directLight, spotLight);
+		//Strand::Renderer3D::BeginScene(m_EditorCamera, m_Lights, directLight, spotLight);
+
+		std::array<Strand::PointLight, 4> lightsArray;
+		std::copy_n(m_Lights.begin(), 4, lightsArray.begin());
+		Strand::SceneData sceneData{ m_EditorCamera.GetPosition(), 4, lightsArray, directLight, spotLight };
+		Strand::Renderer3D::BeginScene(m_EditorCamera, sceneData);
+
 		glm::mat4 model = glm::mat4(1.0f);
 
 		for (uint32_t i = 0; i < 10; i++)
@@ -204,15 +214,17 @@ void Sandbox3D::OnUpdate(Strand::Timestep ts)
 
 		}
 		
-		Strand::Renderer3D::DrawCubeMesh(glm::mat4(1), m_CubeMesh, m_CubeColor, m_ReflectiveMaterial);
+		//Strand::Renderer3D::DrawCubeMesh(glm::mat4(1), m_CubeMesh, m_CubeColor, m_ReflectiveMaterial);
+		Strand::Renderer3D::Submit(m_CubeMesh, m_ReflectiveMaterial, glm::mat4(1));
 
-	/*	for (const auto& mesh : m_Backpack->GetMeshes())
+		/*for (const auto& mesh : m_Backpack->GetMeshes())
 		{
 			uint32_t materialIndex = mesh->GetMaterialIndex();
 			Strand::Ref<Strand::Material> material = m_Backpack->GetMaterials()[materialIndex];
 
 			
 			Strand::Renderer3D::DrawMesh(glm::mat4(1), mesh, material);
+			Strand::Renderer3D::Submit(mesh, material, model);
 		}*/
 
 
@@ -221,11 +233,17 @@ void Sandbox3D::OnUpdate(Strand::Timestep ts)
 			model = glm::mat4(1.0f);
 			model = glm::translate(model, glm::vec3(pointLightPositions[i]));
 			model = glm::scale(model, glm::vec3(0.2f));
-			Strand::Renderer3D::DrawLightCube(model, m_CubeMesh, m_CubeColor);
+			//Strand::Renderer3D::DrawLightCube(model, m_CubeMesh, m_CubeColor);
+			Strand::Renderer3D::Submit(m_CubeMesh, m_LightMaterial, model);
 		}
 
-		Strand::Renderer3D::DrawCubeMap( m_SkyBoxMesh, m_CubeMapTextur, m_CubeMapShader);
-	
+		Strand::Renderer3D::BeginSkyboxPass(m_CubeMapTextur);
+
+		//Strand::Renderer3D::DrawCubeMap( m_SkyBoxMesh, m_CubeMapTextur, m_CubeMapShader);
+		Strand::Renderer3D::SubmitSkybox();
+
+		Strand::Renderer3D::EndSkyboxPass();
+
 
 		Strand::Renderer3D::EndScene();
 

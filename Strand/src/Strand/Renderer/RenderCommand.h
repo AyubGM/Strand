@@ -33,6 +33,12 @@ namespace Strand {
 			s_RendererAPI->DrawIndexed(vertexArray, indexCount);
 		}
 
+
+		static void DrawIndexedInstanced(const Ref<VertexArray>& vertexArray, uint32_t InstanceCount = 0)
+		{
+			s_RendererAPI->DrawIndexedInstanced(vertexArray, InstanceCount);
+		}
+
 		static void DrawLines(const Ref<VertexArray>& vertexArray, uint32_t vertexCount)
 		{
 			s_RendererAPI->DrawLines(vertexArray, vertexCount);

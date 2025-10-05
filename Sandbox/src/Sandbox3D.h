@@ -39,7 +39,9 @@ private:
 	float m_Shininess = 32.0f;
 	Strand::Ref<Strand::Shader> m_PhongShader;
 	Strand::Ref<Strand::Shader> m_ModelShader;
+	Strand::Ref<Strand::Shader> m_LightShader;
 	Strand::Ref<Strand::Material> m_Material;
+	Strand::Ref<Strand::Material> m_LightMaterial;
 
 	Strand::Ref<Strand::Shader> m_ReflectShader;
 	Strand::Ref<Strand::Material> m_ReflectiveMaterial;

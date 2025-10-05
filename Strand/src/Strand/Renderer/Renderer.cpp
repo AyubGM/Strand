@@ -17,7 +17,7 @@ namespace Strand
 		}
 	};
 
-	struct SceneData
+	struct SceneDataDebug
 	{
 		glm::mat4 ViewProjectionMatrix;
 	};
@@ -26,7 +26,7 @@ namespace Strand
 	{
 		// Global Scene UBO
 		Ref<UniformBuffer> SceneUniformBuffer;
-		SceneData SceneBuffer;
+		SceneDataDebug SceneBuffer;
 
 		Scope<MaterialLibrary> Library;
 
@@ -40,7 +40,7 @@ namespace Strand
 		SD_PROFILE_FUNCTION();
 
 		RenderCommand::Init();
-		s_Data.SceneUniformBuffer = UniformBuffer::Create(sizeof(SceneData), 0);
+		s_Data.SceneUniformBuffer = UniformBuffer::Create(sizeof(SceneDataDebug), 0);
 		Renderer2D::Init();
 		//I Understand now why these two lines stop renderer2D TODO THE UNIFORMBUFFER
 		
@@ -64,7 +64,7 @@ namespace Strand
 	{
 		SD_PROFILE_FUNCTION();
 		s_Data.SceneBuffer.ViewProjectionMatrix = camera.GetViewProjectionMatrix();
-		s_Data.SceneUniformBuffer->SetData(&s_Data.SceneBuffer, sizeof(SceneData));
+		s_Data.SceneUniformBuffer->SetData(&s_Data.SceneBuffer, sizeof(SceneDataDebug));
 		s_Data.CommandQueue.clear();
 
 	}
@@ -74,7 +74,7 @@ namespace Strand
 		SD_PROFILE_FUNCTION();
 
 		s_Data.SceneBuffer.ViewProjectionMatrix = camera.GetProjection() * glm::inverse(transform);
-		s_Data.SceneUniformBuffer->SetData(&s_Data.SceneBuffer, sizeof(SceneData));
+		s_Data.SceneUniformBuffer->SetData(&s_Data.SceneBuffer, sizeof(SceneDataDebug));
 		s_Data.CommandQueue.clear();
 	}
 
@@ -83,7 +83,7 @@ namespace Strand
 		SD_PROFILE_FUNCTION();
 
 		s_Data.SceneBuffer.ViewProjectionMatrix = camera.GetViewProjection();
-		s_Data.SceneUniformBuffer->SetData(&s_Data.SceneBuffer, sizeof(SceneData));
+		s_Data.SceneUniformBuffer->SetData(&s_Data.SceneBuffer, sizeof(SceneDataDebug));
 		s_Data.CommandQueue.clear();
 
 	}
@@ -125,7 +125,7 @@ namespace Strand
 	//void Renderer::Submit(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray, const glm::mat4& transform)
 	//{
 	//	shader->Bind();
-	//	std::dynamic_pointer_cast<OpenGLShader>(shader)->UploadUniformMat4("u_ViewProjection", s_SceneData->ViewProjectionMatrix);
+	//	std::dynamic_pointer_cast<OpenGLShader>(shader)->UploadUniformMat4("u_ViewProjection", s_SceneDataDebug->ViewProjectionMatrix);
 	//	std::dynamic_pointer_cast<OpenGLShader>(shader)->UploadUniformMat4("u_Transform", transform);
 
 	//	vertexArray->Bind();

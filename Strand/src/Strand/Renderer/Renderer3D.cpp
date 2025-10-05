@@ -12,15 +12,33 @@ namespace Strand {
 
 	};
 
+	struct InstancedDrawCommand
+	{
+		Ref<Mesh> Mesh;
+		Ref<Material> Material;
+		Ref<VertexBuffer> InstanceBuffer;
+		uint32_t InstanceCount = 0;
+	};
 
 
 	static Scope<SceneData> s_SceneData;
 
 	struct Renderer3DData
 	{
+
+		Ref<UniformBuffer> CameraUniformBuffer;
+		Ref<UniformBuffer> ObjectUniformBuffer; // binding = 1
+		Ref<UniformBuffer> SceneUniformBuffer; // binding = 2
+
 		Ref<Shader> LightCubeShader;
 
 		std::vector<DrawCommand> OpaqueRenderQueue;
+
+		std::vector<InstancedDrawCommand> OpaqueInstancedRenderQueue;
+
+		Ref<VertexBuffer> InstancedDataBuffer;
+		static const uint32_t MaxInstances = 10000;
+		static const uint32_t MaxInstanceDataSize = MaxInstances * sizeof(glm::mat4);
 
 		struct CameraData
 		{
@@ -43,9 +61,7 @@ namespace Strand {
 
 		CameraData CameraBuffer;
 		ObjectData ObjectBuffer;
-		Ref<UniformBuffer> CameraUniformBuffer;
-		Ref<UniformBuffer> ObjectUniformBuffer; // binding = 1
-		Ref<UniformBuffer> SceneUniformBuffer; // binding = 2
+		
 
 		Renderer3D::Statistics Stats;
 	};
@@ -125,6 +141,14 @@ namespace Strand {
 		};
 
 		s_Data.Skybox.CubeMesh = Strand::CreateRef<Strand::Mesh>(cubeVertices, cubeindces);
+
+		s_Data.InstancedDataBuffer = VertexBuffer::Create(s_Data.MaxInstanceDataSize);
+		s_Data.InstancedDataBuffer->SetLayout({
+			{ ShaderDataType::Float4, "a_InstanceMatrix", false, 1 },
+			{ ShaderDataType::Float4, "a_InstanceMatrix", false, 1 },
+			{ ShaderDataType::Float4, "a_InstanceMatrix", false, 1 },
+			{ ShaderDataType::Float4, "a_InstanceMatrix", false, 1 }
+			});
 	}
 
 	void Renderer3D::Shutdown()
@@ -175,6 +199,8 @@ namespace Strand {
 		s_SceneData->Spotlight = spotLight;
 		s_Data.SceneUniformBuffer->SetData(s_SceneData.get(), sizeof(SceneData));
 
+		s_Data.OpaqueRenderQueue.clear();
+
 	}
 
 	void Renderer3D::BeginScene(const EditorCamera& camera, const SceneData& sceneData)
@@ -194,6 +220,8 @@ namespace Strand {
 	void Renderer3D::EndScene()
 	{
 		SD_PROFILE_FUNCTION();
+
+		FlushOpaqueQueue();
 	}
 
 	void Renderer3D::FlushOpaqueQueue()
@@ -225,6 +253,38 @@ namespace Strand {
 			s_Data.Stats.DrawCalls++;
 			s_Data.Stats.MeshCount++;
 		}
+
+		std::sort(s_Data.OpaqueInstancedRenderQueue.begin(), s_Data.OpaqueInstancedRenderQueue.end(),
+			[](const InstancedDrawCommand& a, const InstancedDrawCommand& b) {
+				if (a.Material->GetID() != b.Material->GetID())
+					return a.Material->GetID() < b.Material->GetID();
+				//return a.Mesh->GetVertexArray()->GetRendererID() < b.Mesh->GetVertexArray()->GetRendererID();
+			});
+
+		Ref<Material> currentInstancedMaterial = nullptr;
+		Ref<VertexArray> currentVAO = nullptr;
+
+		for (const auto& command : s_Data.OpaqueInstancedRenderQueue)
+		{
+
+			if (command.Material != currentInstancedMaterial)
+			{
+				command.Material->Bind();
+				currentInstancedMaterial = command.Material;
+			}
+
+			// Add the instance buffer to the mesh's VAO for this draw
+			if (command.Mesh->GetVertexArray() != currentVAO)
+			{
+				command.Mesh->GetVertexArray()->AddVertexBuffer(command.InstanceBuffer);
+				currentVAO = command.Mesh->GetVertexArray();
+			}
+
+			RenderCommand::DrawIndexedInstanced(command.Mesh->GetVertexArray(), command.InstanceCount);
+
+			s_Data.Stats.DrawCalls++;
+			s_Data.Stats.MeshCount += command.InstanceCount;
+		}
 			
 		
 	}
@@ -236,6 +296,46 @@ namespace Strand {
 
 		//  Add a command to the Queue.
 		s_Data.OpaqueRenderQueue.emplace_back(DrawCommand{ mesh, material, transform });
+	}
+
+
+	void Renderer3D::DrawCubeMesh(const glm::mat4& transform, const Ref<Mesh> mesh, const glm::vec3& cubeColor, const Ref<Material> materail)
+	{
+		SD_PROFILE_FUNCTION();
+
+		if (!mesh) return;
+
+		materail->Bind();
+
+		// Update UBOs
+		s_Data.ObjectBuffer.u_Model = transform;
+		s_Data.ObjectBuffer.u_NormalMatrix = glm::transpose(glm::inverse(transform));
+		s_Data.ObjectBuffer.u_ObjectColor = cubeColor;
+		s_Data.ObjectUniformBuffer->SetData(&s_Data.ObjectBuffer, sizeof(Renderer3DData::ObjectBuffer));
+
+		RenderCommand::DrawIndexed(mesh->GetVertexArray());
+
+		// Update performance statistics.
+		s_Data.Stats.DrawCalls++;
+		s_Data.Stats.MeshCount++;
+	}
+
+	void Renderer3D::SubmitInstanced(const Ref<Mesh>& mesh, const Ref<Material>& material, const std::vector<glm::mat4>& transforms)
+	{
+		SD_PROFILE_FUNCTION();
+		if (transforms.empty()) return;
+
+		uint32_t instanceCount = static_cast<uint32_t>(transforms.size());
+		//SD_CORE_ASSERT(instanceCount <= s_Data.MaxInstances, "Exceeded maximum instance count!");
+		if (instanceCount > s_Data.MaxInstances)
+		{
+			SD_CORE_WARN("Instancing batch full! Dropping {0} transforms.", instanceCount);
+			return;
+		}
+
+		s_Data.InstancedDataBuffer->SetData(transforms.data(), instanceCount * sizeof(glm::mat4));
+
+		s_Data.OpaqueInstancedRenderQueue.push_back({ mesh, material, s_Data.InstancedDataBuffer, instanceCount });
 	}
 
 	void Renderer3D::BeginSkyboxPass(const Ref<TextureCube>& skyboxTexture)
@@ -254,11 +354,12 @@ namespace Strand {
 		if (!s_Data.Skybox.SkyboxTexture || !s_Data.Skybox.CubeMesh) return;
 
 		s_Data.Skybox.SkyboxShader->Bind();
-		s_Data.Skybox.SkyboxTexture->Bind(0); 
+		s_Data.Skybox.SkyboxTexture->Bind(5); 
 
 		RenderCommand::DrawIndexed(s_Data.Skybox.CubeMesh->GetVertexArray());
 
 		s_Data.Stats.DrawCalls++;
+		s_Data.Stats.MeshCount++;
 	}
 
 	void Renderer3D::EndSkyboxPass()
@@ -267,6 +368,28 @@ namespace Strand {
 
 		RenderCommand::SetDepthMask(true);
 		RenderCommand::SetDepthFunc(RendererAPI::DepthFunc::Less);
+	}
+
+	void Renderer3D::DrawCubeMap(const Ref<Mesh> mesh, const Ref<TextureCube> texture, const Ref<Shader> shader)
+	{
+		SD_PROFILE_FUNCTION();
+
+		if (!mesh) return;
+
+		RenderCommand::SetDepthFunc(RendererAPI::DepthFunc::LessEqual);
+		RenderCommand::SetDepthMask(false);
+
+		shader->Bind();
+		texture->Bind(5);
+
+		RenderCommand::DrawIndexed(mesh->GetVertexArray());
+
+		RenderCommand::SetDepthMask(true);
+		RenderCommand::SetDepthFunc(RendererAPI::DepthFunc::Less);
+
+		// Update performance statistics.
+		s_Data.Stats.DrawCalls++;
+		s_Data.Stats.MeshCount++;
 	}
 
 	void Renderer3D::DrawMesh(const glm::mat4& transform, const Ref<Mesh> mesh, const Ref<Material> material)
@@ -293,48 +416,8 @@ namespace Strand {
 
 
 
-	void Renderer3D::DrawCubeMesh(const glm::mat4& transform, const Ref<Mesh> mesh, const glm::vec3& cubeColor, const Ref<Material> materail)
-	{
-		SD_PROFILE_FUNCTION();
 
-		if (!mesh) return;
-		
-		materail->Bind();
-
-		// Update UBOs
-		s_Data.ObjectBuffer.u_Model = transform;
-		s_Data.ObjectBuffer.u_NormalMatrix = glm::transpose(glm::inverse(transform));
-		s_Data.ObjectBuffer.u_ObjectColor = cubeColor;
-		s_Data.ObjectUniformBuffer->SetData(&s_Data.ObjectBuffer, sizeof(Renderer3DData::ObjectBuffer));
-
-		RenderCommand::DrawIndexed(mesh->GetVertexArray());
-
-		// Update performance statistics.
-		s_Data.Stats.DrawCalls++;
-		s_Data.Stats.MeshCount++;
-	}
-
-	 void Renderer3D::DrawCubeMap( const Ref<Mesh> mesh, const Ref<TextureCube> texture, const Ref<Shader> shader)
-	{
-		SD_PROFILE_FUNCTION();
-
-		if (!mesh) return;
-		
-		RenderCommand::SetDepthFunc(RendererAPI::DepthFunc::LessEqual);
-		RenderCommand::SetDepthMask(false);
-
-		shader->Bind();
-		texture->Bind(5);
-
-		RenderCommand::DrawIndexed(mesh->GetVertexArray());
-
-		RenderCommand::SetDepthMask(true);
-		RenderCommand::SetDepthFunc(RendererAPI::DepthFunc::Less);
-
-		// Update performance statistics.
-		s_Data.Stats.DrawCalls++;
-		s_Data.Stats.MeshCount++;
-	}
+	 
 
 	 void Renderer3D::DrawLightCube(const glm::mat4& transform, const Ref<Mesh> mesh, const glm::vec3& cubeColor)
 	 {

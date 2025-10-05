@@ -81,6 +81,7 @@ namespace Strand {
 					element.Normalized ? GL_TRUE : GL_FALSE,
 					layout.GetStride(),
 					(const void*)element.Offset);
+				glVertexAttribDivisor(m_VertexBufferIndex, element.Divisor);
 				m_VertexBufferIndex++;
 				break;
 			}
@@ -96,23 +97,24 @@ namespace Strand {
 					ShaderDataTypeToOpenGLBaseType(element.Type),
 					layout.GetStride(),
 					(const void*)element.Offset);
+				glVertexAttribDivisor(m_VertexBufferIndex, element.Divisor);
 				m_VertexBufferIndex++;
 				break;
 			}
 			case ShaderDataType::Mat3:
 			case ShaderDataType::Mat4:
 			{
-				uint8_t count = element.GetComponentCount();
-				for (uint8_t i = 0; i < count; i++)
+				uint8_t columnCount = element.Type == ShaderDataType::Mat3 ? 3 : 4 ;
+				for (uint8_t i = 0; i < columnCount; i++)
 				{
 					glEnableVertexAttribArray(m_VertexBufferIndex);
 					glVertexAttribPointer(m_VertexBufferIndex,
-						count,
+						columnCount,
 						ShaderDataTypeToOpenGLBaseType(element.Type),
 						element.Normalized ? GL_TRUE : GL_FALSE,
 						layout.GetStride(),
-						(const void*)(sizeof(float) * count * i));
-					glVertexAttribDivisor(m_VertexBufferIndex, 1);
+						(const void*)(element.Offset + sizeof(float) * columnCount * i));
+					glVertexAttribDivisor(m_VertexBufferIndex, element.Divisor);
 					m_VertexBufferIndex++;
 				}
 				break;

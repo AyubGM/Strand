@@ -54,7 +54,7 @@ namespace Strand {
 	struct SceneData {
 		glm::vec3 CameraPosition;
 		int NumPointLights;
-		PointLight PointLights[4];
+		std::array<PointLight, 4> PointLights;
 		DirectLight DirectLight;
 		Spotlight Spotlight;
 	};
@@ -82,6 +82,7 @@ namespace Strand {
 
 		// Draws a static mesh.
 		static void Submit(const Ref<Mesh>& mesh, const Ref<Material>& material, const glm::mat4& transform);
+		static void SubmitInstanced(const Ref<Mesh>& mesh, const Ref<Material>& material, const std::vector<glm::mat4>& transforms);
 		static void DrawLightCube(const glm::mat4& transform, const Ref<Mesh> mesh, const glm::vec3& cubeColor);
 		static void DrawCubeMesh(const glm::mat4& transform, const Ref<Mesh> mesh, const glm::vec3& cubeColor, const Ref<Material> materail);
 		static void DrawCubeMap( const Ref<Mesh> mesh, const Ref<TextureCube> texture, const Ref<Shader> shader);

@@ -306,17 +306,6 @@ namespace Strand {
 		StartBatch();
 	}
 
-	//void Renderer2D::FlushAndReset()
-	//{
-	//	EndScene();
-
-	//	s_Data.QuadIndexCount = 0;
-	//	s_Data.QuadVertexBufferPtr = s_Data.QuadVertexBufferBase;
-
-	//	s_Data.TextureSlotIndex = 1;
-	//}
-
-
 	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color)
 	{
 		DrawQuad({ position.x, position.y, 0.0f }, size, color);

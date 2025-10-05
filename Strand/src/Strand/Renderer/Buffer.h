@@ -35,8 +35,9 @@ namespace Strand {
 		uint32_t Size;
 		size_t  Offset;
 		bool Normalized;
-		BufferElement(ShaderDataType type, const std::string& name, size_t offset = 0,bool normalized = false)
-			: Name(name), Type(type), Size(ShaderDataTypeSize(type)), Offset(offset), Normalized(normalized)
+		uint32_t Divisor;
+		BufferElement(ShaderDataType type, const std::string& name, size_t offset = 0, bool normalized = false, uint32_t divisor = 0)
+			: Name(name), Type(type), Size(ShaderDataTypeSize(type)), Offset(offset), Normalized(normalized), Divisor(divisor)
 		{
 		}
 
