@@ -59,13 +59,6 @@ namespace Strand {
 		Spotlight Spotlight;
 	};
 
-	struct MaterialD {
-		//glm::vec4 ambient;
-		//Ref<Texture2D> diffuse;
-		//glm::vec4 specular;
-		float shininess;
-	};
-
 	class Renderer3D
 	{
 	public:
@@ -73,9 +66,6 @@ namespace Strand {
 		static void Init();
 		static void Shutdown();
 
-		static void BeginScene(const Camera& camera, const glm::mat4& transform);
-		static void BeginScene(const EditorCamera& camera);
-		static void BeginScene(const EditorCamera& camera, const std::vector<PointLight>& pointLights, const DirectLight& directLight, const Spotlight& spotLight);
 		static void BeginScene(const EditorCamera& camera, const SceneData& sceneData);
 
 		static void EndScene();
@@ -83,14 +73,17 @@ namespace Strand {
 		// Draws a static mesh.
 		static void Submit(const Ref<Mesh>& mesh, const Ref<Material>& material, const glm::mat4& transform);
 		static void SubmitInstanced(const Ref<Mesh>& mesh, const Ref<Material>& material, const std::vector<glm::mat4>& transforms);
-		static void DrawLightCube(const glm::mat4& transform, const Ref<Mesh> mesh, const glm::vec3& cubeColor);
-		static void DrawCubeMesh(const glm::mat4& transform, const Ref<Mesh> mesh, const glm::vec3& cubeColor, const Ref<Material> materail);
-		static void DrawCubeMap( const Ref<Mesh> mesh, const Ref<TextureCube> texture, const Ref<Shader> shader);
-		static void DrawMesh(const glm::mat4& transform, const Ref<Mesh> mesh, const Ref<Material> material);
+		
 
 		static void BeginSkyboxPass(const Ref<TextureCube>& skyboxTexture);
 		static void SubmitSkybox();
 		static void EndSkyboxPass();
+
+		//TODO REMOVE
+		static void DrawLightCube(const glm::mat4& transform, const Ref<Mesh> mesh, const glm::vec3& cubeColor);
+		static void DrawCubeMesh(const glm::mat4& transform, const Ref<Mesh> mesh, const glm::vec3& cubeColor, const Ref<Material> materail);
+		static void DrawCubeMap(const Ref<Mesh> mesh, const Ref<TextureCube> texture, const Ref<Shader> shader);
+		static void DrawMesh(const glm::mat4& transform, const Ref<Mesh> mesh, const Ref<Material> material);
 
 		// Stats
 		struct Statistics

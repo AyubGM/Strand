@@ -156,53 +156,6 @@ namespace Strand {
 		SD_PROFILE_FUNCTION();
 	}
 
-	void Renderer3D::BeginScene(const Camera& camera, const glm::mat4& transform)
-	{
-		SD_PROFILE_FUNCTION();
-
-		s_Data.CameraBuffer.ViewProjection = camera.GetProjection() * glm::inverse(transform);
-		s_Data.CameraUniformBuffer->SetData(&s_Data.CameraBuffer, sizeof(Renderer3DData::CameraData));
-	}
-
-	void Renderer3D::BeginScene(const EditorCamera& camera)
-	{
-		SD_PROFILE_FUNCTION();
-
-		s_Data.CameraBuffer.ViewProjection = camera.GetViewProjection();
-		s_Data.CameraUniformBuffer->SetData(&s_Data.CameraBuffer, sizeof(Renderer3DData::CameraData));
-
-		s_SceneData->CameraPosition = camera.GetPosition();
-		glm::vec4 postion = glm::vec4(1.2f, 1.0f, 2.0f, 1.0f);
-		glm::vec4 ambient = glm::vec4(0.2f, 0.2f, 0.2f, 1.0f);
-		glm::vec4 diffuse = glm::vec4(0.5f, 0.5f, 0.5f, 1.0f);
-		glm::vec4 specular = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
-		s_SceneData->PointLights[0] = {postion, ambient, diffuse, specular };
-		s_Data.SceneUniformBuffer->SetData(s_SceneData.get(), sizeof(SceneData));
-
-	}
-
-	void Renderer3D::BeginScene(const EditorCamera& camera, const std::vector<PointLight>& pointLights, const DirectLight& directLight, const Spotlight& spotLight)
-	{
-
-		SD_PROFILE_FUNCTION();
-
-		s_Data.CameraBuffer.ViewProjection = camera.GetViewProjection();
-		s_Data.CameraUniformBuffer->SetData(&s_Data.CameraBuffer, sizeof(Renderer3DData::CameraData));
-
-		
-		s_SceneData->CameraPosition = camera.GetPosition();
-		s_SceneData->NumPointLights = glm::min((uint32_t)pointLights.size(), 4u);
-		for (uint32_t i = 0; i < s_SceneData->NumPointLights; ++i) {
-			s_SceneData->PointLights[i] = pointLights[i];
-		}
-		s_SceneData->DirectLight = directLight;
-		s_SceneData->Spotlight = spotLight;
-		s_Data.SceneUniformBuffer->SetData(s_SceneData.get(), sizeof(SceneData));
-
-		s_Data.OpaqueRenderQueue.clear();
-
-	}
-
 	void Renderer3D::BeginScene(const EditorCamera& camera, const SceneData& sceneData)
 	{
 		SD_PROFILE_FUNCTION();
@@ -213,6 +166,7 @@ namespace Strand {
 
 		// Clear the queue for the new frame
 		s_Data.OpaqueRenderQueue.clear();
+		s_Data.OpaqueInstancedRenderQueue.clear();
 		ResetStats();
 
 	}
@@ -234,14 +188,14 @@ namespace Strand {
 				return a.Material->GetID() < b.Material->GetID();
 			});
 
-		Ref<Material> currentMaterail = nullptr;
+		Ref<Material> currentMaterial = nullptr;
 
 		for (const auto& command : s_Data.OpaqueRenderQueue)
 		{
-			if (command.Material != currentMaterail)
+			if (command.Material != currentMaterial)
 			{
 				command.Material->Bind();
-				currentMaterail = command.Material;
+				currentMaterial = command.Material;
 			}
 
 			s_Data.ObjectBuffer.u_Model = command.Transform;
@@ -256,8 +210,9 @@ namespace Strand {
 
 		std::sort(s_Data.OpaqueInstancedRenderQueue.begin(), s_Data.OpaqueInstancedRenderQueue.end(),
 			[](const InstancedDrawCommand& a, const InstancedDrawCommand& b) {
-				if (a.Material->GetID() != b.Material->GetID())
-					return a.Material->GetID() < b.Material->GetID();
+				return a.Material->GetID() < b.Material->GetID();
+				/*if (a.Material->GetID() != b.Material->GetID())
+					return a.Material->GetID() < b.Material->GetID();*/
 				//return a.Mesh->GetVertexArray()->GetRendererID() < b.Mesh->GetVertexArray()->GetRendererID();
 			});
 
@@ -299,26 +254,7 @@ namespace Strand {
 	}
 
 
-	void Renderer3D::DrawCubeMesh(const glm::mat4& transform, const Ref<Mesh> mesh, const glm::vec3& cubeColor, const Ref<Material> materail)
-	{
-		SD_PROFILE_FUNCTION();
-
-		if (!mesh) return;
-
-		materail->Bind();
-
-		// Update UBOs
-		s_Data.ObjectBuffer.u_Model = transform;
-		s_Data.ObjectBuffer.u_NormalMatrix = glm::transpose(glm::inverse(transform));
-		s_Data.ObjectBuffer.u_ObjectColor = cubeColor;
-		s_Data.ObjectUniformBuffer->SetData(&s_Data.ObjectBuffer, sizeof(Renderer3DData::ObjectBuffer));
-
-		RenderCommand::DrawIndexed(mesh->GetVertexArray());
-
-		// Update performance statistics.
-		s_Data.Stats.DrawCalls++;
-		s_Data.Stats.MeshCount++;
-	}
+	
 
 	void Renderer3D::SubmitInstanced(const Ref<Mesh>& mesh, const Ref<Material>& material, const std::vector<glm::mat4>& transforms)
 	{
@@ -370,6 +306,31 @@ namespace Strand {
 		RenderCommand::SetDepthFunc(RendererAPI::DepthFunc::Less);
 	}
 
+
+
+	//TODO REMOVE
+
+	void Renderer3D::DrawCubeMesh(const glm::mat4& transform, const Ref<Mesh> mesh, const glm::vec3& cubeColor, const Ref<Material> materail)
+	{
+		SD_PROFILE_FUNCTION();
+
+		if (!mesh) return;
+
+		materail->Bind();
+
+		// Update UBOs
+		s_Data.ObjectBuffer.u_Model = transform;
+		s_Data.ObjectBuffer.u_NormalMatrix = glm::transpose(glm::inverse(transform));
+		s_Data.ObjectBuffer.u_ObjectColor = cubeColor;
+		s_Data.ObjectUniformBuffer->SetData(&s_Data.ObjectBuffer, sizeof(Renderer3DData::ObjectBuffer));
+
+		RenderCommand::DrawIndexed(mesh->GetVertexArray());
+
+		// Update performance statistics.
+		s_Data.Stats.DrawCalls++;
+		s_Data.Stats.MeshCount++;
+	}
+
 	void Renderer3D::DrawCubeMap(const Ref<Mesh> mesh, const Ref<TextureCube> texture, const Ref<Shader> shader)
 	{
 		SD_PROFILE_FUNCTION();
@@ -413,11 +374,6 @@ namespace Strand {
 		s_Data.Stats.DrawCalls++;
 		s_Data.Stats.MeshCount++;
 	}
-
-
-
-
-	 
 
 	 void Renderer3D::DrawLightCube(const glm::mat4& transform, const Ref<Mesh> mesh, const glm::vec3& cubeColor)
 	 {

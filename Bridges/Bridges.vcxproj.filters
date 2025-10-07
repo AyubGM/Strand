@@ -28,5 +28,6 @@
     <None Include="assets\shaders\Renderer3D_Model.glsl" />
     <None Include="assets\shaders\Renderer3D_CubeMap.glsl" />
     <None Include="assets\shaders\Renderer3D_Reflection.glsl" />
+    <None Include="assets\shaders\Renderer3D_Instanced.glsl" />
   </ItemGroup>
 </Project>

@@ -114,6 +114,12 @@ void Sandbox3D::OnAttach()
 	m_LightShader = Strand::Shader::Create("assets/shaders/Renderer3D_LightCube.glsl");
 	m_LightMaterial = Strand::Material::Create(m_LightShader);
 
+	m_InstacedShader = Strand::Shader::Create("assets/shaders/Renderer3D_Instanced.glsl");
+	m_InstacedMaterial = Strand::Material::Create(m_InstacedShader);
+	m_InstacedMaterial->Set("u_MaterialData", m_Shininess);
+	m_InstacedMaterial->Set("u_DiffuseTexture", m_Diffuse);
+	m_InstacedMaterial->Set("u_SpecularTexture", m_Specular);
+
 	//m_ModelShader = Strand::Shader::Create("assets/shaders/Renderer3D_Model.glsl");
 	//m_Backpack = Strand::CreateRef<Strand::Model>("assets/models/backpack/backpack.obj", m_ModelShader);
 	
@@ -205,14 +211,17 @@ void Sandbox3D::OnUpdate(Strand::Timestep ts)
 
 		glm::mat4 model = glm::mat4(1.0f);
 
+		std::vector<glm::mat4> models;
+		models.reserve(10);
 		for (uint32_t i = 0; i < 10; i++)
 		{
 			model = glm::translate(model, cubePositions[i]);
 			float angle = 20.0f * i;
 			model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+			models.emplace_back(model);
 			//Strand::Renderer3D::DrawCubeMesh(model, m_CubeMesh, m_CubeColor, m_Material);
-
 		}
+		Strand::Renderer3D::SubmitInstanced(m_CubeMesh, m_InstacedMaterial, models);
 		
 		//Strand::Renderer3D::DrawCubeMesh(glm::mat4(1), m_CubeMesh, m_CubeColor, m_ReflectiveMaterial);
 		Strand::Renderer3D::Submit(m_CubeMesh, m_ReflectiveMaterial, glm::mat4(1));

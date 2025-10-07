@@ -38,9 +38,11 @@ private:
 	Strand::Ref<Strand::Texture2D> m_Specular;
 	float m_Shininess = 32.0f;
 	Strand::Ref<Strand::Shader> m_PhongShader;
+	Strand::Ref<Strand::Shader> m_InstacedShader;
 	Strand::Ref<Strand::Shader> m_ModelShader;
 	Strand::Ref<Strand::Shader> m_LightShader;
 	Strand::Ref<Strand::Material> m_Material;
+	Strand::Ref<Strand::Material> m_InstacedMaterial;
 	Strand::Ref<Strand::Material> m_LightMaterial;
 
 	Strand::Ref<Strand::Shader> m_ReflectShader;
