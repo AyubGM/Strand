@@ -45,4 +45,21 @@ namespace Strand {
 		
 	}
 
+	void Mesh::EnableInstancing(uint32_t maxInstances)
+	{
+		if (!m_InstanceBuffer) {
+			m_InstanceBuffer = VertexBuffer::Create(maxInstances * sizeof(glm::mat4));
+			m_InstanceBuffer->SetLayout({
+				{ ShaderDataType::Mat4, "a_InstanceMatrix", 0, false, 1 }
+			});
+			m_VertexArray->AddVertexBuffer(m_InstanceBuffer); // Attach once
+		}
+	}
+
+	void Mesh::UpdateInstanceData(const void* data, uint32_t size)
+	{
+		if (m_InstanceBuffer)
+			m_InstanceBuffer->SetData(data, size);
+	}
+
 }

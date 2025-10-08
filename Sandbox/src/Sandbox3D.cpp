@@ -116,9 +116,7 @@ void Sandbox3D::OnAttach()
 
 	m_InstacedShader = Strand::Shader::Create("assets/shaders/Renderer3D_Instanced.glsl");
 	m_InstacedMaterial = Strand::Material::Create(m_InstacedShader);
-	m_InstacedMaterial->Set("u_MaterialData", m_Shininess);
 	m_InstacedMaterial->Set("u_DiffuseTexture", m_Diffuse);
-	m_InstacedMaterial->Set("u_SpecularTexture", m_Specular);
 
 	//m_ModelShader = Strand::Shader::Create("assets/shaders/Renderer3D_Model.glsl");
 	//m_Backpack = Strand::CreateRef<Strand::Model>("assets/models/backpack/backpack.obj", m_ModelShader);
@@ -215,6 +213,7 @@ void Sandbox3D::OnUpdate(Strand::Timestep ts)
 		models.reserve(10);
 		for (uint32_t i = 0; i < 10; i++)
 		{
+			glm::mat4 model = glm::mat4(1.0f);
 			model = glm::translate(model, cubePositions[i]);
 			float angle = 20.0f * i;
 			model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));

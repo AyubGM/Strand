@@ -16,7 +16,6 @@ namespace Strand {
 	{
 		Ref<Mesh> Mesh;
 		Ref<Material> Material;
-		Ref<VertexBuffer> InstanceBuffer;
 		uint32_t InstanceCount = 0;
 	};
 
@@ -144,10 +143,7 @@ namespace Strand {
 
 		s_Data.InstancedDataBuffer = VertexBuffer::Create(s_Data.MaxInstanceDataSize);
 		s_Data.InstancedDataBuffer->SetLayout({
-			{ ShaderDataType::Float4, "a_InstanceMatrix", false, 1 },
-			{ ShaderDataType::Float4, "a_InstanceMatrix", false, 1 },
-			{ ShaderDataType::Float4, "a_InstanceMatrix", false, 1 },
-			{ ShaderDataType::Float4, "a_InstanceMatrix", false, 1 }
+			{ ShaderDataType::Mat4, "a_InstanceMatrix", false, 1 },
 			});
 	}
 
@@ -217,8 +213,6 @@ namespace Strand {
 			});
 
 		Ref<Material> currentInstancedMaterial = nullptr;
-		Ref<VertexArray> currentVAO = nullptr;
-
 		for (const auto& command : s_Data.OpaqueInstancedRenderQueue)
 		{
 
@@ -228,19 +222,12 @@ namespace Strand {
 				currentInstancedMaterial = command.Material;
 			}
 
-			// Add the instance buffer to the mesh's VAO for this draw
-			if (command.Mesh->GetVertexArray() != currentVAO)
-			{
-				command.Mesh->GetVertexArray()->AddVertexBuffer(command.InstanceBuffer);
-				currentVAO = command.Mesh->GetVertexArray();
-			}
 
 			RenderCommand::DrawIndexedInstanced(command.Mesh->GetVertexArray(), command.InstanceCount);
 
 			s_Data.Stats.DrawCalls++;
 			s_Data.Stats.MeshCount += command.InstanceCount;
 		}
-			
 		
 	}
 
@@ -262,16 +249,19 @@ namespace Strand {
 		if (transforms.empty()) return;
 
 		uint32_t instanceCount = static_cast<uint32_t>(transforms.size());
-		//SD_CORE_ASSERT(instanceCount <= s_Data.MaxInstances, "Exceeded maximum instance count!");
 		if (instanceCount > s_Data.MaxInstances)
 		{
 			SD_CORE_WARN("Instancing batch full! Dropping {0} transforms.", instanceCount);
 			return;
 		}
 
-		s_Data.InstancedDataBuffer->SetData(transforms.data(), instanceCount * sizeof(glm::mat4));
+		// Enable instancing for this mesh if not already done
+		mesh->EnableInstancing(instanceCount);
 
-		s_Data.OpaqueInstancedRenderQueue.push_back({ mesh, material, s_Data.InstancedDataBuffer, instanceCount });
+		mesh->UpdateInstanceData(transforms.data(), instanceCount * sizeof(glm::mat4));
+
+		// Submit mesh for instanced rendering using its own instance buffer
+		s_Data.OpaqueInstancedRenderQueue.push_back({ mesh, material, instanceCount });
 	}
 
 	void Renderer3D::BeginSkyboxPass(const Ref<TextureCube>& skyboxTexture)

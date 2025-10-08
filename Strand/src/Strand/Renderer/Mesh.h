@@ -31,7 +31,9 @@ namespace Strand {
 
 		const Ref<VertexArray>& GetVertexArray() const { return m_VertexArray; }
 		const uint32_t GetMaterialIndex() const { return m_MaterialIndex; }
-
+		void EnableInstancing(uint32_t maxInstances);
+		void UpdateInstanceData(const void* data, uint32_t size);
+		Ref<VertexBuffer> GetInstanceBuffer() const { return m_InstanceBuffer; }
 
 	private:
 		void setupMesh();
@@ -46,6 +48,7 @@ namespace Strand {
 
 		Ref<VertexBuffer> m_VertexBuffer;
 		Ref<IndexBuffer> m_IndexBuffer;
+		Ref<VertexBuffer> m_InstanceBuffer; // Instance buffer for instancing
 
 		// Link to the material used by this mesh
 		uint32_t m_MaterialIndex;
