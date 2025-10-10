@@ -164,6 +164,7 @@
     <ClInclude Include="src\Strand\Core\Application.h" />
     <ClInclude Include="src\Strand\Core\Assert.h" />
     <ClInclude Include="src\Strand\Core\Base.h" />
+    <ClInclude Include="src\Strand\Core\Common.h" />
     <ClInclude Include="src\Strand\Core\EntryPoint.h" />
     <ClInclude Include="src\Strand\Core\KeyCodes.h" />
     <ClInclude Include="src\Strand\Core\Layer.h" />
@@ -183,6 +184,11 @@
     <ClInclude Include="src\Strand\Events\MouseEvent.h" />
     <ClInclude Include="src\Strand\ImGui\ImGuiLayer.h" />
     <ClInclude Include="src\Strand\Math\Math.h" />
+    <ClInclude Include="src\Strand\Physics\AABB.h" />
+    <ClInclude Include="src\Strand\Physics\Collision\Collider.h" />
+    <ClInclude Include="src\Strand\Physics\Collision\CollisionObject.h" />
+    <ClInclude Include="src\Strand\Physics\Collision\CollisionSpace.h" />
+    <ClInclude Include="src\Strand\Physics\Dynamics\DynamicsSpace.h" />
     <ClInclude Include="src\Strand\Renderer\Buffer.h" />
     <ClInclude Include="src\Strand\Renderer\Camera.h" />
     <ClInclude Include="src\Strand\Renderer\EditorCamera.h" />
@@ -654,6 +660,9 @@
     <ClCompile Include="src\Strand\ImGui\ImGuiBuild.cpp" />
     <ClCompile Include="src\Strand\ImGui\ImGuiLayer.cpp" />
     <ClCompile Include="src\Strand\Math\Math.cpp" />
+    <ClCompile Include="src\Strand\Physics\Collision\CollisionObject.cpp" />
+    <ClCompile Include="src\Strand\Physics\Collision\CollisionSpace.cpp" />
+    <ClCompile Include="src\Strand\Physics\Dynamics\DynamicsSpace.cpp" />
     <ClCompile Include="src\Strand\Renderer\Buffer.cpp" />
     <ClCompile Include="src\Strand\Renderer\EditorCamera.cpp" />
     <ClCompile Include="src\Strand\Renderer\Framebuffer.cpp" />

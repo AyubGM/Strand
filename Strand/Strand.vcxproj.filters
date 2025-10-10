@@ -1512,6 +1512,12 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
+    <ClInclude Include="src\Strand\Physics\Dynamics\DynamicsSpace.h" />
+    <ClInclude Include="src\Strand\Physics\Collision\CollisionSpace.h" />
+    <ClInclude Include="src\Strand\Physics\Collision\CollisionObject.h" />
+    <ClInclude Include="src\Strand\Physics\Collision\Collider.h" />
+    <ClInclude Include="src\Strand\Core\Common.h" />
+    <ClInclude Include="src\Strand\Physics\AABB.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp">
@@ -1655,5 +1661,8 @@
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
+    <ClCompile Include="src\Strand\Physics\Dynamics\DynamicsSpace.cpp" />
+    <ClCompile Include="src\Strand\Physics\Collision\CollisionSpace.cpp" />
+    <ClCompile Include="src\Strand\Physics\Collision\CollisionObject.cpp" />
   </ItemGroup>
 </Project>
