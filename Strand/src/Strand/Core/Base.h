@@ -48,6 +48,7 @@ namespace Strand {
 #include "Strand/Core/Log.h"
 #include "Strand/Core/Assert.h"
 #include "Strand/Core/Common.h"
+#include "Strand/Core/PolygonCommon.h"
 
 
 

@@ -1518,6 +1518,13 @@
     <ClInclude Include="src\Strand\Physics\Collision\Collider.h" />
     <ClInclude Include="src\Strand\Core\Common.h" />
     <ClInclude Include="src\Strand\Physics\AABB.h" />
+    <ClInclude Include="src\Strand\Core\PolygonCommon.h" />
+    <ClInclude Include="src\Strand\Physics\Collision\Solver.h" />
+    <ClInclude Include="src\Strand\Physics\Collision\ManifoldPoints.h" />
+    <ClInclude Include="src\Strand\Physics\Collision\Manifold.h" />
+    <ClInclude Include="src\Strand\Physics\Collision\TestCollision.h" />
+    <ClInclude Include="src\Strand\Utils\Thread_pool.h" />
+    <ClInclude Include="src\Strand\Utils\Blocking_queue.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp">
@@ -1664,5 +1671,6 @@
     <ClCompile Include="src\Strand\Physics\Dynamics\DynamicsSpace.cpp" />
     <ClCompile Include="src\Strand\Physics\Collision\CollisionSpace.cpp" />
     <ClCompile Include="src\Strand\Physics\Collision\CollisionObject.cpp" />
+    <ClCompile Include="src\Strand\Physics\Collision\TestCollision.cpp" />
   </ItemGroup>
 </Project>

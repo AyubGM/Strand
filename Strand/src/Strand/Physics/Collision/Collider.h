@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Strand/Core/Base.h"
+#include "Strand/Physics/AABB.h"
 #include "Strand/Scene/Components.h"
 
 namespace Strand
@@ -45,7 +46,7 @@ namespace Strand
 			return (uint32_t)Type;
 		}
 
-		virtual bool CasheIsOld() const = 0;
+		virtual bool CacheIsOld() const = 0;
 		virtual void UpdateCache() = 0;
 
 	};
@@ -54,7 +55,7 @@ namespace Strand
 	struct ColliderShape : Collider
 	{
 		using vec_t = _vec<D>;
-		//AABB
+		using aabb_t = AABB<D>;
 
 		ColliderShape(ColliderType type) : Collider(type, D)
 		{
@@ -62,8 +63,25 @@ namespace Strand
 		}
 
 		virtual vec_t FindFurthestPoint(TransformComponent* transform, const vec_t& direction) const = 0;
-		//virtual aabb_t CalcBounds() const = 0;
+		virtual aabb_t CalcBounds() const = 0;
 
+		aabb_t Bounds()
+		{
+			if (CasheIsOld())
+			{
+				UpdateCache();
+			}
+
+			return t_Bounds
+		}
+
+		void UpdateCache() override
+		{
+			t_Bounds = CalcBounds();
+		}
+
+	private:
+		aabb_t t_Bounds;
 
 	};
 

@@ -172,6 +172,7 @@
     <ClInclude Include="src\Strand\Core\Log.h" />
     <ClInclude Include="src\Strand\Core\MouseCodes.h" />
     <ClInclude Include="src\Strand\Core\PlatformDetection.h" />
+    <ClInclude Include="src\Strand\Core\PolygonCommon.h" />
     <ClInclude Include="src\Strand\Core\Timer.h" />
     <ClInclude Include="src\Strand\Core\Timestep.h" />
     <ClInclude Include="src\Strand\Core\UUID.h" />
@@ -188,6 +189,10 @@
     <ClInclude Include="src\Strand\Physics\Collision\Collider.h" />
     <ClInclude Include="src\Strand\Physics\Collision\CollisionObject.h" />
     <ClInclude Include="src\Strand\Physics\Collision\CollisionSpace.h" />
+    <ClInclude Include="src\Strand\Physics\Collision\Manifold.h" />
+    <ClInclude Include="src\Strand\Physics\Collision\ManifoldPoints.h" />
+    <ClInclude Include="src\Strand\Physics\Collision\Solver.h" />
+    <ClInclude Include="src\Strand\Physics\Collision\TestCollision.h" />
     <ClInclude Include="src\Strand\Physics\Dynamics\DynamicsSpace.h" />
     <ClInclude Include="src\Strand\Renderer\Buffer.h" />
     <ClInclude Include="src\Strand\Renderer\Camera.h" />
@@ -215,8 +220,10 @@
     <ClInclude Include="src\Strand\Scene\SceneCamera.h" />
     <ClInclude Include="src\Strand\Scene\SceneSerializer.h" />
     <ClInclude Include="src\Strand\Scene\ScriptableEntity.h" />
+    <ClInclude Include="src\Strand\Utils\Blocking_queue.h" />
     <ClInclude Include="src\Strand\Utils\PlatformUtils.h" />
     <ClInclude Include="src\sdpch.h" />
+    <ClInclude Include="src\Strand\Utils\Thread_pool.h" />
     <ClInclude Include="vendor\ImGuizmo\ImGuizmo.h" />
     <ClInclude Include="vendor\glm\glm\common.hpp" />
     <ClInclude Include="vendor\glm\glm\detail\_features.hpp" />
@@ -662,6 +669,7 @@
     <ClCompile Include="src\Strand\Math\Math.cpp" />
     <ClCompile Include="src\Strand\Physics\Collision\CollisionObject.cpp" />
     <ClCompile Include="src\Strand\Physics\Collision\CollisionSpace.cpp" />
+    <ClCompile Include="src\Strand\Physics\Collision\TestCollision.cpp" />
     <ClCompile Include="src\Strand\Physics\Dynamics\DynamicsSpace.cpp" />
     <ClCompile Include="src\Strand\Renderer\Buffer.cpp" />
     <ClCompile Include="src\Strand\Renderer\EditorCamera.cpp" />

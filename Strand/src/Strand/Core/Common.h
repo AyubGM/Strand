@@ -10,10 +10,10 @@ namespace Strand {
 	};
 
 	template<Dimension D>
-	using _vec = glm::vec<size_t(D), float>;
+	using _vec = glm::vec<uint32_t(D), float>;
 
 	template<Dimension D>
-	using _ivec = glm::vec<size_t(D), int>;
+	using _ivec = glm::vec<uint32_t(D), int>;
 
 }
 

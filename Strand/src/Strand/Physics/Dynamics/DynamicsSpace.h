@@ -19,10 +19,10 @@ namespace Strand {
 		virtual void AddConstaint(Constraint* constraint);
 		virtual void Step(Timestep ts);
 
-		const glm::vec3& GetGravity();
-		void SetGravity(const glm::vec3& gravity);
+		const glm::vec3& GetGravity() { return m_Gravity; }
+		void SetGravity(const glm::vec3& gravity) { m_Gravity = gravity;}
 
-		const std::vector<Constraint*>& Constraints() const;
+		const std::vector<Constraint*>& GetConstraints() const { return m_Constraints; }
 
 	private: 
 		void TrySetGravity();

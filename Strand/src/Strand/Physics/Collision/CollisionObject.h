@@ -12,9 +12,12 @@ namespace Strand {
 	class CollisionObject
 	{
 	public:
-		CollisionObject(bool isDynamic = false);
+		CollisionObject(bool isDynamic = false) : Collider(nullptr), 
+			IsTrigger(false)
+			, IsStatic(!isDynamic)
+			, IsDynamic(isDynamic) {};
 
-		virtual void SetTransform();
+		virtual void SetTransform(TransformComponent* transform) { Transform = *transform; }
 
 	public:
 		TransformComponent Transform;
