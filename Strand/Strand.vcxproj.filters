@@ -1523,8 +1523,8 @@
     <ClInclude Include="src\Strand\Physics\Collision\ManifoldPoints.h" />
     <ClInclude Include="src\Strand\Physics\Collision\Manifold.h" />
     <ClInclude Include="src\Strand\Physics\Collision\TestCollision.h" />
-    <ClInclude Include="src\Strand\Utils\Thread_pool.h" />
-    <ClInclude Include="src\Strand\Utils\Blocking_queue.h" />
+    <ClInclude Include="src\Strand\Utils\ThreadPool.h" />
+    <ClInclude Include="src\Strand\Utils\BlockingQueue.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp">
