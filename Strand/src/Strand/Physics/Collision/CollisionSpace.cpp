@@ -2,6 +2,7 @@
 
 #include "CollisionSpace.h"
 #include "Strand/Core/Base.h"
+#include "TestCollision.h"
 
 namespace Strand {
 
@@ -76,23 +77,25 @@ namespace Strand {
 				}
 			};
 
-		/*if (m_Task) {
-			for (iw::CollisionObject* obj : m_objects)
+		if (m_Task) 
+		{
+			for (CollisionObject* obj : m_Objects)
 			{
 				updateCahce(obj);
 			}
 
+			/*	m_Task->foreach(m_Objects, [&](int index) {
+					updateCahce(m_Objects.at(index));
+				});
+			*/
 
-			//m_task->foreach(m_objects, [&](int index) {
-			//	updateCahce(m_objects.at(index));
-			//});
-		
-
-		else {
-			for (CollisionObject* obj : m_objects) {
+		}
+		else 
+		{
+			for (CollisionObject* obj : m_Objects) {
 				updateCahce(obj);
 			}
-		}}*/
+		}
 
 		// should have a container that keeps track of this
 		std::vector<std::pair<CollisionObject*, CollisionObject*>> pairs;
@@ -156,8 +159,8 @@ namespace Strand {
 				}
 			};
 
-		if (m_task) {
-			m_task->foreach(pairs, [&](size_t i) {
+		if (m_Task) {
+			m_Task->foreach(pairs, [&](size_t i) {
 				findManifold(pairs[i].first, pairs[i].second);
 				});
 		}

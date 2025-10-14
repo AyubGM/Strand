@@ -39,7 +39,7 @@ namespace Strand
 		ColliderShape<D>* as_dim()
 		{
 			SD_CORE_ASSERT(D == Dim);
-			return (Collider<D>*)this;
+			return (ColliderShape<D>*)this;
 		}
 
 		uint32_t get_id() const {
@@ -59,7 +59,7 @@ namespace Strand
 
 		ColliderShape(ColliderType type) : Collider(type, D)
 		{
-			static_assert(D == Dimension::D2 || D == Dimension::D3)
+			static_assert(D == Dimension::D2 || D == Dimension::D3);
 		}
 
 		virtual vec_t FindFurthestPoint(TransformComponent* transform, const vec_t& direction) const = 0;
@@ -67,12 +67,12 @@ namespace Strand
 
 		aabb_t Bounds()
 		{
-			if (CasheIsOld())
+			if (CacheIsOld())
 			{
 				UpdateCache();
 			}
 
-			return t_Bounds
+			return t_Bounds;
 		}
 
 		void UpdateCache() override

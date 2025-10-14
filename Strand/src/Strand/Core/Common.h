@@ -4,7 +4,7 @@
 
 namespace Strand {
 
-	enum class Dimension {
+	enum Dimension {
 		D2 = 2,
 		D3 = 3,
 	};

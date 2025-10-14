@@ -191,9 +191,12 @@
     <ClInclude Include="src\Strand\Physics\Collision\CollisionSpace.h" />
     <ClInclude Include="src\Strand\Physics\Collision\Manifold.h" />
     <ClInclude Include="src\Strand\Physics\Collision\ManifoldPoints.h" />
+    <ClInclude Include="src\Strand\Physics\Collision\PlaneCollider.h" />
     <ClInclude Include="src\Strand\Physics\Collision\Solver.h" />
+    <ClInclude Include="src\Strand\Physics\Collision\SphereCollider.h" />
     <ClInclude Include="src\Strand\Physics\Collision\TestCollision.h" />
     <ClInclude Include="src\Strand\Physics\Dynamics\DynamicsSpace.h" />
+    <ClInclude Include="src\Strand\Physics\Physics.h" />
     <ClInclude Include="src\Strand\Renderer\Buffer.h" />
     <ClInclude Include="src\Strand\Renderer\Camera.h" />
     <ClInclude Include="src\Strand\Renderer\EditorCamera.h" />

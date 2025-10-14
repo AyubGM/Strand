@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Strand/Physics/Collision/Solver.h"
+#include "Strand/Utils/ThreadPool.h"
 
 #include <set>
 
@@ -78,7 +79,7 @@ namespace Strand {
 		std::vector<CollisionObject*> m_Objects;
 	private:
 		std::vector<Solver*> m_Solvers;
-		//ref<iw::thread_pool> m_Task;
+		Ref<ThreadPool> m_Task;
 	};
 
 }

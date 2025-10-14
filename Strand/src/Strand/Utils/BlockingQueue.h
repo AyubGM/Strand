@@ -53,7 +53,7 @@ namespace Strand {
 			return m_Queue.empty(); // not sure if this is thread safe?
 		}
 
-		sizeT size() 
+		size_t size() 
 		{
 			std::lock_guard<std::mutex> lock(m_Mutex);
 			return m_Queue.size();

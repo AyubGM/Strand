@@ -1525,6 +1525,9 @@
     <ClInclude Include="src\Strand\Physics\Collision\TestCollision.h" />
     <ClInclude Include="src\Strand\Utils\ThreadPool.h" />
     <ClInclude Include="src\Strand\Utils\BlockingQueue.h" />
+    <ClInclude Include="src\Strand\Physics\Collision\PlaneCollider.h" />
+    <ClInclude Include="src\Strand\Physics\Collision\SphereCollider.h" />
+    <ClInclude Include="src\Strand\Physics\Physics.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp">
