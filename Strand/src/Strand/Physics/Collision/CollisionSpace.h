@@ -65,7 +65,7 @@ namespace Strand {
 
 		void SetCollisionCallback(const CollisionCallbackFn& callback);
 
-		//void SetMultithread(iw::ref<iw::thread_pool> task);
+		void SetMultithread(Ref<ThreadPool> task);
 
 		const std::vector<CollisionObject*>& CollisionObjects() const;
 

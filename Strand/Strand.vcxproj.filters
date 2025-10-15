@@ -1528,6 +1528,11 @@
     <ClInclude Include="src\Strand\Physics\Collision\PlaneCollider.h" />
     <ClInclude Include="src\Strand\Physics\Collision\SphereCollider.h" />
     <ClInclude Include="src\Strand\Physics\Physics.h" />
+    <ClInclude Include="src\Strand\Physics\Collision\PositionSolver.h" />
+    <ClInclude Include="src\Strand\Physics\Dynamics\Rigidbody.h" />
+    <ClInclude Include="src\Strand\Physics\Dynamics\Constraint.h" />
+    <ClInclude Include="src\Strand\Physics\Dynamics\ImpulseSolver.h" />
+    <ClInclude Include="src\Strand\Physics\Dynamics\SmoothPositionSolver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp">
@@ -1673,7 +1678,10 @@
     </ClCompile>
     <ClCompile Include="src\Strand\Physics\Dynamics\DynamicsSpace.cpp" />
     <ClCompile Include="src\Strand\Physics\Collision\CollisionSpace.cpp" />
-    <ClCompile Include="src\Strand\Physics\Collision\CollisionObject.cpp" />
     <ClCompile Include="src\Strand\Physics\Collision\TestCollision.cpp" />
+    <ClCompile Include="src\Strand\Physics\Collision\PositionSolver.cpp" />
+    <ClCompile Include="src\Strand\Physics\Dynamics\Rigidbody.cpp" />
+    <ClCompile Include="src\Strand\Physics\Dynamics\ImpulseSolver.cpp" />
+    <ClCompile Include="src\Strand\Physics\Dynamics\SmoothPositionSolver.cpp" />
   </ItemGroup>
 </Project>

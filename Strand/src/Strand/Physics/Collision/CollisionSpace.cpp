@@ -186,4 +186,123 @@ namespace Strand {
 		SolveManifolds(collisions, dt);
 	}
 
+	bool CollisionSpace::TestCollider(
+		Collider& collider) const
+	{
+		TransformComponent tempTransform;
+		for (CollisionObject* other : m_Objects) {
+			if (other->Collider
+				&& TestCollision(other->Collider, &other->Transform, &collider, &tempTransform).HasCollision)
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	bool CollisionSpace::TestObject(
+		CollisionObject* object) const
+	{
+		return TestCollider(*object->Collider);
+	}
+
+	DistanceQueryResult CollisionSpace::QueryPoint(
+		const glm::vec3& position,
+		float maxDistance) const
+	{
+		DistanceQueryResult result;
+
+		for (CollisionObject* object : m_Objects)
+		{
+			// this doesnt take into account collider, should use FindClosestPoint, but even with mesh colliders only returns verts
+			// needs ture analyitical closest point type function to be super correct
+			// solving this would mean that the exact point from gjk/epa could be found which opens rotational physics finally
+
+			float distance = glm::distance2(object->Transform.Translation, position);
+			if (distance < maxDistance * maxDistance)
+			{
+				result.Objects.emplace(distance, object);
+			}
+		}
+
+		return result;
+	}
+
+	DistanceQueryResult CollisionSpace::QueryVector(
+		const glm::vec3& position,
+		const glm::vec3& vector,
+		float maxDistance,
+		float maxDistanceNorm) const
+	{
+		DistanceQueryResult result;
+
+		glm::vec3 vectorNorm = glm::normalize(vector);
+
+		for (CollisionObject* object : m_Objects)
+		{
+			glm::vec3 objPos = object->Transform.Translation;
+			glm::vec3 objDelta = objPos - position;
+			glm::vec3 projPos = position + vectorNorm * glm::dot(vectorNorm, objDelta);
+
+			float  objDistance = glm::dot(vectorNorm, objDelta);
+			float projDistance = glm::length2(projPos - objPos);
+
+			if (objDistance > 0
+				&& objDistance < maxDistance
+				&& projDistance < maxDistanceNorm * maxDistanceNorm)
+			{
+				result.Objects.emplace(objDistance, object);
+			}
+		}
+
+		return result;
+	}
+
+	void CollisionSpace::SolveManifolds(
+		std::vector<Manifold>& manifolds,
+		float dt)
+	{
+		//for (int i = 0; i < 5; i++) {
+		for (Solver* solver : m_Solvers) {
+			solver->Solve(manifolds, dt);
+		}
+		//}
+	}
+
+	void CollisionSpace::SendCollisionCallbacks(
+		std::vector<Manifold>& manifolds,
+		float dt)
+	{
+		for (Manifold& manifold : manifolds) {
+			m_CollisionCallbackFn(manifold, dt);
+
+			CollisionCallbackFn& a = manifold.ObjA->OnCollision;
+			CollisionCallbackFn& b = manifold.ObjB->OnCollision;
+
+			if (a) {
+				a(manifold, dt);
+			}
+
+			if (b) {
+				b(manifold, dt);
+			}
+		}
+	}
+
+	void CollisionSpace::SetCollisionCallback(
+		const CollisionCallbackFn& callback)
+	{
+		m_CollisionCallbackFn = callback;
+	}
+
+	void CollisionSpace::SetMultithread(
+		Ref<ThreadPool> task)
+	{
+		m_Task = task;
+	}
+
+	const std::vector<CollisionObject*>& CollisionSpace::CollisionObjects() const {
+		return m_Objects;
+	}
 }
