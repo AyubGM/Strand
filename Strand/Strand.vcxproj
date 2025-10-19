@@ -187,12 +187,15 @@
     <ClInclude Include="src\Strand\ImGui\ImGuiLayer.h" />
     <ClInclude Include="src\Strand\Math\Math.h" />
     <ClInclude Include="src\Strand\Physics\AABB.h" />
+    <ClInclude Include="src\Strand\Physics\Collision\CapsuleCollider.h" />
     <ClInclude Include="src\Strand\Physics\Collision\Collider.h" />
     <ClInclude Include="src\Strand\Physics\Collision\CollisionObject.h" />
     <ClInclude Include="src\Strand\Physics\Collision\CollisionSpace.h" />
+    <ClInclude Include="src\Strand\Physics\Collision\GJK.h" />
     <ClInclude Include="src\Strand\Physics\Collision\HullCollider.h" />
     <ClInclude Include="src\Strand\Physics\Collision\Manifold.h" />
     <ClInclude Include="src\Strand\Physics\Collision\ManifoldPoints.h" />
+    <ClInclude Include="src\Strand\Physics\Collision\MeshCollider.h" />
     <ClInclude Include="src\Strand\Physics\Collision\PlaneCollider.h" />
     <ClInclude Include="src\Strand\Physics\Collision\PositionSolver.h" />
     <ClInclude Include="src\Strand\Physics\Collision\Solver.h" />

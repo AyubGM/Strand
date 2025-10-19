@@ -16,6 +16,7 @@ namespace Strand::Common {
 	using c_aabb2 = std::pair<glm::vec2, glm::vec2>;
 	using c_aabb = std::pair<glm::vec3, glm::vec3>;
 
+
 	template<typename C, typename T = std::decay_t<decltype(*begin(std::declval<C>()))>, typename = std::enable_if_t<std::is_same_v<T, glm::vec2>>>
 	c_aabb2 GenPolygonBounds(
 		const C& polygon)
@@ -29,6 +30,26 @@ namespace Strand::Common {
 			if (v.x < min.x) min.x = v.x;
 			if (v.y > max.y) max.y = v.y;
 			if (v.y < min.y) min.y = v.y;
+		}
+
+		return bounds;
+	}
+
+	template<typename C, typename T = std::decay_t<decltype(*begin(std::declval<C>()))>, typename = std::enable_if_t<std::is_same_v<T, glm::vec3>>>
+	c_aabb GenPolygonBounds(
+		const C& polygon)
+	{
+		c_aabb bounds(glm::vec3(FLT_MAX), glm::vec3(-FLT_MAX));
+		auto& [min, max] = bounds;
+
+		for (const glm::vec3& v : polygon)
+		{
+			if (v.x > max.x) max.x = v.x;
+			if (v.x < min.x) min.x = v.x;
+			if (v.y > max.y) max.y = v.y;
+			if (v.y < min.y) min.y = v.y;
+			if (v.z > max.z) max.z = v.z;
+			if (v.z < min.z) min.z = v.z;
 		}
 
 		return bounds;

@@ -18,7 +18,7 @@ namespace Strand {
 		HullCollider(const std::vector<vec_t>& points = {}, bool isMesh = false) : ColliderShape<D>(isMesh ? ColliderType::MESH : ColliderType::HULL)
 			, Points(points)
 		{
-			Bounds();
+			ColliderShape<D>::Bounds();
 		}
 
 		virtual void AddPoint(const vec_t& p)
@@ -28,7 +28,7 @@ namespace Strand {
 
 		virtual void RemovePoint(const vec_t& p)
 		{
-			Points.erase(std::find(Points.begin, Points.end(), p));
+			Points.erase(std::find(Points.begin(), Points.end(), p));
 		}
 
 		vec_t FindFurthestPoint(TransformComponent* transform, const vec_t& direction) const override
@@ -38,7 +38,7 @@ namespace Strand {
 
 			for (const vec_t& point : Points)
 			{
-				vec_t p = Physics::TransformPoint<D>;
+				vec_t p = Physics::TransformPoint<D>(point, transform);
 
 				float distance = glm::dot(p, direction);
 				if(distance > maxDistance) 
@@ -58,11 +58,11 @@ namespace Strand {
 
 		bool CacheIsOld() const override
 		{
-			uint32_t size = Points.size();
+			size_t size = Points.size();
 
 			if (size != t_Points.size())
 			{
-				return;
+				return true;
 			}
 
 			for (size_t i = 0; i < size; i++)
@@ -76,7 +76,7 @@ namespace Strand {
 			return false;
 		}
 
-		void UpdateCashe() override
+		void UpdateCache() override
 		{
 			t_Points = Points;
 			ColliderShape<D>::UpdateCache();
