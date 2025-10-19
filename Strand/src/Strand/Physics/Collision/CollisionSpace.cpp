@@ -79,15 +79,9 @@ namespace Strand {
 
 		if (m_Task) 
 		{
-			for (CollisionObject* obj : m_Objects)
-			{
-				updateCahce(obj);
-			}
-
-			/*	m_Task->foreach(m_Objects, [&](int index) {
-					updateCahce(m_Objects.at(index));
-				});
-			*/
+			m_Task->foreach(m_Objects, [&](int index) {
+				updateCahce(m_Objects.at(index));
+			});
 
 		}
 		else 

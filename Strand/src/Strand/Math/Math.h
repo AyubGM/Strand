@@ -11,5 +11,11 @@ namespace Strand::Math {
 	{
 		return a >= b ? a : b;
 	}
+
+	constexpr float Pi = 3.14159265359f;
+	constexpr float Pi2 = Pi * 2;
+	constexpr float hPi = Pi * 0.5f;
+	constexpr float e = 2.71828182846f;
+	constexpr float Phi = 1.61803398875f;
 }
 

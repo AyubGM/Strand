@@ -21,3 +21,17 @@ inline float Minor(glm::vec3& v) {
 	if (v.z < m) m = v.z;
 	return m;
 }
+
+namespace Strand::Physics {
+
+	template<Dimension D>
+	_vec<D> TransformPoint(const _vec<D>& point, TransformComponent* transform)
+	{
+		glm::vec4 v;
+
+		if constexpr (D == D2) v = glm::vec4(point, 0, 1);
+		else                    v = glm::vec4(point, 1);
+
+		return _vec<D>(v * glm::transpose(transform->GetTransform()));
+	}
+}

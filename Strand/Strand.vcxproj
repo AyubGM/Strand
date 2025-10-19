@@ -161,6 +161,7 @@
     <ClInclude Include="src\Platform\OpenGL\OpenGLVertexArray.h" />
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="src\Strand.h" />
+    <ClInclude Include="src\Strand\Common\Algos\Polygon.h" />
     <ClInclude Include="src\Strand\Core\Application.h" />
     <ClInclude Include="src\Strand\Core\Assert.h" />
     <ClInclude Include="src\Strand\Core\Base.h" />
@@ -189,6 +190,7 @@
     <ClInclude Include="src\Strand\Physics\Collision\Collider.h" />
     <ClInclude Include="src\Strand\Physics\Collision\CollisionObject.h" />
     <ClInclude Include="src\Strand\Physics\Collision\CollisionSpace.h" />
+    <ClInclude Include="src\Strand\Physics\Collision\HullCollider.h" />
     <ClInclude Include="src\Strand\Physics\Collision\Manifold.h" />
     <ClInclude Include="src\Strand\Physics\Collision\ManifoldPoints.h" />
     <ClInclude Include="src\Strand\Physics\Collision\PlaneCollider.h" />
@@ -201,6 +203,7 @@
     <ClInclude Include="src\Strand\Physics\Dynamics\ImpulseSolver.h" />
     <ClInclude Include="src\Strand\Physics\Dynamics\Rigidbody.h" />
     <ClInclude Include="src\Strand\Physics\Dynamics\SmoothPositionSolver.h" />
+    <ClInclude Include="src\Strand\Physics\Events\PhysicsEvent.h" />
     <ClInclude Include="src\Strand\Physics\Physics.h" />
     <ClInclude Include="src\Strand\Renderer\Buffer.h" />
     <ClInclude Include="src\Strand\Renderer\Camera.h" />
