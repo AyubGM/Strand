@@ -42,6 +42,10 @@
 #include "Strand/Renderer/Material.h"
 // --------TEMP-----------------------
 
+// ---Physics-------------------------
+#include "Strand/Physics/Dynamics/DynamicsSpace.h"
+//-----------------------------------
+
 // ---Entry Point--------------------
 //#include "Strand/Core/EntryPoint.h"
 // ----------------------------------

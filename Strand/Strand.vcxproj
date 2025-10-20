@@ -186,6 +186,8 @@
     <ClInclude Include="src\Strand\Events\MouseEvent.h" />
     <ClInclude Include="src\Strand\ImGui\ImGuiLayer.h" />
     <ClInclude Include="src\Strand\Math\Math.h" />
+    <ClInclude Include="src\Strand\Math\MathTranslation.h" />
+    <ClInclude Include="src\Strand\Math\Matrix.h" />
     <ClInclude Include="src\Strand\Physics\AABB.h" />
     <ClInclude Include="src\Strand\Physics\Collision\CapsuleCollider.h" />
     <ClInclude Include="src\Strand\Physics\Collision\Collider.h" />

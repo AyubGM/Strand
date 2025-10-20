@@ -141,6 +141,17 @@ void Sandbox3D::OnUpdate(Strand::Timestep ts)
 {
 	SD_PROFILE_FUNCTION();
 
+	{
+		m_DeltaTime = ts;
+		m_Accumlator += ts;
+		m_Frames++;
+		if (m_Accumlator >= 1.0f)
+		{
+			m_FPS = m_Frames / m_Accumlator;
+			m_Frames = 0;
+			m_Accumlator = 0.0f;
+		}
+	}
 
 	// Update
 	m_CameraController.OnUpdate(ts);
@@ -266,6 +277,10 @@ void Sandbox3D::OnImGuiRender()
 	SD_PROFILE_FUNCTION();
 
 
+	ImGui::Begin("Stats");
+	ImGui::Text("Delta Time: %.3f ms", m_DeltaTime * 1000.0f);
+	ImGui::Text("FPS: %.1f ms", m_FPS);
+	ImGui::End();
 
 	ImGui::Begin("Settings");
 

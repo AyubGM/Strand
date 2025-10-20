@@ -16,6 +16,16 @@ public:
 	virtual void OnImGuiRender() override;
 	void OnEvent(Strand::Event& e) override;
 private:
+	//---------DEBUG-------
+	Strand::Timestep m_DeltaTime = 0.0f;
+	float m_Accumlator = 0.0f;
+	int m_Frames = 0;
+	float m_FPS = 0.0f;
+	//---------DEBUG--------
+
+
+
+
 	Strand::OrthographicCameraController m_CameraController;
 	std::vector<Strand::PointLight> m_Lights;
 	Strand::EditorCamera m_EditorCamera;

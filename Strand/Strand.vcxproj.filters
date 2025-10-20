@@ -1539,6 +1539,8 @@
     <ClInclude Include="src\Strand\Physics\Collision\MeshCollider.h" />
     <ClInclude Include="src\Strand\Physics\Collision\CapsuleCollider.h" />
     <ClInclude Include="src\Strand\Physics\Collision\GJK.h" />
+    <ClInclude Include="src\Strand\Math\Matrix.h" />
+    <ClInclude Include="src\Strand\Math\MathTranslation.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp">
