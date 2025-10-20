@@ -23,6 +23,10 @@ private:
 	float m_FPS = 0.0f;
 	//---------DEBUG--------
 
+	Strand::DynamicsSpace m_PhysicsWorld;
+	Strand::Rigidbody m_Rigidbody;
+	Strand::TransformComponent m_TransformComponent;
+	Strand::HullCollider<Strand::Dimension::D3> m_TestCollider;
 
 
 

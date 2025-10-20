@@ -20,6 +20,7 @@ C:\dev\Strand\Strand\src\Strand\ImGui\ImGuiBuild.cpp;C:\dev\Strand\bin-int\Debug
 C:\dev\Strand\Strand\src\Strand\ImGui\ImGuiLayer.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\ImGuiLayer.obj
 C:\dev\Strand\Strand\src\Strand\Math\Math.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\Math.obj
 C:\dev\Strand\Strand\src\Strand\Physics\Collision\CollisionSpace.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\CollisionSpace.obj
+C:\dev\Strand\Strand\src\Strand\Physics\Collision\GJK.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\GJK.obj
 C:\dev\Strand\Strand\src\Strand\Physics\Collision\PositionSolver.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\PositionSolver.obj
 C:\dev\Strand\Strand\src\Strand\Physics\Collision\TestCollision.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\TestCollision.obj
 C:\dev\Strand\Strand\src\Strand\Physics\Dynamics\DynamicsSpace.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\DynamicsSpace.obj

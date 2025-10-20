@@ -2,6 +2,7 @@
 
 #include "Strand/Physics/Collision/Collider.h"
 #include "Strand/Physics/Collision/ManifoldPoints.h"
+#include "Strand/Math/Math.h"
 
 namespace Strand {
 

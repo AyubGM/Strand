@@ -684,6 +684,7 @@
     <ClCompile Include="src\Strand\ImGui\ImGuiLayer.cpp" />
     <ClCompile Include="src\Strand\Math\Math.cpp" />
     <ClCompile Include="src\Strand\Physics\Collision\CollisionSpace.cpp" />
+    <ClCompile Include="src\Strand\Physics\Collision\GJK.cpp" />
     <ClCompile Include="src\Strand\Physics\Collision\PositionSolver.cpp" />
     <ClCompile Include="src\Strand\Physics\Collision\TestCollision.cpp" />
     <ClCompile Include="src\Strand\Physics\Dynamics\DynamicsSpace.cpp" />

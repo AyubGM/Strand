@@ -96,6 +96,8 @@ Sandbox3D::Sandbox3D()
 	m_CubeMesh = Strand::CreateRef<Strand::Mesh>(cubeVertices, cubeindces);
 
 	m_SkyBoxMesh = Strand::CreateRef<Strand::Mesh>(cubeVertices, cubeindces);
+
+	m_PhysicsWorld.SetGravity(glm::vec3(0, -9.81f, 0));
 	
 }
 
@@ -130,6 +132,23 @@ void Sandbox3D::OnAttach()
 	m_ReflectiveMaterial = Strand::Material::Create(m_ReflectShader);
 	m_ReflectiveMaterial->Set("skybox", m_CubeMapTextur);
 
+	Strand::HullCollider<Strand::Dimension::D3> temp = Strand::MakeCubeCollider();
+
+	m_TestCollider.Points = temp.Points;
+	Strand::Collider* cubeCollider = &m_TestCollider;
+	m_TransformComponent.Translation = glm::vec3(0, 0, 0);
+	m_TransformComponent.Scale = glm::vec3(1, 1, 1);
+	m_TransformComponent.Rotation = glm::vec3(0, 15, 0);
+	m_Rigidbody.SetTransform(&m_TransformComponent);
+	m_Rigidbody.Collider = cubeCollider;
+	m_Rigidbody.IsStatic = false;
+	m_Rigidbody.IsSimulated = true;
+	m_Rigidbody.Restitution = .5;
+	m_Rigidbody.DynamicFriction = .2;
+	m_Rigidbody.StaticFriction = .3;
+	m_Rigidbody.SetMass(10.0);
+	//m_Rigidbody.Velocity = glm::vec3(1, 1, 1);
+	m_PhysicsWorld.AddRigidbody(&m_Rigidbody);
 }
 
 void Sandbox3D::OnDetach()
@@ -155,6 +174,9 @@ void Sandbox3D::OnUpdate(Strand::Timestep ts)
 
 	// Update
 	m_CameraController.OnUpdate(ts);
+
+	// Physics
+	m_PhysicsWorld.Step(ts);
 
 
 	// Render
@@ -216,7 +238,11 @@ void Sandbox3D::OnUpdate(Strand::Timestep ts)
 		std::array<Strand::PointLight, 4> lightsArray;
 		std::copy_n(m_Lights.begin(), 4, lightsArray.begin());
 		Strand::SceneData sceneData{ m_EditorCamera.GetPosition(), 4, lightsArray, directLight, spotLight };
+
 		Strand::Renderer3D::BeginScene(m_EditorCamera, sceneData);
+
+		Strand::Renderer3D::Submit(m_CubeMesh, m_ReflectiveMaterial, m_Rigidbody.Transform.GetTransform());
+
 
 		glm::mat4 model = glm::mat4(1.0f);
 

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Strand/Scene/Components.h"
-#include "Collider.h"
+#include "Strand/Physics/Collision/Collider.h"
 
 namespace Strand {
 

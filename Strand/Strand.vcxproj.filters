@@ -1691,5 +1691,6 @@
     <ClCompile Include="src\Strand\Physics\Dynamics\Rigidbody.cpp" />
     <ClCompile Include="src\Strand\Physics\Dynamics\ImpulseSolver.cpp" />
     <ClCompile Include="src\Strand\Physics\Dynamics\SmoothPositionSolver.cpp" />
+    <ClCompile Include="src\Strand\Physics\Collision\GJK.cpp" />
   </ItemGroup>
 </Project>

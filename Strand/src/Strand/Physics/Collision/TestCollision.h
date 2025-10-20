@@ -256,7 +256,7 @@ namespace Strand {
 
 	// For meshes
 
-	ManifoldPoints GetMaxPen(std::vector<ManifoldPoints>& manifolds)
+	inline ManifoldPoints GetMaxPen(std::vector<ManifoldPoints>& manifolds)
 	{
 		if (manifolds.size() == 0) return ManifoldPoints(); // exit if no collision
 
@@ -338,8 +338,7 @@ namespace Strand {
 	}
 	
 
-	template<
-		Dimension D>
+	template<Dimension D>
 	ManifoldPoints TestGJK(
 		Collider* a, TransformComponent* at,
 		Collider* b, TransformComponent* bt)
