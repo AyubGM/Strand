@@ -54,14 +54,12 @@ namespace Strand {
 		return m_NextTrans;
 	}
 
-	void Rigidbody::SetMass(
-		float mass)
+	void Rigidbody::SetMass(float mass)
 	{
 		InvMass = 1.0f / mass;
 	}
 
-	void Rigidbody::SetTransform(
-		TransformComponent* transform)
+	void Rigidbody::SetTransform(TransformComponent* transform)
 	{
 		SetLastTrans(*transform);
 		SetNextTrans(*transform);

@@ -28,6 +28,9 @@ private:
 	Strand::TransformComponent m_TransformComponent;
 	Strand::HullCollider<Strand::Dimension::D3> m_TestCollider;
 
+	Strand::CollisionObject m_Plane;
+	Strand::PlaneCollider<Strand::Dimension::D3> m_PlaneCol;
+
 
 
 	Strand::OrthographicCameraController m_CameraController;
