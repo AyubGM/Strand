@@ -4,6 +4,7 @@
 #include "Strand/Core/Log.h"
 
 #include "Strand/Renderer/Renderer.h"
+#include "Strand/Scripting/ScriptEngine.h"
 
 #include "Strand/Core/Input.h"
 
@@ -29,6 +30,7 @@ namespace Strand {
 		m_Window->SetEventCallback(SD_BIND_EVENT_FN(Application::OnEvent));
 
 		Renderer::Init();
+		ScriptEngine::Init();
 
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);

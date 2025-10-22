@@ -16,6 +16,12 @@
     <Filter Include="src\Strand">
       <UniqueIdentifier>{08534D2F-F40A-8F7C-5D12-68D849E9296D}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Strand\Common">
+      <UniqueIdentifier>{40A711D7-ACBD-0F6D-F534-9B8E618AE0F4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Strand\Common\Algos">
+      <UniqueIdentifier>{65C3790E-D1FA-C1A5-DA04-26C946BBE89E}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Strand\Core">
       <UniqueIdentifier>{609CBB79-CC27-293E-D538-AC324143853E}</UniqueIdentifier>
     </Filter>
@@ -31,11 +37,26 @@
     <Filter Include="src\Strand\Math">
       <UniqueIdentifier>{E1DCC079-4D68-2E3E-5679-B132C2838A3E}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Strand\Physics">
+      <UniqueIdentifier>{7ADE8392-66C2-44E8-CF22-3F3BBB252F6A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Strand\Physics\Collision">
+      <UniqueIdentifier>{15F4D8ED-01AF-C899-AA66-41E49600132A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Strand\Physics\Dynamics">
+      <UniqueIdentifier>{211913BB-8D26-41A1-160D-3D8C82190D58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Strand\Physics\Events">
+      <UniqueIdentifier>{1E3D93BA-8AFF-C644-D3AF-55D13FB19F22}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Strand\Renderer">
       <UniqueIdentifier>{AE7FDAB9-1AE1-B7C7-A34E-FE790FAFEE86}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\Strand\Scene">
       <UniqueIdentifier>{25E649B2-11DF-6804-3A11-4E8926694810}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Strand\Scripting">
+      <UniqueIdentifier>{0A327ED1-F6C0-079B-9FDF-1B968B4D1841}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\Strand\Utils">
       <UniqueIdentifier>{687A77B2-5473-9604-7DA5-7B8969FD7510}</UniqueIdentifier>
@@ -102,6 +123,9 @@
     <ClInclude Include="src\Strand.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="src\Strand\Common\Algos\Polygon.h">
+      <Filter>src\Strand\Common\Algos</Filter>
+    </ClInclude>
     <ClInclude Include="src\Strand\Core\Application.h">
       <Filter>src\Strand\Core</Filter>
     </ClInclude>
@@ -109,6 +133,9 @@
       <Filter>src\Strand\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Strand\Core\Base.h">
+      <Filter>src\Strand\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Strand\Core\Common.h">
       <Filter>src\Strand\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Strand\Core\EntryPoint.h">
@@ -130,6 +157,9 @@
       <Filter>src\Strand\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Strand\Core\PlatformDetection.h">
+      <Filter>src\Strand\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Strand\Core\PolygonCommon.h">
       <Filter>src\Strand\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Strand\Core\Timer.h">
@@ -167,6 +197,78 @@
     </ClInclude>
     <ClInclude Include="src\Strand\Math\Math.h">
       <Filter>src\Strand\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Strand\Math\MathTranslation.h">
+      <Filter>src\Strand\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Strand\Math\Matrix.h">
+      <Filter>src\Strand\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Strand\Physics\AABB.h">
+      <Filter>src\Strand\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Strand\Physics\Collision\CapsuleCollider.h">
+      <Filter>src\Strand\Physics\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Strand\Physics\Collision\Collider.h">
+      <Filter>src\Strand\Physics\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Strand\Physics\Collision\CollisionObject.h">
+      <Filter>src\Strand\Physics\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Strand\Physics\Collision\CollisionSpace.h">
+      <Filter>src\Strand\Physics\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Strand\Physics\Collision\GJK.h">
+      <Filter>src\Strand\Physics\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Strand\Physics\Collision\HullCollider.h">
+      <Filter>src\Strand\Physics\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Strand\Physics\Collision\Manifold.h">
+      <Filter>src\Strand\Physics\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Strand\Physics\Collision\ManifoldPoints.h">
+      <Filter>src\Strand\Physics\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Strand\Physics\Collision\MeshCollider.h">
+      <Filter>src\Strand\Physics\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Strand\Physics\Collision\PlaneCollider.h">
+      <Filter>src\Strand\Physics\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Strand\Physics\Collision\PositionSolver.h">
+      <Filter>src\Strand\Physics\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Strand\Physics\Collision\Solver.h">
+      <Filter>src\Strand\Physics\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Strand\Physics\Collision\SphereCollider.h">
+      <Filter>src\Strand\Physics\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Strand\Physics\Collision\TestCollision.h">
+      <Filter>src\Strand\Physics\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Strand\Physics\Dynamics\Constraint.h">
+      <Filter>src\Strand\Physics\Dynamics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Strand\Physics\Dynamics\DynamicsSpace.h">
+      <Filter>src\Strand\Physics\Dynamics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Strand\Physics\Dynamics\ImpulseSolver.h">
+      <Filter>src\Strand\Physics\Dynamics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Strand\Physics\Dynamics\Rigidbody.h">
+      <Filter>src\Strand\Physics\Dynamics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Strand\Physics\Dynamics\SmoothPositionSolver.h">
+      <Filter>src\Strand\Physics\Dynamics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Strand\Physics\Events\PhysicsEvent.h">
+      <Filter>src\Strand\Physics\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Strand\Physics\Physics.h">
+      <Filter>src\Strand\Physics</Filter>
     </ClInclude>
     <ClInclude Include="src\Strand\Renderer\Buffer.h">
       <Filter>src\Strand\Renderer</Filter>
@@ -246,7 +348,16 @@
     <ClInclude Include="src\Strand\Scene\ScriptableEntity.h">
       <Filter>src\Strand\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="src\Strand\Scripting\ScriptEngine.h">
+      <Filter>src\Strand\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Strand\Utils\BlockingQueue.h">
+      <Filter>src\Strand\Utils</Filter>
+    </ClInclude>
     <ClInclude Include="src\Strand\Utils\PlatformUtils.h">
+      <Filter>src\Strand\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Strand\Utils\ThreadPool.h">
       <Filter>src\Strand\Utils</Filter>
     </ClInclude>
     <ClInclude Include="src\sdpch.h">
@@ -1512,35 +1623,6 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="src\Strand\Physics\Dynamics\DynamicsSpace.h" />
-    <ClInclude Include="src\Strand\Physics\Collision\CollisionSpace.h" />
-    <ClInclude Include="src\Strand\Physics\Collision\CollisionObject.h" />
-    <ClInclude Include="src\Strand\Physics\Collision\Collider.h" />
-    <ClInclude Include="src\Strand\Core\Common.h" />
-    <ClInclude Include="src\Strand\Physics\AABB.h" />
-    <ClInclude Include="src\Strand\Core\PolygonCommon.h" />
-    <ClInclude Include="src\Strand\Physics\Collision\Solver.h" />
-    <ClInclude Include="src\Strand\Physics\Collision\ManifoldPoints.h" />
-    <ClInclude Include="src\Strand\Physics\Collision\Manifold.h" />
-    <ClInclude Include="src\Strand\Physics\Collision\TestCollision.h" />
-    <ClInclude Include="src\Strand\Utils\ThreadPool.h" />
-    <ClInclude Include="src\Strand\Utils\BlockingQueue.h" />
-    <ClInclude Include="src\Strand\Physics\Collision\PlaneCollider.h" />
-    <ClInclude Include="src\Strand\Physics\Collision\SphereCollider.h" />
-    <ClInclude Include="src\Strand\Physics\Physics.h" />
-    <ClInclude Include="src\Strand\Physics\Collision\PositionSolver.h" />
-    <ClInclude Include="src\Strand\Physics\Dynamics\Rigidbody.h" />
-    <ClInclude Include="src\Strand\Physics\Dynamics\Constraint.h" />
-    <ClInclude Include="src\Strand\Physics\Dynamics\ImpulseSolver.h" />
-    <ClInclude Include="src\Strand\Physics\Dynamics\SmoothPositionSolver.h" />
-    <ClInclude Include="src\Strand\Physics\Events\PhysicsEvent.h" />
-    <ClInclude Include="src\Strand\Physics\Collision\HullCollider.h" />
-    <ClInclude Include="src\Strand\Common\Algos\Polygon.h" />
-    <ClInclude Include="src\Strand\Physics\Collision\MeshCollider.h" />
-    <ClInclude Include="src\Strand\Physics\Collision\CapsuleCollider.h" />
-    <ClInclude Include="src\Strand\Physics\Collision\GJK.h" />
-    <ClInclude Include="src\Strand\Math\Matrix.h" />
-    <ClInclude Include="src\Strand\Math\MathTranslation.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp">
@@ -1605,6 +1687,30 @@
     </ClCompile>
     <ClCompile Include="src\Strand\Math\Math.cpp">
       <Filter>src\Strand\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Strand\Physics\Collision\CollisionSpace.cpp">
+      <Filter>src\Strand\Physics\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Strand\Physics\Collision\GJK.cpp">
+      <Filter>src\Strand\Physics\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Strand\Physics\Collision\PositionSolver.cpp">
+      <Filter>src\Strand\Physics\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Strand\Physics\Collision\TestCollision.cpp">
+      <Filter>src\Strand\Physics\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Strand\Physics\Dynamics\DynamicsSpace.cpp">
+      <Filter>src\Strand\Physics\Dynamics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Strand\Physics\Dynamics\ImpulseSolver.cpp">
+      <Filter>src\Strand\Physics\Dynamics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Strand\Physics\Dynamics\Rigidbody.cpp">
+      <Filter>src\Strand\Physics\Dynamics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Strand\Physics\Dynamics\SmoothPositionSolver.cpp">
+      <Filter>src\Strand\Physics\Dynamics</Filter>
     </ClCompile>
     <ClCompile Include="src\Strand\Renderer\Buffer.cpp">
       <Filter>src\Strand\Renderer</Filter>
@@ -1675,6 +1781,9 @@
     <ClCompile Include="src\Strand\Scene\SceneSerializer.cpp">
       <Filter>src\Strand\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="src\Strand\Scripting\ScriptEngine.cpp">
+      <Filter>src\Strand\Scripting</Filter>
+    </ClCompile>
     <ClCompile Include="src\sdpch.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -1684,13 +1793,5 @@
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="src\Strand\Physics\Dynamics\DynamicsSpace.cpp" />
-    <ClCompile Include="src\Strand\Physics\Collision\CollisionSpace.cpp" />
-    <ClCompile Include="src\Strand\Physics\Collision\TestCollision.cpp" />
-    <ClCompile Include="src\Strand\Physics\Collision\PositionSolver.cpp" />
-    <ClCompile Include="src\Strand\Physics\Dynamics\Rigidbody.cpp" />
-    <ClCompile Include="src\Strand\Physics\Dynamics\ImpulseSolver.cpp" />
-    <ClCompile Include="src\Strand\Physics\Dynamics\SmoothPositionSolver.cpp" />
-    <ClCompile Include="src\Strand\Physics\Collision\GJK.cpp" />
   </ItemGroup>
 </Project>

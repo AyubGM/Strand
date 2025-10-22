@@ -30,6 +30,7 @@ IncludeDir["glm"] = "Strand/vendor/glm"
 IncludeDir["Box2D"] = "Strand/vendor/Box2D/include"
 IncludeDir["stb_image"] = "Strand/vendor/stb_image"
 IncludeDir["entt"] = "Strand/vendor/entt/include"
+IncludeDir["mono"] = "Strand/vendor/mono/include"
 IncludeDir["yaml_cpp"] = "Strand/vendor/yaml-cpp/include"
 IncludeDir["ImGuizmo"] = "Strand/vendor/ImGuizmo"
 IncludeDir["shaderc"] = "Strand/vendor/shaderc/include"
@@ -63,6 +64,18 @@ Library["SPIRV_Cross_GLSL_Release"] = "%{LibraryDir.VulkanSDK}/spirv-cross-glsl.
 LibraryDir["assimp"] = "vendor/assimp"
 Library["assimp_Debug"] = "%{LibraryDir.assimp}/lib/Debug/assimp-vc143-mtd.lib"
 Library["zlibstaticd_Debug"] = "%{LibraryDir.assimp}/contrib/zlib//Debug/zlibstaticd.lib"
+
+---MONO-------------------------
+LibraryDir["mono"] = "vendor/mono/lib/%{cfg.buildcfg}"
+Library["mono"] = "%{LibraryDir.mono}/libmono-static-sgen.lib"
+
+
+-- Windows
+Library["WinSock"] = "Ws2_32.lib"
+Library["WinMM"] = "Winmm.lib"
+Library["WinVersion"] = "Version.lib"
+Library["BCrypt"] = "Bcrypt.lib"
+
 --  Strand Dependencies --------
 
 group "Dependencies"
@@ -119,6 +132,7 @@ project "Strand"
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.stb_image}",
 		"%{IncludeDir.entt}",
+		"%{IncludeDir.mono}",
 		"%{IncludeDir.yaml_cpp}",
 		"%{IncludeDir.ImGuizmo}",
 		"%{IncludeDir.VulkanSDK}",
@@ -134,6 +148,7 @@ project "Strand"
 		"ImGui",
 		"yaml-cpp",
 		"opengl32.lib",
+		"%{Library.mono}",
 		
 	}
 
@@ -149,6 +164,13 @@ project "Strand"
 
 		}
 
+			links
+		{
+			"%{Library.WinSock}",
+			"%{Library.WinMM}",
+			"%{Library.WinVersion}",
+			"%{Library.BCrypt}",
+		}
 
 
 		filter "configurations:Debug"
@@ -310,3 +332,30 @@ project "Bridges"
 		defines "SD_DIST"
 		runtime "Release"
 		optimize "on"
+
+
+project "Strand-ScriptCore"
+	kind "SharedLib"
+	language "C#"
+	dotnetframework "4.7.2"
+
+	targetdir ("%{wks.location}/Bridges/Resources/Scripts")
+	objdir ("%{wks.location}/Bridges/Resources/Scripts/Intermediates")
+
+	files 
+	{
+		"Source/**.cs",
+		"Properties/**.cs"
+	}
+	
+	filter "configurations:Debug"
+		optimize "Off"
+		symbols "Default"
+
+	filter "configurations:Release"
+		optimize "On"
+		symbols "Default"
+
+	filter "configurations:Dist"
+		optimize "Full"
+		symbols "Off"
