@@ -1,0 +1,39 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
+
+namespace Strand
+{
+    public class Entity
+    {
+        protected Entity() { ID = 0; }
+
+        internal Entity(ulong id)
+        {
+            ID = id;
+        }
+
+        public readonly ulong ID;
+
+        public Vector3 Translation
+        {
+            get
+            {
+                InternalCalls.TransformComponent_GetTranslation(ID, out Vector3 result);
+                return result;
+            }
+            set
+            {
+                InternalCalls.TransformComponent_SetTranslation(ID, ref value);
+            }
+        }
+
+        public bool HasComponent<T>() where T : Component, new()
+        {
+
+        }
+    }
+}

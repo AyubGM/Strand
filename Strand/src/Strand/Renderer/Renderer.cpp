@@ -44,14 +44,14 @@ namespace Strand
 		Renderer2D::Init();
 		//I Understand now why these two lines stop renderer2D TODO THE UNIFORMBUFFER
 		
-		Renderer3D::Init();
+		//Renderer3D::Init();
 		s_Data.Library = CreateScope<MaterialLibrary>();
 	}
 
 	void Renderer::Shutdown()
 	{
 		Renderer2D::Shutdown();
-		Renderer3D::Shutdown();
+		//Renderer3D::Shutdown();
 	}
 
 	void Renderer::OnWindowResize(uint32_t width, uint32_t height)

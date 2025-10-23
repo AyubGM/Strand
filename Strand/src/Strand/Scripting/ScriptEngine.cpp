@@ -137,7 +137,7 @@ namespace Strand {
 		void* stringParam = monoString;
 		s_Data->EntityClass.InvokeMethod(instance, printCustomMessageFunc, &stringParam);
 
-		SD_CORE_ASSERT(false);
+		//SD_CORE_ASSERT(false);
 
 	}
 

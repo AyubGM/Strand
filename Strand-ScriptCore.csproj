@@ -7,7 +7,7 @@
     <ProjectGuid>{9CEF67A1-0806-6637-517D-F158BDD236BF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Strand-ScriptCore</RootNamespace>
+    <RootNamespace>Strand</RootNamespace>
     <AssemblyName>Strand-ScriptCore</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -21,7 +21,8 @@
     <OutputPath>Bridges\Resources\Scripts\</OutputPath>
     <BaseIntermediateOutputPath>Bridges\Resources\Scripts\Intermediates\Debug\</BaseIntermediateOutputPath>
     <IntermediateOutputPath>$(BaseIntermediateOutputPath)</IntermediateOutputPath>
-    <DefineConstants></DefineConstants>
+    <DefineConstants>
+    </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -33,7 +34,8 @@
     <OutputPath>Bridges\Resources\Scripts\</OutputPath>
     <BaseIntermediateOutputPath>Bridges\Resources\Scripts\Intermediates\Release\</BaseIntermediateOutputPath>
     <IntermediateOutputPath>$(BaseIntermediateOutputPath)</IntermediateOutputPath>
-    <DefineConstants></DefineConstants>
+    <DefineConstants>
+    </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -45,7 +47,8 @@
     <OutputPath>Bridges\Resources\Scripts\</OutputPath>
     <BaseIntermediateOutputPath>Bridges\Resources\Scripts\Intermediates\Dist\</BaseIntermediateOutputPath>
     <IntermediateOutputPath>$(BaseIntermediateOutputPath)</IntermediateOutputPath>
-    <DefineConstants></DefineConstants>
+    <DefineConstants>
+    </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -56,7 +59,15 @@
   <ItemGroup Condition=" '$(Configuration)|$(Platform)' == 'Dist|x64' ">
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Source\Main.cs" />
+    <Compile Include="Source\Camera.cs" />
+    <Compile Include="Source\Player.cs" />
+    <Compile Include="Source\Strand\Scene\Component.cs" />
+    <Compile Include="Source\Strand\Scene\Entity.cs" />
+    <Compile Include="Source\Strand\Input.cs" />
+    <Compile Include="Source\Strand\InternalCalls.cs" />
+    <Compile Include="Source\Strand\KeyCode.cs" />
+    <Compile Include="Source\Strand\Vector2.cs" />
+    <Compile Include="Source\Strand\Vector3.cs" />
   </ItemGroup>
   <ItemGroup>
   </ItemGroup>
