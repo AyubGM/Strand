@@ -52,5 +52,6 @@ C:\dev\Strand\Strand\src\Strand\Scene\SceneCamera.cpp;C:\dev\Strand\bin-int\Debu
 C:\dev\Strand\Strand\src\Strand\Scene\SceneSerializer.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\SceneSerializer.obj
 C:\dev\Strand\Strand\src\Strand\Scripting\ScriptEngine.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\ScriptEngine.obj
 C:\dev\Strand\Strand\src\sdpch.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\sdpch.obj
+C:\dev\Strand\Strand\src\Strand\Scripting\ScriptGlue.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\ScriptGlue.obj
 C:\dev\Strand\Strand\vendor\ImGuizmo\ImGuizmo.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\ImGuizmo.obj
 C:\dev\Strand\Strand\vendor\stb_image\stb_image.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\stb_image.obj

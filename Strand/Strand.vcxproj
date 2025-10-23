@@ -237,6 +237,7 @@
     <ClInclude Include="src\Strand\Scene\SceneSerializer.h" />
     <ClInclude Include="src\Strand\Scene\ScriptableEntity.h" />
     <ClInclude Include="src\Strand\Scripting\ScriptEngine.h" />
+    <ClInclude Include="src\Strand\Scripting\ScriptGlue.h" />
     <ClInclude Include="src\Strand\Utils\BlockingQueue.h" />
     <ClInclude Include="src\Strand\Utils\PlatformUtils.h" />
     <ClInclude Include="src\Strand\Utils\ThreadPool.h" />
@@ -719,6 +720,7 @@
     <ClCompile Include="src\sdpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\Strand\Scripting\ScriptGlue.cpp" />
     <ClCompile Include="vendor\ImGuizmo\ImGuizmo.cpp">
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>

@@ -50,6 +50,35 @@ inline OStream& operator<<(OStream& os, glm::qua<T, Q> quaternion)
 	return os << glm::to_string(quaternion);
 }
 
+template <>
+struct fmt::formatter<glm::vec3> {
+	constexpr auto parse(format_parse_context& ctx) -> decltype(ctx.begin()) {
+		return ctx.begin();
+	}
+
+	template <typename FormatContext>
+	auto format(const glm::vec3& v, FormatContext& ctx) const -> decltype(ctx.out()) {
+		// Output the vector in a simple (x, y, z) format.
+		// Adjust precision or format as desired.
+		return fmt::format_to(ctx.out(), "({0:.2f}, {1:.2f}, {2:.2f})", v.x, v.y, v.z);
+	}
+};
+
+template <>
+struct fmt::formatter<glm::vec4> {
+	constexpr auto parse(format_parse_context& ctx) -> decltype(ctx.begin()) {
+		return ctx.begin();
+	}
+
+	template <typename FormatContext>
+	auto format(const glm::vec4& v, FormatContext& ctx) const -> decltype(ctx.out()) {
+		// Output the vector in a simple (x, y, z) format.
+		// Adjust precision or format as desired.
+		return fmt::format_to(ctx.out(), "({0:.2f}, {1:.2f}, {2:.2f}, {3:.2f})", v.x, v.y, v.z, v.w);
+	}
+
+};
+
 // Core log macros
 #define SD_CORE_TRACE(...)		::Strand::Log::GetCoreLogger()->trace(__VA_ARGS__)
 #define SD_CORE_INFO(...)		::Strand::Log::GetCoreLogger()->info(__VA_ARGS__)
