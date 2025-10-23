@@ -33,19 +33,19 @@ namespace Strand
 		std::vector<RenderCommandData> CommandQueue;
 	};
 
-	static RendererData s_Data;
+	static RendererData s_SceneData;
 
 	void Renderer::Init()
 	{
 		SD_PROFILE_FUNCTION();
 
 		RenderCommand::Init();
-		s_Data.SceneUniformBuffer = UniformBuffer::Create(sizeof(SceneDataDebug), 0);
+		s_SceneData.SceneUniformBuffer = UniformBuffer::Create(sizeof(SceneDataDebug), 0);
 		Renderer2D::Init();
 		//I Understand now why these two lines stop renderer2D TODO THE UNIFORMBUFFER
 		
 		//Renderer3D::Init();
-		s_Data.Library = CreateScope<MaterialLibrary>();
+		s_SceneData.Library = CreateScope<MaterialLibrary>();
 	}
 
 	void Renderer::Shutdown()
@@ -63,9 +63,9 @@ namespace Strand
 	void Renderer::BeginScene(const OrthographicCamera& camera)
 	{
 		SD_PROFILE_FUNCTION();
-		s_Data.SceneBuffer.ViewProjectionMatrix = camera.GetViewProjectionMatrix();
-		s_Data.SceneUniformBuffer->SetData(&s_Data.SceneBuffer, sizeof(SceneDataDebug));
-		s_Data.CommandQueue.clear();
+		s_SceneData.SceneBuffer.ViewProjectionMatrix = camera.GetViewProjectionMatrix();
+		s_SceneData.SceneUniformBuffer->SetData(&s_SceneData.SceneBuffer, sizeof(SceneDataDebug));
+		s_SceneData.CommandQueue.clear();
 
 	}
 
@@ -73,18 +73,18 @@ namespace Strand
 	{
 		SD_PROFILE_FUNCTION();
 
-		s_Data.SceneBuffer.ViewProjectionMatrix = camera.GetProjection() * glm::inverse(transform);
-		s_Data.SceneUniformBuffer->SetData(&s_Data.SceneBuffer, sizeof(SceneDataDebug));
-		s_Data.CommandQueue.clear();
+		s_SceneData.SceneBuffer.ViewProjectionMatrix = camera.GetProjection() * glm::inverse(transform);
+		s_SceneData.SceneUniformBuffer->SetData(&s_SceneData.SceneBuffer, sizeof(SceneDataDebug));
+		s_SceneData.CommandQueue.clear();
 	}
 
 	void Renderer::BeginScene(const EditorCamera& camera)
 	{
 		SD_PROFILE_FUNCTION();
 
-		s_Data.SceneBuffer.ViewProjectionMatrix = camera.GetViewProjection();
-		s_Data.SceneUniformBuffer->SetData(&s_Data.SceneBuffer, sizeof(SceneDataDebug));
-		s_Data.CommandQueue.clear();
+		s_SceneData.SceneBuffer.ViewProjectionMatrix = camera.GetViewProjection();
+		s_SceneData.SceneUniformBuffer->SetData(&s_SceneData.SceneBuffer, sizeof(SceneDataDebug));
+		s_SceneData.CommandQueue.clear();
 
 	}
 
@@ -95,12 +95,12 @@ namespace Strand
 
 	void Renderer::Submit(const Ref<Material>& material, const Ref<VertexArray>& vertexArray, const glm::mat4& transform)
 	{
-		s_Data.CommandQueue.emplace_back( material, vertexArray, transform );
+		s_SceneData.CommandQueue.emplace_back( material, vertexArray, transform );
 	}
 
 	void Renderer::Flush()
 	{
-		for (const auto& command : s_Data.CommandQueue)
+		for (const auto& command : s_SceneData.CommandQueue)
 		{
 			command.Material->Bind();
 
@@ -113,12 +113,12 @@ namespace Strand
 
 	void Renderer::AddMaterial(const std::string& name, const Ref<Material>& material)
 	{
-		s_Data.Library->Add(name, material);
+		s_SceneData.Library->Add(name, material);
 	}
 
 	Ref<Material> Renderer::GetMaterial(const std::string& name)
 	{
-		return s_Data.Library->Get(name);
+		return s_SceneData.Library->Get(name);
 	}
 
 
