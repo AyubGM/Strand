@@ -334,28 +334,4 @@ project "Bridges"
 		optimize "on"
 
 
-project "Strand-ScriptCore"
-	kind "SharedLib"
-	language "C#"
-	dotnetframework "4.7.2"
-
-	targetdir ("%{wks.location}/Bridges/Resources/Scripts")
-	objdir ("%{wks.location}/Bridges/Resources/Scripts/Intermediates")
-
-	files 
-	{
-		"Source/**.cs",
-		"Properties/**.cs"
-	}
-	
-	filter "configurations:Debug"
-		optimize "Off"
-		symbols "Default"
-
-	filter "configurations:Release"
-		optimize "On"
-		symbols "Default"
-
-	filter "configurations:Dist"
-		optimize "Full"
-		symbols "Off"
+include "Strand-ScriptCore"

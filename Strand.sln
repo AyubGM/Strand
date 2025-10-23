@@ -19,7 +19,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sandbox", "Sandbox\Sandbox.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Strand", "Strand\Strand.vcxproj", "{D179EED1-BD1B-19A8-A6D6-2CFC9217A0F8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Strand-ScriptCore", "Strand-ScriptCore.csproj", "{9CEF67A1-0806-6637-517D-F158BDD236BF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Strand-ScriptCore", "Strand-ScriptCore\Strand-ScriptCore.csproj", "{9CEF67A1-0806-6637-517D-F158BDD236BF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
