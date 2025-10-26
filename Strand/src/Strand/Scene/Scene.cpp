@@ -191,59 +191,62 @@ namespace Strand {
 	void Scene::OnUpdateRuntime(Timestep ts)
 	{
 
-		// Update scripts
+		if (!m_IsPaused || m_StepFrames-- > 0)
 		{
-			// C# Entity OnUpdate
-			auto view = m_Registry.view<ScriptComponent>();
-			for (auto e : view)
+			// Update scripts
 			{
-				Entity entity = { e, this };
-				ScriptEngine::OnUpdateEntity(entity, ts);
+				// C# Entity OnUpdate
+				auto view = m_Registry.view<ScriptComponent>();
+				for (auto e : view)
+				{
+					Entity entity = { e, this };
+					ScriptEngine::OnUpdateEntity(entity, ts);
+				}
+
+				m_Registry.view<NativeScriptComponent>().each([=](auto entity, auto& nsc)
+					{
+						if (!nsc.Instance)
+						{
+							nsc.Instance = nsc.InstantiateScript();
+							nsc.Instance->m_Entity = Entity{ entity, this };
+
+							nsc.Instance->OnCreate();
+						}
+
+						nsc.Instance->OnUpdate(ts);
+					});
 			}
 
-			m_Registry.view<NativeScriptComponent>().each([=](auto entity, auto& nsc)
-				{
-					if (!nsc.Instance)
-					{
-						nsc.Instance = nsc.InstantiateScript();
-						nsc.Instance->m_Entity = Entity{ entity, this };
 
-						nsc.Instance->OnCreate();
-					}
-
-					nsc.Instance->OnUpdate(ts);
-				});
-		}
-
-
-		// Physics
-		{
-			/*const int32_t velocityIterations = 6;
-			const int32_t positionIterations = 2;*/
-			const int32_t subStepCount = 8;
-			b2World_Step(m_PhysicsWorld, ts, subStepCount);
-
-
-			// Retrieve transform from Box2D
-			auto view = m_Registry.view<Rigidbody2DComponent>();
-			for (auto e : view)
+			// Physics
 			{
-				Entity entity = { e, this };
-				auto& transform = entity.GetComponent<TransformComponent>();
-				auto& rb2d = entity.GetComponent<Rigidbody2DComponent>();
+				/*const int32_t velocityIterations = 6;
+				const int32_t positionIterations = 2;*/
+				const int32_t subStepCount = 8;
+				b2World_Step(m_PhysicsWorld, ts, subStepCount);
 
-				//b2Body* body = (b2Body*)rb2d.RuntimeBody;
-				b2BodyId bodyId = rb2d.RuntimeBody;
-				
 
-				const b2Vec2 position = b2Body_GetPosition(bodyId);
-				const b2Rot rotation = b2Body_GetRotation(bodyId);
+				// Retrieve transform from Box2D
+				auto view = m_Registry.view<Rigidbody2DComponent>();
+				for (auto e : view)
+				{
+					Entity entity = { e, this };
+					auto& transform = entity.GetComponent<TransformComponent>();
+					auto& rb2d = entity.GetComponent<Rigidbody2DComponent>();
 
-				//const auto& position = body->GetPosition();
-				transform.Translation.x = position.x;
-				transform.Translation.y = position.y;
-				//transform.Rotation.z = body->GetAngle();
-				transform.Rotation.z = b2Rot_GetAngle(rotation);
+					//b2Body* body = (b2Body*)rb2d.RuntimeBody;
+					b2BodyId bodyId = rb2d.RuntimeBody;
+
+
+					const b2Vec2 position = b2Body_GetPosition(bodyId);
+					const b2Rot rotation = b2Body_GetRotation(bodyId);
+
+					//const auto& position = body->GetPosition();
+					transform.Translation.x = position.x;
+					transform.Translation.y = position.y;
+					//transform.Rotation.z = body->GetAngle();
+					transform.Rotation.z = b2Rot_GetAngle(rotation);
+				}
 			}
 		}
 
@@ -304,33 +307,37 @@ namespace Strand {
 
 	void Scene::OnUpdateSimulation(Timestep ts, EditorCamera& camera)
 	{
-		// Physics
+		if (!m_IsPaused || m_StepFrames-- > 0)
 		{
 
-			const int32_t subStepCount = 8;
-			b2World_Step(m_PhysicsWorld, ts, subStepCount);
-
-			// Retrieve transform from Box2D
-			auto view = m_Registry.view<Rigidbody2DComponent>();
-			for (auto e : view)
+			// Physics
 			{
-				Entity entity = { e, this };
-				auto& transform = entity.GetComponent<TransformComponent>();
-				auto& rb2d = entity.GetComponent<Rigidbody2DComponent>();
 
-				//b2Body* body = (b2Body*)rb2d.RuntimeBody;
-				b2BodyId bodyId = rb2d.RuntimeBody;
+				const int32_t subStepCount = 8;
+				b2World_Step(m_PhysicsWorld, ts, subStepCount);
+
+				// Retrieve transform from Box2D
+				auto view = m_Registry.view<Rigidbody2DComponent>();
+				for (auto e : view)
+				{
+					Entity entity = { e, this };
+					auto& transform = entity.GetComponent<TransformComponent>();
+					auto& rb2d = entity.GetComponent<Rigidbody2DComponent>();
+
+					//b2Body* body = (b2Body*)rb2d.RuntimeBody;
+					b2BodyId bodyId = rb2d.RuntimeBody;
 
 
-				const b2Vec2 position = b2Body_GetPosition(bodyId);
-				const b2Rot rotation = b2Body_GetRotation(bodyId);
+					const b2Vec2 position = b2Body_GetPosition(bodyId);
+					const b2Rot rotation = b2Body_GetRotation(bodyId);
 
-				//const auto& position = body->GetPosition();
-				transform.Translation.x = position.x;
-				transform.Translation.y = position.y;
-				//transform.Rotation.z = body->GetAngle();
-				transform.Rotation.z = b2Rot_GetAngle(rotation);
-		
+					//const auto& position = body->GetPosition();
+					transform.Translation.x = position.x;
+					transform.Translation.y = position.y;
+					//transform.Rotation.z = body->GetAngle();
+					transform.Rotation.z = b2Rot_GetAngle(rotation);
+
+				}
 			}
 		}
 
@@ -389,6 +396,11 @@ namespace Strand {
 				return Entity{ entity, this };
 		}
 		return {};
+	}
+
+	void Scene::Step(int frames)
+	{
+		m_StepFrames = frames;
 	}
 
 	Entity Scene::FindEntityByName(std::string_view name)
