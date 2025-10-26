@@ -165,8 +165,10 @@
     <ClInclude Include="src\Strand\Core\Application.h" />
     <ClInclude Include="src\Strand\Core\Assert.h" />
     <ClInclude Include="src\Strand\Core\Base.h" />
+    <ClInclude Include="src\Strand\Core\Buffer.h" />
     <ClInclude Include="src\Strand\Core\Common.h" />
     <ClInclude Include="src\Strand\Core\EntryPoint.h" />
+    <ClInclude Include="src\Strand\Core\FileSystem.h" />
     <ClInclude Include="src\Strand\Core\KeyCodes.h" />
     <ClInclude Include="src\Strand\Core\Layer.h" />
     <ClInclude Include="src\Strand\Core\LayerStack.h" />
@@ -677,6 +679,7 @@
     <ClCompile Include="src\Platform\Windows\WindowsPlatformUtils.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />
     <ClCompile Include="src\Strand\Core\Application.cpp" />
+    <ClCompile Include="src\Strand\Core\FileSystem.cpp" />
     <ClCompile Include="src\Strand\Core\Layer.cpp" />
     <ClCompile Include="src\Strand\Core\LayerStack.cpp" />
     <ClCompile Include="src\Strand\Core\Log.cpp" />
