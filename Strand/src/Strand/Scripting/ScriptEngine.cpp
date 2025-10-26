@@ -396,6 +396,13 @@ namespace Strand {
 		return s_ScriptData->CoreAssemblyImage;
 	}
 	
+	MonoObject* ScriptEngine::GetManagedInstance(UUID uuid)
+	{
+		SD_CORE_ASSERT(s_ScriptData->EntityInstances.find(uuid) != s_ScriptData->EntityInstances.end());
+		return s_ScriptData->EntityInstances.at(uuid)->GetManagedObject();
+	}
+
+
 	MonoObject* ScriptEngine::InstantiateClass(MonoClass* monoClass)
 	{
 		MonoObject* instance = mono_object_new(s_ScriptData->AppDomain, monoClass);

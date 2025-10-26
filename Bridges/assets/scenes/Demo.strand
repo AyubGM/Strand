@@ -18,15 +18,21 @@ Entities:
         OrthographicFar: 1
       Primary: true
       FixedAspectRatio: false
+    ScriptComponent:
+      ClassName: Sandbox.Camera
+      ScriptFields:
+        []
   - Entity: 15480225426909577686
     TagComponent:
-      Tag: " Entity"
+      Tag: Player
     TransformComponent:
       Translation: [0, 0, 0]
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     ScriptComponent:
       ClassName: Sandbox.Player
+      ScriptFields:
+        []
     SpriteRendererComponent:
       Color: [1, 1, 1, 1]
       TilingFactor: 1
