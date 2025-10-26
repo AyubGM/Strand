@@ -167,48 +167,24 @@ namespace Strand {
 		InitMono();
 		ScriptGlue::RegisterFunctions();
 
-		LoadAssembly("Resources/Scripts/Strand-ScriptCore.dll");
-
-		LoadAppAssembly("SandboxProject/Assets/Scripts/Binaries/Sandbox.dll");
+		bool status = LoadAssembly("Resources/Scripts/Strand-ScriptCore.dll");
+		if (!status)
+		{
+			SD_CORE_ERROR("[ScriptEngine] Could not load Strand-ScriptCore assembly.");
+			return;
+		}
+		status = LoadAppAssembly("SandboxProject/Assets/Scripts/Binaries/Sandbox.dll");
+		if (!status)
+		{
+			SD_CORE_ERROR("[ScriptEngine] Could not load app assembly.");
+			return;
+		}
 		LoadAssemblyClasses();
 
 		ScriptGlue::RegisterComponents();
 
 		// Retrieve and instantiate class (with constructor)
 		s_ScriptData->EntityClass = ScriptClass("Strand", "Entity", true);
-
-#if 0
-
-		MonoObject* instance = s_ScriptData->EntityClass.Instantiate();
-
-		// Call method
-		MonoMethod* printMessageFunc = s_ScriptData->EntityClass.GetMethod("PrintMessage", 0);
-		s_ScriptData->EntityClass.InvokeMethod(instance, printMessageFunc);
-
-		// Call method with param
-		MonoMethod* printIntFunc = s_ScriptData->EntityClass.GetMethod("PrintInt", 1);
-
-		int value = 5;
-		void* param = &value;
-
-		s_ScriptData->EntityClass.InvokeMethod(instance, printIntFunc, &param);
-
-		MonoMethod* printIntsFunc = s_ScriptData->EntityClass.GetMethod("PrintInts", 2);
-		int value2 = 508;
-		void* params[2] =
-		{
-			&value,
-			&value2
-		};
-		s_ScriptData->EntityClass.InvokeMethod(instance, printIntsFunc, params);
-
-		MonoString* monoString = mono_string_new(s_ScriptData->AppDomain, "Hello World from C++!");
-		MonoMethod* printCustomMessageFunc = s_ScriptData->EntityClass.GetMethod("PrintCustomMessage", 1);
-		void* stringParam = monoString;
-		s_ScriptData->EntityClass.InvokeMethod(instance, printCustomMessageFunc, &stringParam);
-
-		SD_CORE_ASSERT(false);
-#endif
 
 	}
 
@@ -260,7 +236,7 @@ namespace Strand {
 		s_ScriptData->RootDomain = nullptr;
 	}
 
-	void ScriptEngine::LoadAssembly(const std::filesystem::path& filepath)
+	bool ScriptEngine::LoadAssembly(const std::filesystem::path& filepath)
 	{
 		// Create an App Domain
 		char appDomainName[] = "StrandScriptRuntime";
@@ -270,22 +246,30 @@ namespace Strand {
 		// Move this maybe
 		s_ScriptData->CoreAssemblyFilepath = filepath;
 		s_ScriptData->CoreAssembly = Utils::LoadMonoAssembly(filepath, s_ScriptData->EnableDebugging);
+		if (s_ScriptData->CoreAssembly == nullptr)
+			return false;
+
 		s_ScriptData->CoreAssemblyImage = mono_assembly_get_image(s_ScriptData->CoreAssembly);
 		// Utils::PrintAssemblyTypes(s_ScriptData->CoreAssembly);
+
+		return true;
 	}
 
-	void ScriptEngine::LoadAppAssembly(const std::filesystem::path& filepath)
+	bool ScriptEngine::LoadAppAssembly(const std::filesystem::path& filepath)
 	{
 		// Move this maybe
 		s_ScriptData->AppAssemblyFilepath = filepath;
 		s_ScriptData->AppAssembly = Utils::LoadMonoAssembly(filepath, s_ScriptData->EnableDebugging);
-		auto assemb = s_ScriptData->AppAssembly;
+		if (s_ScriptData->AppAssembly == nullptr)
+			return false;
+
 		s_ScriptData->AppAssemblyImage = mono_assembly_get_image(s_ScriptData->AppAssembly);
-		auto assembi = s_ScriptData->AppAssemblyImage;
 		// Utils::PrintAssemblyTypes(s_Data->AppAssembly);
 
 		s_ScriptData->AppAssemblyFileWatcher = CreateScope<filewatch::FileWatch<std::string>>(filepath.string(), OnAppAssemblyFileSystemEvent);
 		s_ScriptData->AssemblyReloadPending = false;
+
+		return true;
 	}
 
 	void ScriptEngine::ReloadAssembly()
@@ -339,10 +323,16 @@ namespace Strand {
 	void ScriptEngine::OnUpdateEntity(Entity entity, Timestep ts)
 	{
 		UUID entityUUID = entity.GetUUID();
-		SD_CORE_ASSERT(s_ScriptData->EntityInstances.find(entityUUID) != s_ScriptData->EntityInstances.end());
-
-		Ref<ScriptInstance> instance = s_ScriptData->EntityInstances[entityUUID];
-		instance->InvokeOnUpdate((float)ts);
+		if (s_ScriptData->EntityInstances.find(entityUUID) != s_ScriptData->EntityInstances.end())
+		{
+			Ref<ScriptInstance> instance = s_ScriptData->EntityInstances[entityUUID];
+			//SD_CORE_INFO("OnUpdate fuction of {0} entity ID", (uint64_t)entityUUID);
+			instance->InvokeOnUpdate((float)ts);
+		}
+		else
+		{
+			SD_CORE_ERROR("Could not find ScriptInstance for entity {}", (uint64_t)entityUUID);
+		}
 	}
 
 	Scene* ScriptEngine::GetSceneContext()
