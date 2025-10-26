@@ -28,6 +28,7 @@ IncludeDir["Glad"] = "Strand/vendor/Glad/include"
 IncludeDir["ImGui"] = "Strand/vendor/imgui"
 IncludeDir["glm"] = "Strand/vendor/glm"
 IncludeDir["Box2D"] = "Strand/vendor/Box2D/include"
+IncludeDir["filewatch"] = "%{wks.location}/Strand/vendor/filewatch"
 IncludeDir["stb_image"] = "Strand/vendor/stb_image"
 IncludeDir["entt"] = "Strand/vendor/entt/include"
 IncludeDir["mono"] = "Strand/vendor/mono/include"
@@ -126,6 +127,7 @@ project "Strand"
 		"%{prj.name}/src",
 		"%{prj.name}/vendor/spdlog/include",
 		"%{IncludeDir.Box2D}",
+		"%{IncludeDir.filewatch}",
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.Glad}",
 		"%{IncludeDir.ImGui}",
@@ -299,6 +301,7 @@ project "Bridges"
 		"Strand/vendor",
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.entt}",
+		"%{IncludeDir.filewatch}",
 		"%{IncludeDir.ImGuizmo}",
 		"%{IncludeDir.assimp}",
 	}
