@@ -132,6 +132,9 @@ namespace Strand {
 		MonoAssembly* AppAssembly = nullptr;
 		MonoImage* AppAssemblyImage = nullptr;
 
+		std::filesystem::path CoreAssemblyFilepath;
+		std::filesystem::path AppAssemblyFilepath;
+
 		ScriptClass EntityClass;
 
 		std::unordered_map<std::string, Ref<ScriptClass>> EntityClasses;
@@ -147,7 +150,9 @@ namespace Strand {
 	void ScriptEngine::Init()
 	{
 		s_ScriptData = new ScriptEngineData();
+
 		InitMono();
+		ScriptGlue::RegisterFunctions();
 
 		LoadAssembly("Resources/Scripts/Strand-ScriptCore.dll");
 
@@ -155,7 +160,6 @@ namespace Strand {
 		LoadAssemblyClasses();
 
 		ScriptGlue::RegisterComponents();
-		ScriptGlue::RegisterFunctions();
 
 		// Retrieve and instantiate class (with constructor)
 		s_ScriptData->EntityClass = ScriptClass("Strand", "Entity", true);
@@ -217,12 +221,12 @@ namespace Strand {
 
 	void ScriptEngine::ShutdownMono()
 	{
-		// NOTE: mono is a little confusing to shutdown, so maybe come back to this
+		mono_domain_set(mono_get_root_domain(), false);
 
-		// mono_domain_unload(s_ScriptData->AppDomain);
+		mono_domain_unload(s_ScriptData->AppDomain);
 		s_ScriptData->AppDomain = nullptr;
 
-		// mono_jit_cleanup(s_ScriptData->RootDomain);
+		mono_jit_cleanup(s_ScriptData->RootDomain);
 		s_ScriptData->RootDomain = nullptr;
 	}
 
@@ -234,6 +238,7 @@ namespace Strand {
 		mono_domain_set(s_ScriptData->AppDomain, true);
 
 		// Move this maybe
+		s_ScriptData->CoreAssemblyFilepath = filepath;
 		s_ScriptData->CoreAssembly = Utils::LoadMonoAssembly(filepath);
 		s_ScriptData->CoreAssemblyImage = mono_assembly_get_image(s_ScriptData->CoreAssembly);
 		// Utils::PrintAssemblyTypes(s_ScriptData->CoreAssembly);
@@ -242,11 +247,28 @@ namespace Strand {
 	void ScriptEngine::LoadAppAssembly(const std::filesystem::path& filepath)
 	{
 		// Move this maybe
+		s_ScriptData->AppAssemblyFilepath = filepath;
 		s_ScriptData->AppAssembly = Utils::LoadMonoAssembly(filepath);
 		auto assemb = s_ScriptData->AppAssembly;
 		s_ScriptData->AppAssemblyImage = mono_assembly_get_image(s_ScriptData->AppAssembly);
 		auto assembi = s_ScriptData->AppAssemblyImage;
 		// Utils::PrintAssemblyTypes(s_Data->AppAssembly);
+	}
+
+	void ScriptEngine::ReloadAssembly()
+	{
+		mono_domain_set(mono_get_root_domain(), false);
+
+		mono_domain_unload(s_ScriptData->AppDomain);
+
+		LoadAssembly(s_ScriptData->CoreAssemblyFilepath);
+		LoadAppAssembly(s_ScriptData->AppAssemblyFilepath);
+		LoadAssemblyClasses();
+
+		ScriptGlue::RegisterComponents();
+
+		// Retrieve and instantiate class
+		s_ScriptData->EntityClass = ScriptClass("Strand", "Entity", true);
 	}
 
 	void ScriptEngine::OnRuntimeStart(Scene* scene)

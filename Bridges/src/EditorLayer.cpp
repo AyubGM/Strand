@@ -7,10 +7,11 @@
 #include "Strand/Scene/SceneSerializer.h"
 
 #include "Strand/Utils/PlatformUtils.h"
+#include "Strand/Scripting/ScriptEngine.h"
+#include "Strand/Math/Math.h"
 
 #include "ImGuizmo.h"
 
-#include "Strand/Math/Math.h"
 namespace Strand {
 
 	extern const std::filesystem::path g_AssetPath;
@@ -216,6 +217,15 @@ namespace Strand {
 				ImGui::EndMenu();
 			}
 
+			if (ImGui::BeginMenu("Script"))
+			{
+				if (ImGui::MenuItem("Reload assembly", "Ctrl+R"))
+					ScriptEngine::ReloadAssembly();
+
+				ImGui::EndMenu();
+			}
+
+
 			ImGui::EndMenuBar();
 		}
 
@@ -401,55 +411,76 @@ namespace Strand {
 		bool shift = Input::IsKeyPressed(Key::LeftShift) || Input::IsKeyPressed(Key::RightShift);
 		switch (e.GetKeyCode())
 		{
-		case Key::N:
-		{
-			if (control)
-				NewScene();
-
-			break;
-		}
-		case Key::O:
-		{
-			if (control)
-				OpenScene();
-
-			break;
-		}
-		case Key::S:
-		{
-			if (control)
+			case Key::N:
 			{
-				if (shift)
-					SaveSceneAs();
-				else
-					SaveScene();
+				if (control)
+					NewScene();
+
+				break;
+			}
+			case Key::O:
+			{
+				if (control)
+					OpenScene();
+
+				break;
+			}
+			case Key::S:
+			{
+				if (control)
+				{
+					if (shift)
+						SaveSceneAs();
+					else
+						SaveScene();
+				}
+
+				break;
 			}
 
-			break;
-		}
+			// Scene Commands
+			case Key::D:
+			{
+				if (control)
+					OnDuplicateEntity();
 
-		// Scene Commands
-		case Key::D:
-		{
-			if (control)
-				OnDuplicateEntity();
+				break;
+			}
 
-			break;
-		}
-
-		// Gizmos
-		case Key::Q:
-			m_GizmoType = -1;
-			break;
-		case Key::W:
-			m_GizmoType = ImGuizmo::OPERATION::TRANSLATE;
-			break;
-		case Key::E:
-			m_GizmoType = ImGuizmo::OPERATION::ROTATE;
-			break;
-		case Key::R:
-			m_GizmoType = ImGuizmo::OPERATION::SCALE;
-			break;
+			// Gizmos
+			case Key::Q:
+			{
+				if (!ImGuizmo::IsUsing())
+					m_GizmoType = -1;
+				break;
+			}
+			case Key::W:
+			{
+				if (!ImGuizmo::IsUsing())
+					m_GizmoType = ImGuizmo::OPERATION::TRANSLATE;
+				break;
+			}
+			case Key::E:
+			{
+				if (!ImGuizmo::IsUsing())
+					m_GizmoType = ImGuizmo::OPERATION::ROTATE;
+				break;
+			}
+			case Key::R:
+			{
+				if (!ImGuizmo::IsUsing())
+					m_GizmoType = ImGuizmo::OPERATION::SCALE;
+				if (control)
+				{
+					ScriptEngine::ReloadAssembly();
+				}
+				else
+				{
+					if (!ImGuizmo::IsUsing())
+						m_GizmoType = ImGuizmo::OPERATION::SCALE;
+				}
+				break;
+			}
 
 		}
 	}
