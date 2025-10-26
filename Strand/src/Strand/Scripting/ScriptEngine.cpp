@@ -6,6 +6,8 @@
 #include "mono/metadata/assembly.h"
 #include "mono/metadata/object.h"
 #include "mono/metadata/tabledefs.h"
+#include "mono/metadata/mono-debug.h"
+#include "mono/metadata/threads.h"
 
 #include "FileWatch.h"
 
@@ -66,7 +68,7 @@ namespace Strand {
 			return buffer;
 		}
 
-		static MonoAssembly* LoadMonoAssembly(const std::filesystem::path& assemblyPath)
+		static MonoAssembly* LoadMonoAssembly(const std::filesystem::path& assemblyPath, bool loadPDB = false)
 		{
 			uint32_t fileSize = 0;
 			char* fileData = ReadBytes(assemblyPath, &fileSize);
@@ -80,6 +82,22 @@ namespace Strand {
 				const char* errorMessage = mono_image_strerror(status);
 				// Log some error message using the errorMessage data
 				return nullptr;
+			}
+
+
+			if (loadPDB)
+			{
+				std::filesystem::path pdbPath = assemblyPath;
+				pdbPath.replace_extension(".pdb");
+
+				if (std::filesystem::exists(pdbPath))
+				{
+					uint32_t pdbFileSize = 0;
+					char* pdbFileData = ReadBytes(pdbPath, &pdbFileSize);
+					mono_debug_open_image_from_memory(image, (const mono_byte*)pdbFileData, pdbFileSize);
+					SD_CORE_INFO("Loaded PDB {}", pdbPath);
+					delete[] pdbFileData;
+				}
 			}
 
 			std::string pathString = assemblyPath.string();
@@ -149,6 +167,8 @@ namespace Strand {
 
 		Scope<filewatch::FileWatch<std::string>> AppAssemblyFileWatcher;
 		bool AssemblyReloadPending = false;
+
+		bool EnableDebugging = true;
 
 		// Runtime
 		Scene* SceneContext = nullptr;
@@ -234,11 +254,28 @@ namespace Strand {
 	{
 		mono_set_assemblies_path("mono/lib");
 
+		if (s_ScriptData->EnableDebugging)
+		{
+			const char* argv[2] = {
+				"--debugger-agent=transport=dt_socket,address=127.0.0.1:2550,server=y,suspend=n,loglevel=3,logfile=MonoDebugger.log",
+				"--soft-breakpoints"
+			};
+
+			mono_jit_parse_options(2, (char**)argv);
+			mono_debug_init(MONO_DEBUG_FORMAT_MONO);
+		}
+
 		MonoDomain* rootDomain = mono_jit_init("StrandJITRuntime");
 		SD_CORE_ASSERT(rootDomain);
 
 		// Store the root domain pointer
 		s_ScriptData->RootDomain = rootDomain;
+
+
+		if (s_ScriptData->EnableDebugging)
+			mono_debug_domain_create(s_ScriptData->RootDomain);
+
+		mono_thread_set_main(mono_thread_current());
 
 	}
 
@@ -262,7 +299,7 @@ namespace Strand {
 
 		// Move this maybe
 		s_ScriptData->CoreAssemblyFilepath = filepath;
-		s_ScriptData->CoreAssembly = Utils::LoadMonoAssembly(filepath);
+		s_ScriptData->CoreAssembly = Utils::LoadMonoAssembly(filepath, s_ScriptData->EnableDebugging);
 		s_ScriptData->CoreAssemblyImage = mono_assembly_get_image(s_ScriptData->CoreAssembly);
 		// Utils::PrintAssemblyTypes(s_ScriptData->CoreAssembly);
 	}
@@ -271,7 +308,7 @@ namespace Strand {
 	{
 		// Move this maybe
 		s_ScriptData->AppAssemblyFilepath = filepath;
-		s_ScriptData->AppAssembly = Utils::LoadMonoAssembly(filepath);
+		s_ScriptData->AppAssembly = Utils::LoadMonoAssembly(filepath, s_ScriptData->EnableDebugging);
 		auto assemb = s_ScriptData->AppAssembly;
 		s_ScriptData->AppAssemblyImage = mono_assembly_get_image(s_ScriptData->AppAssembly);
 		auto assembi = s_ScriptData->AppAssemblyImage;
@@ -476,7 +513,8 @@ namespace Strand {
 
 	MonoObject* ScriptClass::InvokeMethod(MonoObject* instance, MonoMethod* method, void** params)
 	{
-		return mono_runtime_invoke(method, instance, params, nullptr);
+		MonoObject* exception = nullptr;
+		return mono_runtime_invoke(method, instance, params, &exception);
 	}
 	
 
