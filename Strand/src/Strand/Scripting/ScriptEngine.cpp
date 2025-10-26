@@ -95,7 +95,8 @@ namespace Strand {
 					uint32_t pdbFileSize = 0;
 					char* pdbFileData = ReadBytes(pdbPath, &pdbFileSize);
 					mono_debug_open_image_from_memory(image, (const mono_byte*)pdbFileData, pdbFileSize);
-					SD_CORE_INFO("Loaded PDB {}", pdbPath);
+					//TODO SEE WHAT IS WRONG WITH THE LOGGER
+					SD_CORE_INFO("Loaded PDB {}", pdbPath.string());
 					delete[] pdbFileData;
 				}
 			}
