@@ -28,7 +28,6 @@ namespace Sandbox
             Time += ts;
             // Console.WriteLine($"Player.OnUpdate: {ts}");
 
-
             float speed = Speed;
             Vector3 velocity = Vector3.Zero;
 
@@ -57,9 +56,9 @@ namespace Sandbox
 
             // m_Rigidbody.ApplyLinearImpulse(velocity.XY, true);
 
-            //Vector3 translation = m_Transform.Translation;
-            //translation += velocity * ts;
-            //m_Transform.Translation = translation;
+            Vector3 translation = m_Transform.Translation;
+            translation += velocity * ts;
+            m_Transform.Translation = translation;
         }
 
     }

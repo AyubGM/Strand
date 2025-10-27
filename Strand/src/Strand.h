@@ -22,6 +22,8 @@
 #include "Strand/Scene/ScriptableEntity.h"
 #include "Strand/Scene/Components.h"
 
+#include "Strand/Project/Project.h"
+
 // ---Renderer------------------------
 #include "Strand/Renderer/Renderer.h"
 #include "Strand/Renderer/Renderer2D.h"

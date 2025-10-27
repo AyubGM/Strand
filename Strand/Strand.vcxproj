@@ -212,6 +212,8 @@
     <ClInclude Include="src\Strand\Physics\Dynamics\SmoothPositionSolver.h" />
     <ClInclude Include="src\Strand\Physics\Events\PhysicsEvent.h" />
     <ClInclude Include="src\Strand\Physics\Physics.h" />
+    <ClInclude Include="src\Strand\Project\Project.h" />
+    <ClInclude Include="src\Strand\Project\ProjectSerializer.h" />
     <ClInclude Include="src\Strand\Renderer\Buffer.h" />
     <ClInclude Include="src\Strand\Renderer\Camera.h" />
     <ClInclude Include="src\Strand\Renderer\EditorCamera.h" />
@@ -240,6 +242,7 @@
     <ClInclude Include="src\Strand\Scene\ScriptableEntity.h" />
     <ClInclude Include="src\Strand\Scripting\ScriptEngine.h" />
     <ClInclude Include="src\Strand\Scripting\ScriptGlue.h" />
+    <ClInclude Include="src\Strand\UI\UI.h" />
     <ClInclude Include="src\Strand\Utils\BlockingQueue.h" />
     <ClInclude Include="src\Strand\Utils\PlatformUtils.h" />
     <ClInclude Include="src\Strand\Utils\ThreadPool.h" />
@@ -696,6 +699,8 @@
     <ClCompile Include="src\Strand\Physics\Dynamics\ImpulseSolver.cpp" />
     <ClCompile Include="src\Strand\Physics\Dynamics\Rigidbody.cpp" />
     <ClCompile Include="src\Strand\Physics\Dynamics\SmoothPositionSolver.cpp" />
+    <ClCompile Include="src\Strand\Project\Project.cpp" />
+    <ClCompile Include="src\Strand\Project\ProjectSerializer.cpp" />
     <ClCompile Include="src\Strand\Renderer\Buffer.cpp" />
     <ClCompile Include="src\Strand\Renderer\EditorCamera.cpp" />
     <ClCompile Include="src\Strand\Renderer\Framebuffer.cpp" />

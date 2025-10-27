@@ -28,6 +28,8 @@ C:\dev\Strand\Strand\src\Strand\Physics\Dynamics\DynamicsSpace.cpp;C:\dev\Strand
 C:\dev\Strand\Strand\src\Strand\Physics\Dynamics\ImpulseSolver.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\ImpulseSolver.obj
 C:\dev\Strand\Strand\src\Strand\Physics\Dynamics\Rigidbody.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\Rigidbody.obj
 C:\dev\Strand\Strand\src\Strand\Physics\Dynamics\SmoothPositionSolver.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\SmoothPositionSolver.obj
+C:\dev\Strand\Strand\src\Strand\Project\Project.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\Project.obj
+C:\dev\Strand\Strand\src\Strand\Project\ProjectSerializer.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\ProjectSerializer.obj
 C:\dev\Strand\Strand\src\Strand\Renderer\Buffer.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\Buffer.obj
 C:\dev\Strand\Strand\src\Strand\Renderer\EditorCamera.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\EditorCamera.obj
 C:\dev\Strand\Strand\src\Strand\Renderer\Framebuffer.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\Framebuffer.obj

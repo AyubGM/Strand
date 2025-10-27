@@ -1628,6 +1628,9 @@
     </ClInclude>
     <ClInclude Include="src\Strand\Core\Buffer.h" />
     <ClInclude Include="src\Strand\Core\FileSystem.h" />
+    <ClInclude Include="src\Strand\Project\Project.h" />
+    <ClInclude Include="src\Strand\Project\ProjectSerializer.h" />
+    <ClInclude Include="src\Strand\UI\UI.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp">
@@ -1802,5 +1805,7 @@
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
     <ClCompile Include="src\Strand\Core\FileSystem.cpp" />
+    <ClCompile Include="src\Strand\Project\Project.cpp" />
+    <ClCompile Include="src\Strand\Project\ProjectSerializer.cpp" />
   </ItemGroup>
 </Project>
