@@ -16,6 +16,8 @@
 #include "Strand/Core/Buffer.h"
 #include "Strand/Core/FileSystem.h"
 
+#include "Strand/Project/Project.h"
+
 
 namespace Strand {
 
@@ -177,7 +179,9 @@ namespace Strand {
 			SD_CORE_ERROR("[ScriptEngine] Could not load Strand-ScriptCore assembly.");
 			return;
 		}
-		status = LoadAppAssembly("SandboxProject/Assets/Scripts/Binaries/Sandbox.dll");
+
+		auto scriptModulePath = Project::GetAssetDirectory() / Project::GetActive()->GetConfig().ScriptModulePath;
+		status = LoadAppAssembly(scriptModulePath);
 		if (!status)
 		{
 			SD_CORE_ERROR("[ScriptEngine] Could not load app assembly.");

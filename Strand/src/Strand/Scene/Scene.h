@@ -8,8 +8,7 @@
 
 #include "entt.hpp"
 
-// Box2D
-#include "box2d/box2d.h"
+class b2World;
 
 namespace Strand {
 
@@ -41,7 +40,7 @@ namespace Strand {
 		void OnUpdateEditor(Timestep ts, EditorCamera& camera);
 		void OnViewportResize(uint32_t width, uint32_t height);
 
-		void DuplicateEntity(Entity entity);
+		Entity DuplicateEntity(Entity entity);
 
 		Entity FindEntityByName(std::string_view name);
 		Entity GetEntityByUUID(UUID uuid);
@@ -77,7 +76,7 @@ namespace Strand {
 		bool m_IsPaused = false;
 		int m_StepFrames = 0;
 
-		b2WorldId m_PhysicsWorld = b2_nullWorldId;
+		b2World* m_PhysicsWorld = nullptr;
 
 		std::unordered_map<UUID, entt::entity> m_EntityMap;
 

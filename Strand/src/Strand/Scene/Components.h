@@ -6,8 +6,6 @@
 #include "Strand/Core/UUID.h"
 #include "Strand/Renderer/Texture.h"
 
-#include "box2d/box2d.h"
-
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -131,7 +129,7 @@ namespace Strand {
 		bool FixedRotation = false;
 
 		// Storage for runtime
-		b2BodyId RuntimeBody = { 0 };
+		void* RuntimeBody = nullptr;
 
 		Rigidbody2DComponent() = default;
 		Rigidbody2DComponent(const Rigidbody2DComponent&) = default;

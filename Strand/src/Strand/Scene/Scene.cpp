@@ -5,27 +5,23 @@
 #include "ScriptableEntity.h"
 #include "Strand/Scripting/ScriptEngine.h"
 #include "Strand/Renderer/Renderer2D.h"
+#include "Strand/Physics/Physics2D.h"
 
 #include <glm/glm.hpp>
 
 #include "Entity.h"
 
+// Box2D
+#include "box2d/b2_world.h"
+#include "box2d/b2_body.h"
+#include "box2d/b2_fixture.h"
+#include "box2d/b2_polygon_shape.h"
+#include "box2d/b2_circle_shape.h"
+
 
 
 namespace Strand {
 
-	static b2BodyType Rigidbody2DTypeToBox2DBody(Rigidbody2DComponent::BodyType bodyType)
-	{
-		switch (bodyType)
-		{
-		case Rigidbody2DComponent::BodyType::Static:    return b2_staticBody;
-		case Rigidbody2DComponent::BodyType::Dynamic:   return b2_dynamicBody;
-		case Rigidbody2DComponent::BodyType::Kinematic: return b2_kinematicBody;
-		}
-
-		SD_CORE_ASSERT(false, "Unknown body type");
-		return b2_staticBody;
-	}
 
 	Scene::Scene()
 	{
@@ -34,7 +30,7 @@ namespace Strand {
 
 	Scene::~Scene()
 	{
-		m_PhysicsWorld = b2_nullWorldId;
+		delete m_PhysicsWorld;
 	}
 
 	template<typename... Component>
@@ -144,8 +140,9 @@ namespace Strand {
 
 	void Scene::DestroyEntity(Entity entity)
 	{
-		m_Registry.destroy(entity);
 		m_EntityMap.erase(entity.GetUUID());
+		m_Registry.destroy(entity);
+
 	}
 
 
@@ -220,11 +217,9 @@ namespace Strand {
 
 			// Physics
 			{
-				/*const int32_t velocityIterations = 6;
-				const int32_t positionIterations = 2;*/
-				const int32_t subStepCount = 8;
-				b2World_Step(m_PhysicsWorld, ts, subStepCount);
-
+				const int32_t velocityIterations = 6;
+				const int32_t positionIterations = 2;
+				m_PhysicsWorld->Step(ts, velocityIterations, positionIterations);
 
 				// Retrieve transform from Box2D
 				auto view = m_Registry.view<Rigidbody2DComponent>();
@@ -234,18 +229,12 @@ namespace Strand {
 					auto& transform = entity.GetComponent<TransformComponent>();
 					auto& rb2d = entity.GetComponent<Rigidbody2DComponent>();
 
-					//b2Body* body = (b2Body*)rb2d.RuntimeBody;
-					b2BodyId bodyId = rb2d.RuntimeBody;
+					b2Body* body = (b2Body*)rb2d.RuntimeBody;
 
-
-					const b2Vec2 position = b2Body_GetPosition(bodyId);
-					const b2Rot rotation = b2Body_GetRotation(bodyId);
-
-					//const auto& position = body->GetPosition();
+					const auto& position = body->GetPosition();
 					transform.Translation.x = position.x;
 					transform.Translation.y = position.y;
-					//transform.Rotation.z = body->GetAngle();
-					transform.Rotation.z = b2Rot_GetAngle(rotation);
+					transform.Rotation.z = body->GetAngle();
 				}
 			}
 		}
@@ -312,9 +301,9 @@ namespace Strand {
 
 			// Physics
 			{
-
-				const int32_t subStepCount = 8;
-				b2World_Step(m_PhysicsWorld, ts, subStepCount);
+				const int32_t velocityIterations = 6;
+				const int32_t positionIterations = 2;
+				m_PhysicsWorld->Step(ts, velocityIterations, positionIterations);
 
 				// Retrieve transform from Box2D
 				auto view = m_Registry.view<Rigidbody2DComponent>();
@@ -324,19 +313,11 @@ namespace Strand {
 					auto& transform = entity.GetComponent<TransformComponent>();
 					auto& rb2d = entity.GetComponent<Rigidbody2DComponent>();
 
-					//b2Body* body = (b2Body*)rb2d.RuntimeBody;
-					b2BodyId bodyId = rb2d.RuntimeBody;
-
-
-					const b2Vec2 position = b2Body_GetPosition(bodyId);
-					const b2Rot rotation = b2Body_GetRotation(bodyId);
-
-					//const auto& position = body->GetPosition();
+					b2Body* body = (b2Body*)rb2d.RuntimeBody;
+					const auto& position = body->GetPosition();
 					transform.Translation.x = position.x;
 					transform.Translation.y = position.y;
-					//transform.Rotation.z = body->GetAngle();
-					transform.Rotation.z = b2Rot_GetAngle(rotation);
-
+					transform.Rotation.z = body->GetAngle();
 				}
 			}
 		}
@@ -372,21 +353,13 @@ namespace Strand {
 
 	}
 
-	void Scene::DuplicateEntity(Entity entity)
+	Entity Scene::DuplicateEntity(Entity entity)
 	{
-		/*std::string name = entity.GetName();
+		// Copy name because we're going to modify component data structure
+		std::string name = entity.GetName();
 		Entity newEntity = CreateEntity(name);
-
-		CopyComponentIfExists<TransformComponent>(newEntity, entity);
-		CopyComponentIfExists<SpriteRendererComponent>(newEntity, entity);
-		CopyComponentIfExists<CameraComponent>(newEntity, entity);
-		CopyComponentIfExists<NativeScriptComponent>(newEntity, entity);
-		CopyComponentIfExists<Rigidbody2DComponent>(newEntity, entity);
-		CopyComponentIfExists<BoxCollider2DComponent>(newEntity, entity);
-		CopyComponentIfExists<CircleCollider2DComponent>(newEntity, entity);*/
-
-		Entity newEntity = CreateEntity(entity.GetName());
 		CopyComponentIfExists(AllComponents{}, newEntity, entity);
+		return newEntity;
 	}
 
 	Entity Scene::GetPrimaryCameraEntity()
@@ -429,10 +402,7 @@ namespace Strand {
 
 	void Scene::OnPhysics2DStart()
 	{
-		//TODO Create Box2D Wrapper or use my own physics engine
-		b2WorldDef worldDef = b2DefaultWorldDef();
-		worldDef.gravity = { 0.0f, -9.8f };
-		m_PhysicsWorld = b2CreateWorld(&worldDef);
+		m_PhysicsWorld = new b2World({ 0.0f, -9.8f });
 
 		auto view = m_Registry.view<Rigidbody2DComponent>();
 		for (auto e : view)
@@ -441,61 +411,56 @@ namespace Strand {
 			auto& transform = entity.GetComponent<TransformComponent>();
 			auto& rb2d = entity.GetComponent<Rigidbody2DComponent>();
 
-			b2BodyDef bodyDef = b2DefaultBodyDef();
-			bodyDef.type = Rigidbody2DTypeToBox2DBody(rb2d.Type);
-			bodyDef.position = { transform.Translation.x, transform.Translation.y };
-			bodyDef.rotation = b2MakeRot(transform.Rotation.z);
-			bodyDef.motionLocks.angularZ = rb2d.FixedRotation;
+			b2BodyDef bodyDef;
+			bodyDef.type = Utils::Rigidbody2DTypeToBox2DBody(rb2d.Type);
+			bodyDef.position.Set(transform.Translation.x, transform.Translation.y);
+			bodyDef.angle = transform.Rotation.z;
 
-
-			b2BodyId bodyId = b2CreateBody(m_PhysicsWorld, &bodyDef);
-
-			rb2d.RuntimeBody = bodyId;
+			b2Body* body = m_PhysicsWorld->CreateBody(&bodyDef);
+			body->SetFixedRotation(rb2d.FixedRotation);
+			rb2d.RuntimeBody = body;
 
 			if (entity.HasComponent<BoxCollider2DComponent>())
 			{
 				auto& bc2d = entity.GetComponent<BoxCollider2DComponent>();
 
-				b2Polygon box = b2MakeBox(bc2d.Size.x * transform.Scale.x / 2.0f, bc2d.Size.y * transform.Scale.y / 2.0f);
+				b2PolygonShape boxShape;
+				boxShape.SetAsBox(bc2d.Size.x * transform.Scale.x, bc2d.Size.y * transform.Scale.y);
 
-				//box.SetAsBox(bc2d.Size.x * transform.Scale.x, bc2d.Size.y * transform.Scale.y);
-
-				b2ShapeDef shapeDef = b2DefaultShapeDef();
-				/*fixtureDef.shape = &boxShape;*/
-				shapeDef.density = bc2d.Density;
-				shapeDef.material.friction = bc2d.Friction;
-				shapeDef.material.restitution = bc2d.Restitution;
-				//shapeDef.material.restitutionThreshold = bc2d.RestitutionThreshold;
-				//TODO need to check the API and need to change to world defintion
-				worldDef.restitutionThreshold = bc2d.RestitutionThreshold;
-				b2ShapeId shapeId = b2CreatePolygonShape(bodyId, &shapeDef, &box);
+				b2FixtureDef fixtureDef;
+				fixtureDef.shape = &boxShape;
+				fixtureDef.density = bc2d.Density;
+				fixtureDef.friction = bc2d.Friction;
+				fixtureDef.restitution = bc2d.Restitution;
+				fixtureDef.restitutionThreshold = bc2d.RestitutionThreshold;
+				body->CreateFixture(&fixtureDef);
 			}
 
 			if (entity.HasComponent<CircleCollider2DComponent>())
 			{
 				auto& cc2d = entity.GetComponent<CircleCollider2DComponent>();
 
-				b2Circle circle;
-				circle.center.x = cc2d.Offset.x;
-				circle.center.y = cc2d.Offset.y;
-				circle.radius = transform.Scale.x * cc2d.Radius;
+				b2CircleShape circleShape;
+				circleShape.m_p.Set(cc2d.Offset.x, cc2d.Offset.y);
+				circleShape.m_radius = transform.Scale.x * cc2d.Radius;
 
-				b2ShapeDef shapeDef = b2DefaultShapeDef();
-				shapeDef.density = cc2d.Density;
-				shapeDef.material.friction = cc2d.Friction;
-				shapeDef.material.restitution = cc2d.Restitution;
-				b2ShapeId shapeId = b2CreateCircleShape(bodyId, &shapeDef, &circle);
-				//cc2d.RuntimeFixture = reinterpret_cast<void*>(shapeId);
+				b2FixtureDef fixtureDef;
+				fixtureDef.shape = &circleShape;
+				fixtureDef.density = cc2d.Density;
+				fixtureDef.friction = cc2d.Friction;
+				fixtureDef.restitution = cc2d.Restitution;
+				fixtureDef.restitutionThreshold = cc2d.RestitutionThreshold;
+				body->CreateFixture(&fixtureDef);
 			}
 		}
 	}
 
 	void Scene::OnPhysics2DStop()
 	{
-		b2DestroyWorld(m_PhysicsWorld);
-		m_PhysicsWorld = b2_nullWorldId;
-		/*delete m_PhysicsWorld;
-		m_PhysicsWorld = nullptr;*/
+		/*b2DestroyWorld(m_PhysicsWorld);
+		m_PhysicsWorld = b2_nullWorldId;*/
+		delete m_PhysicsWorld;
+		m_PhysicsWorld = nullptr;
 	}
 
 	void Scene::RenderScene(EditorCamera& camera)

@@ -49,6 +49,9 @@
     <Filter Include="src\Strand\Physics\Events">
       <UniqueIdentifier>{1E3D93BA-8AFF-C644-D3AF-55D13FB19F22}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Strand\Project">
+      <UniqueIdentifier>{4E7F1DA9-3A63-DEFE-A3C3-D8518FC6C880}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Strand\Renderer">
       <UniqueIdentifier>{AE7FDAB9-1AE1-B7C7-A34E-FE790FAFEE86}</UniqueIdentifier>
     </Filter>
@@ -57,6 +60,9 @@
     </Filter>
     <Filter Include="src\Strand\Scripting">
       <UniqueIdentifier>{0A327ED1-F6C0-079B-9FDF-1B968B4D1841}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Strand\UI">
+      <UniqueIdentifier>{35A9B535-A169-316C-6AA4-7AE9D6237648}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\Strand\Utils">
       <UniqueIdentifier>{687A77B2-5473-9604-7DA5-7B8969FD7510}</UniqueIdentifier>
@@ -135,10 +141,16 @@
     <ClInclude Include="src\Strand\Core\Base.h">
       <Filter>src\Strand\Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\Strand\Core\Buffer.h">
+      <Filter>src\Strand\Core</Filter>
+    </ClInclude>
     <ClInclude Include="src\Strand\Core\Common.h">
       <Filter>src\Strand\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Strand\Core\EntryPoint.h">
+      <Filter>src\Strand\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Strand\Core\FileSystem.h">
       <Filter>src\Strand\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Strand\Core\KeyCodes.h">
@@ -270,6 +282,15 @@
     <ClInclude Include="src\Strand\Physics\Physics.h">
       <Filter>src\Strand\Physics</Filter>
     </ClInclude>
+    <ClInclude Include="src\Strand\Physics\Physics2D.h">
+      <Filter>src\Strand\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Strand\Project\Project.h">
+      <Filter>src\Strand\Project</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Strand\Project\ProjectSerializer.h">
+      <Filter>src\Strand\Project</Filter>
+    </ClInclude>
     <ClInclude Include="src\Strand\Renderer\Buffer.h">
       <Filter>src\Strand\Renderer</Filter>
     </ClInclude>
@@ -353,6 +374,9 @@
     </ClInclude>
     <ClInclude Include="src\Strand\Scripting\ScriptGlue.h">
       <Filter>src\Strand\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Strand\UI\UI.h">
+      <Filter>src\Strand\UI</Filter>
     </ClInclude>
     <ClInclude Include="src\Strand\Utils\BlockingQueue.h">
       <Filter>src\Strand\Utils</Filter>
@@ -1626,11 +1650,6 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="src\Strand\Core\Buffer.h" />
-    <ClInclude Include="src\Strand\Core\FileSystem.h" />
-    <ClInclude Include="src\Strand\Project\Project.h" />
-    <ClInclude Include="src\Strand\Project\ProjectSerializer.h" />
-    <ClInclude Include="src\Strand\UI\UI.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp">
@@ -1670,6 +1689,9 @@
       <Filter>src\Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="src\Strand\Core\Application.cpp">
+      <Filter>src\Strand\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Strand\Core\FileSystem.cpp">
       <Filter>src\Strand\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\Strand\Core\Layer.cpp">
@@ -1719,6 +1741,12 @@
     </ClCompile>
     <ClCompile Include="src\Strand\Physics\Dynamics\SmoothPositionSolver.cpp">
       <Filter>src\Strand\Physics\Dynamics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Strand\Project\Project.cpp">
+      <Filter>src\Strand\Project</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Strand\Project\ProjectSerializer.cpp">
+      <Filter>src\Strand\Project</Filter>
     </ClCompile>
     <ClCompile Include="src\Strand\Renderer\Buffer.cpp">
       <Filter>src\Strand\Renderer</Filter>
@@ -1804,8 +1832,5 @@
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="src\Strand\Core\FileSystem.cpp" />
-    <ClCompile Include="src\Strand\Project\Project.cpp" />
-    <ClCompile Include="src\Strand\Project\ProjectSerializer.cpp" />
   </ItemGroup>
 </Project>
