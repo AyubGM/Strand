@@ -5,6 +5,9 @@
 
 #include "Strand/Core/Base.h"
 
+#include "Strand/Asset/RuntimeAssetManager.h"
+#include "Strand/Asset/EditorAssetManager.h"
+
 namespace Strand {
 
 	struct ProjectConfig
@@ -42,6 +45,9 @@ namespace Strand {
 		ProjectConfig& GetConfig() { return m_Config; }
 
 		static Ref<Project> GetActive() { return s_ActiveProject; }
+		std::shared_ptr<AssetManagerBase> GetAssetManager() { return m_AssetManager; }
+		std::shared_ptr<RuntimeAssetManager> GetRuntimeAssetManager() { return std::static_pointer_cast<RuntimeAssetManager>(m_AssetManager); }
+		std::shared_ptr<EditorAssetManager> GetEditorAssetManager() { return std::static_pointer_cast<EditorAssetManager>(m_AssetManager); }
 
 		static Ref<Project> New();
 		static Ref<Project> Load(const std::filesystem::path& path);
@@ -49,6 +55,7 @@ namespace Strand {
 	private:
 		ProjectConfig m_Config;
 		std::filesystem::path m_ProjectDirectory;
+		std::shared_ptr<AssetManagerBase> m_AssetManager;
 
 		inline static Ref<Project> s_ActiveProject;
 	};
