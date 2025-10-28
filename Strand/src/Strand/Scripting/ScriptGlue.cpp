@@ -161,6 +161,8 @@ namespace Strand {
 
 	static bool Input_IsKeyDown(KeyCode keycode)
 	{
+		//bool status = Input::IsKeyPressed(keycode);
+		//SD_CORE_TRACE("IS KEY CODE {0}", status);
 		return Input::IsKeyPressed(keycode);
 	}
 
