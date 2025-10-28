@@ -98,7 +98,7 @@ namespace Strand {
 		entity.GetComponent<TransformComponent>().Translation = *translation;
 	}
 
-	/*static void Rigidbody2DComponent_ApplyLinearImpulse(UUID entityID, glm::vec2* impulse, glm::vec2* point, bool wake)
+	static void Rigidbody2DComponent_ApplyLinearImpulse(UUID entityID, glm::vec2* impulse, glm::vec2* point, bool wake)
 	{
 		Scene* scene = ScriptEngine::GetSceneContext();
 		SD_CORE_ASSERT(scene);
@@ -120,7 +120,7 @@ namespace Strand {
 		auto& rb2d = entity.GetComponent<Rigidbody2DComponent>();
 		b2Body* body = (b2Body*)rb2d.RuntimeBody;
 		body->ApplyLinearImpulseToCenter(b2Vec2(impulse->x, impulse->y), wake);
-	}*/
+	}
 
 	static void Rigidbody2DComponent_GetLinearVelocity(UUID entityID, glm::vec2* outLinearVelocity)
 	{
@@ -210,8 +210,8 @@ namespace Strand {
 		SD_ADD_INTERNAL_CALL(TransformComponent_GetTranslation);
 		SD_ADD_INTERNAL_CALL(TransformComponent_SetTranslation);
 
-		//SD_ADD_INTERNAL_CALL(Rigidbody2DComponent_ApplyLinearImpulse);
-		//SD_ADD_INTERNAL_CALL(Rigidbody2DComponent_ApplyLinearImpulseToCenter);
+		SD_ADD_INTERNAL_CALL(Rigidbody2DComponent_ApplyLinearImpulse);
+		SD_ADD_INTERNAL_CALL(Rigidbody2DComponent_ApplyLinearImpulseToCenter);
 		SD_ADD_INTERNAL_CALL(Rigidbody2DComponent_GetLinearVelocity);
 		SD_ADD_INTERNAL_CALL(Rigidbody2DComponent_GetType);
 		SD_ADD_INTERNAL_CALL(Rigidbody2DComponent_SetType);
