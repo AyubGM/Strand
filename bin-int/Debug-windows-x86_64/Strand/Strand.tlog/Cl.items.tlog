@@ -10,6 +10,13 @@ C:\dev\Strand\Strand\src\Platform\OpenGL\OpenGLVertexArray.cpp;C:\dev\Strand\bin
 C:\dev\Strand\Strand\src\Platform\Windows\WindowsInput.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\WindowsInput.obj
 C:\dev\Strand\Strand\src\Platform\Windows\WindowsPlatformUtils.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\WindowsPlatformUtils.obj
 C:\dev\Strand\Strand\src\Platform\Windows\WindowsWindow.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\WindowsWindow.obj
+C:\dev\Strand\Strand\src\Strand\Asset\Asset.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\Asset.obj
+C:\dev\Strand\Strand\src\Strand\Asset\AssetImporter.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\AssetImporter.obj
+C:\dev\Strand\Strand\src\Strand\Asset\AssetManager.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\AssetManager.obj
+C:\dev\Strand\Strand\src\Strand\Asset\AssetManagerBase.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\AssetManagerBase.obj
+C:\dev\Strand\Strand\src\Strand\Asset\EditorAssetManager.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\EditorAssetManager.obj
+C:\dev\Strand\Strand\src\Strand\Asset\RuntimeAssetManager.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\RuntimeAssetManager.obj
+C:\dev\Strand\Strand\src\Strand\Asset\TextureImporter.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\TextureImporter.obj
 C:\dev\Strand\Strand\src\Strand\Core\Application.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\Application.obj
 C:\dev\Strand\Strand\src\Strand\Core\FileSystem.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\FileSystem.obj
 C:\dev\Strand\Strand\src\Strand\Core\Layer.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\Layer.obj

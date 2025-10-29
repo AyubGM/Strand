@@ -3,7 +3,7 @@
 #include <memory>
 #include "Strand/Core/PlatformDetection.h"
 
-#ifdef SD_DEBUG
+
 #if defined(SD_PLATFORM_WINDOWS)
 #define SD_DEBUGBREAK() __debugbreak()
 #elif defined(SD_PLATFORM_LINUX)
@@ -12,9 +12,13 @@
 #else
 #error "Platform doesn't support debugbreak yet!"
 #endif
+
+#ifdef SD_DEBUG
 #define SD_ENABLE_ASSERTS
-#else
-#define SD_DEBUGBREAK()
+#endif
+
+#ifndef SD_DIST
+#define SD_ENABLE_VERIFY
 #endif
 
 #define SD_EXPAND_MACRO(x) x

@@ -10,8 +10,15 @@ namespace Strand {
 	{
 		None = 0,
 		Scene,
-		Texture2D
+		Texture2D,
+		Texture3D,
+		TextureCube
+
+
 	};
+
+	std::string_view AssetTypeToString(AssetType type);
+	AssetType AssetTypeFromString(std::string_view assetType);
 
 	class Asset
 	{

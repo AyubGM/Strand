@@ -1,5 +1,6 @@
 #include "sdpch.h"
 #include "Model.h"
+#include "Strand/Asset/TextureImporter.h"
 
 namespace Strand {
 
@@ -118,7 +119,7 @@ namespace Strand {
                 mat->GetTexture(type, i, &str);
                 std::string texturePath = m_Directory + '/' + std::string(str.C_Str());
                 SD_CORE_TRACE("TexturePath: {0}", texturePath);
-                Ref<Texture2D> texture = Texture2D::Create(texturePath);
+                Ref<Texture2D> texture = TextureImporter::LoadTexture2D(texturePath);
                 material->Set(typeName, texture);
             }
 

@@ -409,15 +409,17 @@ namespace Strand {
 				{
 					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
 					{
+#if 0
 						const wchar_t* path = (const wchar_t*)payload->Data;
 						std::filesystem::path texturePath(path);
 						Ref<Texture2D> texture = Texture2D::Create(texturePath.string());
 						/*wchar_t path[260] = {};
 						memcpy(path, payload->Data, payload->DataSize);*/
 						if (texture->IsLoaded())
-							component.Texture = texture;
+							component.Texture = texture->Handle;
 						else
 							SD_WARN("Could not load texture {0}", texturePath.filename().string());
+#endif
 					}
 					ImGui::EndDragDropTarget();
 				}

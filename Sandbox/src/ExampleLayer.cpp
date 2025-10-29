@@ -1,4 +1,5 @@
 #include "ExampleLayer.h"
+#include "Strand/Asset/TextureImporter.h"
 
 #include "imgui/imgui.h"
 
@@ -121,8 +122,8 @@ ExampleLayer::ExampleLayer()
 
 	auto textureShader = m_ShaderLibrary.Load("assets/shaders/Texture.glsl");
 
-	m_Texture = Strand::Texture2D::Create("assets/textures/Checkerboard.png");
-	m_ChernoLogoTexture = Strand::Texture2D::Create("assets/textures/ChernoLogo.png");
+	m_Texture = Strand::TextureImporter::LoadTexture2D("assets/textures/Checkerboard.png");
+	m_ChernoLogoTexture = Strand::TextureImporter::LoadTexture2D("assets/textures/ChernoLogo.png");
 
 	textureShader->Bind();
 	textureShader->SetInt("u_Texture", 0);

@@ -12,14 +12,15 @@ namespace Strand {
         {
             return s_TextureCache[path];
         }
+        //TODO INVASTIGATE
 
-        Ref<Texture2D> texture = CreateRef<OpenGLTexture2D>(path);
+       // Ref<Texture2D> texture = CreateRef<OpenGLTexture2D>(path);
 
-        if (texture->IsLoaded())
+       /* if (texture->IsLoaded())
         {
             s_TextureCache[path] = texture;
             return texture;
-        }
+        }*/
 
         return nullptr;
     }

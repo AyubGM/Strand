@@ -1,4 +1,7 @@
 #include "Sandbox2D.h"
+
+#include "Strand/Asset/TextureImporter.h"
+
 #include "imgui/imgui.h"
 
 #include <glm/gtc/matrix_transform.hpp>
@@ -20,7 +23,7 @@ void Sandbox2D::OnAttach()
 {
 	SD_PROFILE_FUNCTION();
 
-	m_CheckerboardTexture = Strand::Texture2D::Create("assets/textures/Checkerboard.png");
+	m_CheckerboardTexture = Strand::TextureImporter::LoadTexture2D("assets/textures/Checkerboard.png");
 }
 
 void Sandbox2D::OnDetach()

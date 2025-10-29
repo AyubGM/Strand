@@ -46,6 +46,8 @@ namespace Strand {
 		virtual uint32_t GetHeight() const override { return m_Height; }
 		virtual uint32_t GetDepth() const override { return m_Depth; }
 		virtual uint32_t GetRendererID() const override { return m_RendererID; }
+		virtual const std::vector<std::string>& GetPaths() const override { return m_Paths; }
+
 
 		//virtual void SetData(void* data, uint32_t size) override;
 		virtual void SetData(Buffer data) override;
@@ -54,7 +56,6 @@ namespace Strand {
 
 		virtual bool IsLoaded() const override { return m_IsLoaded; }
 
-		virtual const std::vector<std::string>& GetPaths() const override { return m_Paths; }
 
 		virtual bool operator==(const Texture& other) const override
 		{
