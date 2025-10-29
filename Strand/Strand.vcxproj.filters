@@ -1658,6 +1658,7 @@
     <ClInclude Include="src\Strand\Asset\EditorAssetManager.h" />
     <ClInclude Include="src\Strand\Asset\RuntimeAssetManager.h" />
     <ClInclude Include="src\Strand\Asset\TextureImporter.h" />
+    <ClInclude Include="src\Strand\Asset\SceneImporter.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp">
@@ -1847,5 +1848,6 @@
     <ClCompile Include="src\Strand\Asset\EditorAssetManager.cpp" />
     <ClCompile Include="src\Strand\Asset\RuntimeAssetManager.cpp" />
     <ClCompile Include="src\Strand\Asset\TextureImporter.cpp" />
+    <ClCompile Include="src\Strand\Asset\SceneImporter.cpp" />
   </ItemGroup>
 </Project>

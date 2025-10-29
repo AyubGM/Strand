@@ -1,7 +1,7 @@
 #pragma once
 
 
-
+#include "Strand/Asset/Asset.h"
 #include "Strand/Core/Timestep.h"
 #include "Strand/Core/UUID.h"
 #include "Strand/Renderer/EditorCamera.h"
@@ -14,13 +14,16 @@ namespace Strand {
 
 	class Entity;
 
-	class Scene
+	class Scene : public Asset
 	{
 	public:
 		Scene();
 		~Scene();
 
 		static Ref<Scene> Copy(Ref<Scene> other);
+
+		virtual AssetType GetType() const { return AssetType::Scene; }
+
 
 		Entity CreateEntity(const std::string& name = std::string());
 		Entity CreateEntityWithUUID(UUID uuid, const std::string& name = std::string());

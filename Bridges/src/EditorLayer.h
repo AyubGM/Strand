@@ -33,7 +33,7 @@ namespace Strand {
 
 		void NewScene();
 		void OpenScene();
-		void OpenScene(const std::filesystem::path& path);
+		void OpenScene(AssetHandle  path);
 		void SaveScene();
 		void SaveSceneAs();
 

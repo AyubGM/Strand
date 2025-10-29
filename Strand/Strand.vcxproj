@@ -168,6 +168,7 @@
     <ClInclude Include="src\Strand\Asset\AssetMetadata.h" />
     <ClInclude Include="src\Strand\Asset\EditorAssetManager.h" />
     <ClInclude Include="src\Strand\Asset\RuntimeAssetManager.h" />
+    <ClInclude Include="src\Strand\Asset\SceneImporter.h" />
     <ClInclude Include="src\Strand\Asset\TextureImporter.h" />
     <ClInclude Include="src\Strand\Common\Algos\Polygon.h" />
     <ClInclude Include="src\Strand\Core\Application.h" />
@@ -696,6 +697,7 @@
     <ClCompile Include="src\Strand\Asset\AssetManagerBase.cpp" />
     <ClCompile Include="src\Strand\Asset\EditorAssetManager.cpp" />
     <ClCompile Include="src\Strand\Asset\RuntimeAssetManager.cpp" />
+    <ClCompile Include="src\Strand\Asset\SceneImporter.cpp" />
     <ClCompile Include="src\Strand\Asset\TextureImporter.cpp" />
     <ClCompile Include="src\Strand\Core\Application.cpp" />
     <ClCompile Include="src\Strand\Core\FileSystem.cpp" />

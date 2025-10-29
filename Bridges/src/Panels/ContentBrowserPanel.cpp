@@ -12,7 +12,7 @@ namespace Strand {
 	ContentBrowserPanel::ContentBrowserPanel()
 		: m_BaseDirectory(Project::GetAssetDirectory()), m_CurrentDirectory(m_BaseDirectory)
 	{
-		m_TreeNodes.push_back(TreeNode("."));
+		m_TreeNodes.push_back(TreeNode(".", 0));
 
 		m_DirectoryIcon = TextureImporter::LoadTexture2D("Resources/Icons/ContentBrowser/DirectoryIcon.png");
 		m_FileIcon = TextureImporter::LoadTexture2D("Resources/Icons/ContentBrowser/FileIcon.png");
@@ -90,13 +90,20 @@ namespace Strand {
 
 				if (ImGui::BeginPopupContextItem())
 				{
-					if (ImGui::MenuItem("Import"))
+					if (ImGui::MenuItem("Delete"))
 					{
-						auto relativePath = std::filesystem::relative(item, Project::GetAssetDirectory());
-						Project::GetActive()->GetEditorAssetManager()->ImportAsset(relativePath);
+						SD_CORE_ASSERT(false, "Not implemented");
 					}
 					ImGui::EndPopup();
 				}
+
+				if (ImGui::BeginDragDropSource())
+				{
+					AssetHandle handle = m_TreeNodes[treeNodeIndex].Handle;
+					ImGui::SetDragDropPayload("CONTENT_BROWSER_ITEM", &handle, sizeof(AssetHandle));
+					ImGui::EndDragDropSource();
+				}
+
 
 				ImGui::PopStyleColor();
 				if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
@@ -131,17 +138,11 @@ namespace Strand {
 					{
 						auto relativePath = std::filesystem::relative(path, Project::GetAssetDirectory());
 						Project::GetActive()->GetEditorAssetManager()->ImportAsset(relativePath);
+						RefreshAssetTree();
 					}
 					ImGui::EndPopup();
 				}
 
-				if (ImGui::BeginDragDropSource())
-				{
-					std::filesystem::path relativePath(path);
-					const wchar_t* itemPath = relativePath.c_str();
-					ImGui::SetDragDropPayload("CONTENT_BROWSER_ITEM", itemPath, (wcslen(itemPath) + 1) * sizeof(wchar_t));
-					ImGui::EndDragDropSource();
-				}
 
 				ImGui::PopStyleColor();
 				if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
@@ -184,7 +185,7 @@ namespace Strand {
 				else
 				{
 					// add node
-					TreeNode newNode(p);
+					TreeNode newNode(p, handle);
 					newNode.Parent = currentNodeIndex;
 					m_TreeNodes.push_back(newNode);
 
