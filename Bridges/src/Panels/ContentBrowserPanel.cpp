@@ -8,9 +8,8 @@
 
 namespace Strand {
 
-
-	ContentBrowserPanel::ContentBrowserPanel()
-		: m_BaseDirectory(Project::GetAssetDirectory()), m_CurrentDirectory(m_BaseDirectory)
+	ContentBrowserPanel::ContentBrowserPanel(Ref<Project> project)
+		: m_Project(project), m_ThumbnailCache(CreateRef<ThumbnailCache>(project)), m_BaseDirectory(m_Project->GetAssetDirectory()), m_CurrentDirectory(m_BaseDirectory)
 	{
 		m_TreeNodes.push_back(TreeNode(".", 0));
 
@@ -41,6 +40,7 @@ namespace Strand {
 			}
 		}
 
+
 		static float padding = 16.0f;
 		static float thumbnailSize = 128.0f;
 		float cellSize = thumbnailSize + padding;
@@ -56,7 +56,7 @@ namespace Strand {
 		{
 			TreeNode* node = &m_TreeNodes[0];
 
-			auto currentDir = std::filesystem::relative(m_CurrentDirectory, Project::GetAssetDirectory());
+			auto currentDir = std::filesystem::relative(m_CurrentDirectory, Project::GetActiveAssetDirectory());
 			for (const auto& p : currentDir)
 			{
 				// if only one level
@@ -78,14 +78,13 @@ namespace Strand {
 
 			for (const auto& [item, treeNodeIndex] : node->Children)
 			{
-				bool isDirectory = std::filesystem::is_directory(Project::GetAssetDirectory() / item);
+				bool isDirectory = std::filesystem::is_directory(Project::GetActiveAssetDirectory() / item);
 
 				std::string itemStr = item.generic_string();
 
 				ImGui::PushID(itemStr.c_str());
 				Ref<Texture2D> icon = isDirectory ? m_DirectoryIcon : m_FileIcon;
 				ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
-				//TODO CHECK ImageButton First argument
 				ImGui::ImageButton(itemStr.c_str(), (ImTextureID)icon->GetRendererID(), { thumbnailSize, thumbnailSize }, { 0, 1 }, { 1, 0 });
 
 				if (ImGui::BeginPopupContextItem())
@@ -127,22 +126,29 @@ namespace Strand {
 				std::string filenameString = path.filename().string();
 
 				ImGui::PushID(filenameString.c_str());
-				Ref<Texture2D> icon = directoryEntry.is_directory() ? m_DirectoryIcon : m_FileIcon;
+
+				// THUMBNAIL
+				auto relativePath = std::filesystem::relative(path, Project::GetActiveAssetDirectory());
+				Ref<Texture2D> thumbnail = m_DirectoryIcon;
+				if (!directoryEntry.is_directory())
+				{
+					thumbnail = m_ThumbnailCache->GetOrCreateThumbnail(relativePath);
+					if (!thumbnail)
+						thumbnail = m_FileIcon;
+				}
+
 				ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
-				//TODO CHECK ImageButton First argument
-				ImGui::ImageButton(filenameString.c_str(), (ImTextureID)icon->GetRendererID(), { thumbnailSize, thumbnailSize }, { 0, 1 }, { 1, 0 });
+				ImGui::ImageButton(filenameString.c_str(), (ImTextureID)thumbnail->GetRendererID(), { thumbnailSize, thumbnailSize }, { 0, 1 }, { 1, 0 });
 
 				if (ImGui::BeginPopupContextItem())
 				{
 					if (ImGui::MenuItem("Import"))
 					{
-						auto relativePath = std::filesystem::relative(path, Project::GetAssetDirectory());
 						Project::GetActive()->GetEditorAssetManager()->ImportAsset(relativePath);
 						RefreshAssetTree();
 					}
 					ImGui::EndPopup();
 				}
-
 
 				ImGui::PopStyleColor();
 				if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))

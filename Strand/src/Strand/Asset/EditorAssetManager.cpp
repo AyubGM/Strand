@@ -113,7 +113,7 @@ namespace Strand {
 
 	void EditorAssetManager::SerializeAssetRegistry()
 	{
-		auto path = Project::GetAssetRegistryPath();
+		auto path = Project::GetActiveAssetRegistryPath();
 
 		YAML::Emitter out;
 		{
@@ -141,7 +141,7 @@ namespace Strand {
 
 	bool EditorAssetManager::DeserializeAssetRegistry()
 	{
-		auto path = Project::GetAssetRegistryPath();
+		auto path = Project::GetActiveAssetRegistryPath();
 		YAML::Node data;
 		try
 		{

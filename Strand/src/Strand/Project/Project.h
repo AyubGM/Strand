@@ -24,30 +24,39 @@ namespace Strand {
 	class Project
 	{
 	public:
-		static const std::filesystem::path& GetProjectDirectory()
-		{
-			SD_CORE_ASSERT(s_ActiveProject);
-			return s_ActiveProject->m_ProjectDirectory;
-		}
-		
-		static std::filesystem::path GetAssetDirectory()
-		{
-			SD_CORE_ASSERT(s_ActiveProject);
-			return GetProjectDirectory() / s_ActiveProject->m_Config.AssetDirectory;
-		}
-
-		static std::filesystem::path GetAssetRegistryPath()
-		{
-			SD_CORE_ASSERT(s_ActiveProject);
-			return GetAssetDirectory() / s_ActiveProject->m_Config.AssetRegistryPath;
-		}
-
+		const std::filesystem::path& GetProjectDirectory() { return m_ProjectDirectory; }
+		std::filesystem::path GetAssetDirectory() { return GetProjectDirectory() / s_ActiveProject->m_Config.AssetDirectory; }
+		std::filesystem::path GetAssetRegistryPath() { return GetAssetDirectory() / s_ActiveProject->m_Config.AssetRegistryPath; }
 		// TODO: move to asset manager when we have one
-		static std::filesystem::path GetAssetFileSystemPath(const std::filesystem::path& path)
+		std::filesystem::path GetAssetFileSystemPath(const std::filesystem::path& path) { return GetAssetDirectory() / path; }
+
+		std::filesystem::path GetAssetAbsolutePath(const std::filesystem::path& path);
+
+		static const std::filesystem::path& GetActiveProjectDirectory()
 		{
 			SD_CORE_ASSERT(s_ActiveProject);
-			return GetAssetDirectory() / path;
+			return s_ActiveProject->GetProjectDirectory();
 		}
+
+		static std::filesystem::path GetActiveAssetDirectory()
+		{
+			SD_CORE_ASSERT(s_ActiveProject);
+			return s_ActiveProject->GetAssetDirectory();
+		}
+
+		static std::filesystem::path GetActiveAssetRegistryPath()
+		{
+			SD_CORE_ASSERT(s_ActiveProject);
+			return s_ActiveProject->GetAssetRegistryPath();
+		}
+
+		// TODO(Yan): move to asset manager when we have one
+		static std::filesystem::path GetActiveAssetFileSystemPath(const std::filesystem::path& path)
+		{
+			SD_CORE_ASSERT(s_ActiveProject);
+			return s_ActiveProject->GetAssetFileSystemPath(path);
+		}
+
 
 		ProjectConfig& GetConfig() { return m_Config; }
 

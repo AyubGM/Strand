@@ -228,17 +228,10 @@ namespace Strand {
 
 				ImGui::Separator();
 
-				/*if (ImGui::MenuItem("Save Scene As...", "Ctrl+Shift+S"))
-					SaveSceneAs();*/
+				if (ImGui::MenuItem("Save Scene As...", "Ctrl+Shift+S"))
+					SaveSceneAs();
 
-				/*if (ImGui::MenuItem("Open...", "Ctrl+O"))
-					OpenScene();*/
-
-				/*if (ImGui::MenuItem("Save ", "Ctrl+S"))
-					SaveScene();*/
-
-				/*if (ImGui::MenuItem("Save As...", "Ctrl+Shift+S"))
-					SaveSceneAs();*/
+				ImGui::Separator();
 
 				if (ImGui::MenuItem("Exit")) 
 					Application::Get().Close();
@@ -666,7 +659,7 @@ namespace Strand {
 			AssetHandle startScene = Project::GetActive()->GetConfig().StartScene;
 			if (startScene)
 				OpenScene(startScene);
-			m_ContentBrowserPanel = CreateScope<ContentBrowserPanel>();
+			m_ContentBrowserPanel = CreateScope<ContentBrowserPanel>(Project::GetActive());
 		}
 	}
 

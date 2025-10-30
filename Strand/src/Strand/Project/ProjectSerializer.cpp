@@ -4,7 +4,10 @@
 #include <fstream>
 #include <yaml-cpp/yaml.h>
 
+
 namespace Strand {
+
+	
 
 	ProjectSerializer::ProjectSerializer(Ref<Project> project)
 		: m_Project(project)
@@ -58,7 +61,8 @@ namespace Strand {
 			return false;
 
 		config.Name = projectNode["Name"].as<std::string>();
-		config.StartScene = projectNode["StartScene"].as<uint64_t>();
+		//config.StartScene = projectNode["StartScene"].as<uint64_t>();
+		config.StartScene = 0;
 		config.AssetDirectory = projectNode["AssetDirectory"].as<std::string>();
 		if (projectNode["AssetRegistryPath"])
 			config.AssetRegistryPath = projectNode["AssetRegistryPath"].as<std::string>();
