@@ -17,7 +17,7 @@ namespace Strand {
 		AssetHandle StartScene;
 
 		std::filesystem::path AssetDirectory;
-		std::filesystem::path AssetRegistryPath; // Relative to AssetDirectory
+		std::filesystem::path AssetRegistryPath = "AssetRegistry.yaml"; // Relative to AssetDirectory
 		std::filesystem::path ScriptModulePath;
 	};
 
@@ -50,7 +50,7 @@ namespace Strand {
 			return s_ActiveProject->GetAssetRegistryPath();
 		}
 
-		// TODO(Yan): move to asset manager when we have one
+		// TODO: move to asset manager when we have one
 		static std::filesystem::path GetActiveAssetFileSystemPath(const std::filesystem::path& path)
 		{
 			SD_CORE_ASSERT(s_ActiveProject);

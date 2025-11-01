@@ -57,6 +57,14 @@ namespace Strand {
 		AssetMetadata metadata;
 		metadata.FilePath = filepath;
 		metadata.Type = GetAssetTypeFromFileExtension(filepath.extension());
+
+		if (metadata.Type == AssetType::None)
+		{
+			SD_CORE_ERROR("Failed to import asset: Unknown asset type for {}", filepath.string());
+			return;
+		}
+
+		//TODO MAYBE REMOVE THIS
 		SD_CORE_ASSERT(metadata.Type != AssetType::None);
 		Ref<Asset> asset = AssetImporter::ImportAsset(handle, metadata);
 		if (asset)
@@ -65,6 +73,10 @@ namespace Strand {
 			m_LoadedAssets[handle] = asset;
 			m_AssetRegistry[handle] = metadata;
 			SerializeAssetRegistry();
+		}
+		else
+		{
+			SD_CORE_ERROR("Failed to import asset: Importer failed for {}", filepath.string());
 		}
 	}
 
@@ -124,7 +136,7 @@ namespace Strand {
 			for (const auto& [handle, metadata] : m_AssetRegistry)
 			{
 				out << YAML::BeginMap;
-				out << YAML::Key << "Handle" << YAML::Value << handle;
+				out << YAML::Key << "Handle" << YAML::Value << (uint64_t)handle;
 				std::string filepathStr = metadata.FilePath.generic_string();
 				out << YAML::Key << "FilePath" << YAML::Value << filepathStr;
 				out << YAML::Key << "Type" << YAML::Value << AssetTypeToString(metadata.Type);
@@ -142,6 +154,13 @@ namespace Strand {
 	bool EditorAssetManager::DeserializeAssetRegistry()
 	{
 		auto path = Project::GetActiveAssetRegistryPath();
+
+		if (!std::filesystem::exists(path))
+		{
+			SD_CORE_WARN("Asset Registry file not found at '{0}'. Starting with empty registry.", path.string());
+			return true; // Return true so the editor proceeds with an empty registry
+		}
+
 		YAML::Node data;
 		try
 		{

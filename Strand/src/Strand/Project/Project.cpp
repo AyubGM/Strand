@@ -13,6 +13,12 @@ namespace Strand {
 	Ref<Project> Project::New()
 	{
 		s_ActiveProject = CreateRef<Project>();
+
+		//TODO CHECK THIS
+		// Initialized the AssetManager for a new project.
+		//std::shared_ptr<EditorAssetManager> editorAssetManager = std::make_shared<EditorAssetManager>();
+		//s_ActiveProject->m_AssetManager = editorAssetManager;
+
 		return s_ActiveProject;
 	}
 
@@ -27,8 +33,7 @@ namespace Strand {
 			s_ActiveProject = project;
 			std::shared_ptr<EditorAssetManager> editorAssetManager = std::make_shared<EditorAssetManager>();
 			s_ActiveProject->m_AssetManager = editorAssetManager;
-			//TODO FIX THIS
-			//editorAssetManager->DeserializeAssetRegistry();
+			editorAssetManager->DeserializeAssetRegistry();
 			return s_ActiveProject;
 		}
 
@@ -40,9 +45,7 @@ namespace Strand {
 		ProjectSerializer serializer(s_ActiveProject);
 		if (serializer.Serialize(path))
 		{
-			//TODO CHECK THIS
-			//s_ActiveProject->m_ProjectDirectory = path.parent_path();
-			s_ActiveProject->m_ProjectDirectory = path;
+			s_ActiveProject->m_ProjectDirectory = path.parent_path();
 			return true;
 		}
 

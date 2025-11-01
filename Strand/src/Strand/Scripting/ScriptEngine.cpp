@@ -70,8 +70,8 @@ namespace Strand {
 				{
 					ScopedBuffer pdbFileData = FileSystem::ReadFileBinary(pdbPath);
 					mono_debug_open_image_from_memory(image, pdbFileData.As<const mono_byte>(), pdbFileData.Size());
-					//TODO SEE WHAT IS WRONG WITH THE LOGGER
-					SD_CORE_INFO("Loaded PDB {}", pdbPath.string());
+					//TODO SEE WHAT IS WRONG WITH THE LOGGER (FIXED?)
+					SD_CORE_INFO("Loaded PDB {}", pdbPath);
 				}
 			}
 

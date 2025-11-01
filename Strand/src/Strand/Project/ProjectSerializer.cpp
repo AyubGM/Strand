@@ -61,8 +61,24 @@ namespace Strand {
 			return false;
 
 		config.Name = projectNode["Name"].as<std::string>();
-		//config.StartScene = projectNode["StartScene"].as<uint64_t>();
-		config.StartScene = 0;
+
+		//TODO FIX THIS 
+		if (projectNode["StartScene"])
+		{
+			try
+			{
+				config.StartScene = static_cast<AssetHandle>(projectNode["StartScene"].as<uint64_t>());
+			}
+			catch (const YAML::BadConversion& e)
+			{
+				SD_CORE_WARN("Project file '{0}' has an invalid type for 'StartScene'. Expected uint64_t (AssetHandle), got non-numeric value. Defaulting to 0.", filepath.string());
+				config.StartScene = 0;
+			}
+		}
+		else
+		{
+			config.StartScene = 0;
+		}
 		config.AssetDirectory = projectNode["AssetDirectory"].as<std::string>();
 		if (projectNode["AssetRegistryPath"])
 			config.AssetRegistryPath = projectNode["AssetRegistryPath"].as<std::string>();

@@ -306,8 +306,19 @@ namespace Strand {
 		{
 			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
 			{
+
 				AssetHandle handle = *(AssetHandle*)payload->Data;
-				OpenScene(handle);
+				const AssetType assetType = AssetManager::GetAssetType(handle);
+
+				if (assetType == AssetType::Scene)
+				{
+					OpenScene(handle);
+				}
+				else
+				{
+					SD_CORE_WARN("Dropped asset is not a Scene ({}). Ignoring drop.", AssetTypeToString(assetType));
+				}
+
 			}
 			ImGui::EndDragDropTarget();
 		}
@@ -443,7 +454,7 @@ namespace Strand {
 				{
 					Ref<Texture2D> icon = m_IconStep;
 					bool isPaused = m_ActiveScene->IsPaused();
-					if (ImGui::ImageButton("##Debug1", (ImTextureID)(uint64_t)icon->GetRendererID(), ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0.0f, 0.0f, 0.0f, 0.0f), tintColor) && toolbarEnabled)
+					if (ImGui::ImageButton("##Step", (ImTextureID)(uint64_t)icon->GetRendererID(), ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0.0f, 0.0f, 0.0f, 0.0f), tintColor) && toolbarEnabled)
 					{
 						m_ActiveScene->Step();
 					}
@@ -679,8 +690,21 @@ namespace Strand {
 
 	void EditorLayer::SaveProject()
 	{
-		//TODO CHECK IF THIS CORRECT
-		 Project::SaveActive(Project::GetActiveProjectDirectory());
+		const auto& path = Project::GetActiveProjectDirectory() / (Project::GetActive()->GetConfig().Name + ".sproj");
+
+		if (Project::SaveActive(path))
+		{
+			SD_CORE_INFO("Project saved successfully to: {}", path.string());
+		}
+		else
+		{
+			SD_CORE_ERROR("Failed to save active project.");
+		}
+
+		//if (auto editorAssetManager = Project::GetActive()->GetEditorAssetManager())
+		//{
+		//	editorAssetManager->SerializeAssetRegistry();
+		//}
 	}
 
 	void EditorLayer::NewScene()

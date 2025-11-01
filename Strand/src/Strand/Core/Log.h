@@ -3,6 +3,7 @@
 
 #include "Strand/Core/Base.h"
 
+#include <filesystem>
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include "glm/gtx/string_cast.hpp"
@@ -77,6 +78,19 @@ struct fmt::formatter<glm::vec4> {
 		return fmt::format_to(ctx.out(), "({0:.2f}, {1:.2f}, {2:.2f}, {3:.2f})", v.x, v.y, v.z, v.w);
 	}
 
+};
+
+//TODO CHECK WHY IS NOT WORKING
+template <> 
+struct fmt::formatter<std::filesystem::path> {
+	constexpr auto parse(format_parse_context& ctx) -> decltype(ctx.begin()) {
+		return ctx.begin();
+	}
+
+	template <typename FormatContext>
+	auto format(const std::filesystem::path& path, FormatContext& ctx) const -> decltype(ctx.out()) {
+		return fmt::format_to(ctx.out(), "{}", path.string());
+	}
 };
 
 // Core log macros
