@@ -1,4 +1,7 @@
 #include "Sandbox3D.h"
+
+#include "Strand/Asset/TextureImporter.h"
+
 #include "imgui/imgui.h"
 
 #include <glm/gtc/matrix_transform.hpp>
@@ -149,8 +152,10 @@ void Sandbox3D::OnAttach()
 {
 	SD_PROFILE_FUNCTION();
 
-	m_Diffuse = Strand::Texture2D::Create("assets/textures/container2.png");
-	m_Specular = Strand::Texture2D::Create("assets/textures/container2_specular.png");
+	Strand::Renderer3D::Init();
+
+	m_Diffuse = Strand::TextureImporter::LoadTexture2D("assets/textures/container2.png");
+	m_Specular = Strand::TextureImporter::LoadTexture2D("assets/textures/container2_specular.png");
 	m_PhongShader = Strand::Shader::Create("assets/shaders/Renderer3D_Defualt.glsl");
 	m_Material = Strand::Material::Create(m_PhongShader);
 	m_Material->Set("u_MaterialData", m_Shininess);
@@ -204,6 +209,7 @@ void Sandbox3D::OnAttach()
 void Sandbox3D::OnDetach()
 {
 	SD_PROFILE_FUNCTION();
+	Strand::Renderer3D::Shutdown();
 }
 
 void Sandbox3D::OnUpdate(Strand::Timestep ts)

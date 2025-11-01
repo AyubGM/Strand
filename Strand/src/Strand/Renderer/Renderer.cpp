@@ -44,6 +44,7 @@ namespace Strand
 		Renderer2D::Init();
 		//I Understand now why these two lines stop renderer2D TODO THE UNIFORMBUFFER
 		
+		//Moved it to Sandbox3D.cpp util the 3D renderer is fully implmented
 		//Renderer3D::Init();
 		s_SceneData.Library = CreateScope<MaterialLibrary>();
 	}
@@ -51,6 +52,7 @@ namespace Strand
 	void Renderer::Shutdown()
 	{
 		Renderer2D::Shutdown();
+		//Moved it to Sandbox3D.cpp util the 3D renderer is fully implmented
 		//Renderer3D::Shutdown();
 	}
 

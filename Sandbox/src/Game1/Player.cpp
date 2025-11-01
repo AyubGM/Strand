@@ -1,5 +1,7 @@
 #include "Player.h"
 
+#include "Strand/Asset/TextureImporter.h"
+
 
 #include <imgui/imgui.h>
 #include <glm/gtc/matrix_transform.hpp>
@@ -28,7 +30,7 @@ Player::Player()
 
 void Player::LoadAssets()
 {
-	m_ShipTexture = Strand::Texture2D::Create("assets/textures/Ship.png");
+	m_ShipTexture = TextureImporter::LoadTexture2D("assets/textures/Ship.png");
 }
 
 void Player::OnUpdate(Strand::Timestep ts)

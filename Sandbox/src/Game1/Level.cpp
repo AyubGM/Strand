@@ -1,5 +1,7 @@
 #include "Level.h"
 
+#include "Strand/Asset/TextureImporter.h"
+
 #include <glm/gtc/matrix_transform.hpp>
 
 using namespace Strand;
@@ -66,7 +68,7 @@ static bool PointInTri(const glm::vec2& p, glm::vec2& p0, const glm::vec2& p1, c
 
 void Level::Init()
 {
-	m_TriangleTexture = Texture2D::Create("assets/textures/Triangle.png");
+	m_TriangleTexture = TextureImporter::LoadTexture2D("assets/textures/Triangle.png");
 	m_Player.LoadAssets();
 	m_Player2.LoadAssets();
 
