@@ -12,7 +12,7 @@ namespace Sandbox
         private TransformComponent m_Transform;
         private Rigidbody2DComponent m_Rigidbody;
 
-        public float Speed;
+        public float Speed = 10.0f;
         public float Time = 0.0f;
 
         void OnCreate()
@@ -26,7 +26,7 @@ namespace Sandbox
         void OnUpdate(float ts)
         {
             Time += ts;
-           // Console.WriteLine($"Player.OnUpdate: {ts}");
+            // Console.WriteLine($"Player.OnUpdate: {ts}");
 
             float speed = Speed;
             Vector3 velocity = Vector3.Zero;
@@ -37,22 +37,16 @@ namespace Sandbox
                 velocity.Y = -1.0f;
 
             if (Input.IsKeyDown(KeyCode.A))
+            {
                 velocity.X = -1.0f;
+                Console.WriteLine("A is down");
+            }
             else if (Input.IsKeyDown(KeyCode.D))
                 velocity.X = 1.0f;
 
-            Entity cameraEntity = FindEntityByName("Camera");
-            if (cameraEntity != null)
-            {
-                Camera camera = cameraEntity.As<Camera>();
-
-                if (Input.IsKeyDown(KeyCode.Q))
-                    camera.DistanceFromPlayer += speed * 2.0f * ts;
-                else if (Input.IsKeyDown(KeyCode.E))
-                    camera.DistanceFromPlayer -= speed * 2.0f * ts;
-            }
-
             velocity *= speed * ts;
+            Console.WriteLine(velocity.X);
+            Console.WriteLine(velocity.Y);
 
             m_Rigidbody.ApplyLinearImpulse(velocity.XY, true);
 

@@ -40,7 +40,9 @@ namespace Strand {
 		ProjectSerializer serializer(s_ActiveProject);
 		if (serializer.Serialize(path))
 		{
-			s_ActiveProject->m_ProjectDirectory = path.parent_path();
+			//TODO CHECK THIS
+			//s_ActiveProject->m_ProjectDirectory = path.parent_path();
+			s_ActiveProject->m_ProjectDirectory = path;
 			return true;
 		}
 

@@ -215,8 +215,12 @@ namespace Strand {
 				// which we can't undo at the moment without finer window depth/z control.
 				//ImGui::MenuItem("Fullscreen", NULL, &opt_fullscreen_persistant);
 
+
 				if (ImGui::MenuItem("Open Project...", "Ctrl+O"))
 					OpenProject();
+
+				if (ImGui::MenuItem("Save Project", "not Implemented"))
+					SaveProject();
 
 				ImGui::Separator();
 
@@ -675,7 +679,8 @@ namespace Strand {
 
 	void EditorLayer::SaveProject()
 	{
-		// Project::SaveActive();
+		//TODO CHECK IF THIS CORRECT
+		 Project::SaveActive(Project::GetActiveProjectDirectory());
 	}
 
 	void EditorLayer::NewScene()

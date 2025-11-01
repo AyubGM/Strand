@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Strand
 {
-    public class Vector3
+    public struct Vector3
     {
         public float X, Y, Z;
 
