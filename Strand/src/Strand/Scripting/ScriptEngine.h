@@ -149,6 +149,7 @@ namespace Strand {
 	public:
 		static void Init();
 		static void Shutdown();
+		static bool IsInitialized();
 
 		static bool LoadAssembly(const std::filesystem::path& filepath);
 		static bool LoadAppAssembly(const std::filesystem::path& filepath);

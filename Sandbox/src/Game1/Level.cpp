@@ -70,7 +70,6 @@ void Level::Init()
 {
 	m_TriangleTexture = TextureImporter::LoadTexture2D("assets/textures/Triangle.png");
 	m_Player.LoadAssets();
-	m_Player2.LoadAssets();
 
 	m_Pillars.resize(5);
 	for (int i = 0; i < 5; i++)
@@ -80,7 +79,6 @@ void Level::Init()
 void Level::OnUpdate(Strand::Timestep ts)
 {
 	m_Player.OnUpdate(ts);
-	m_Player2.OnUpdate(ts);
 
 	if (CollisionTest())
 	{
@@ -120,7 +118,6 @@ void Level::OnRender()
 	}
 
 	m_Player.OnRender();
-	m_Player2.OnRender();
 }
 
 void Level::OnImGuiRender()

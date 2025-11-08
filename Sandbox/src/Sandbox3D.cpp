@@ -315,18 +315,18 @@ void Sandbox3D::OnUpdate(Strand::Timestep ts)
 		}
 		Strand::Renderer3D::SubmitInstanced(m_CubeMesh, m_InstacedMaterial, models);
 		
-		//Strand::Renderer3D::DrawCubeMesh(glm::mat4(1), m_CubeMesh, m_CubeColor, m_ReflectiveMaterial);
-		Strand::Renderer3D::Submit(m_CubeMesh, m_ReflectiveMaterial, glm::mat4(1));
+		Strand::Renderer3D::DrawCubeMesh(glm::mat4(1), m_CubeMesh, m_CubeColor, m_ReflectiveMaterial);
+		//Strand::Renderer3D::Submit(m_CubeMesh, m_ReflectiveMaterial, glm::mat4(1));
 
-		/*for (const auto& mesh : m_Backpack->GetMeshes())
-		{
-			uint32_t materialIndex = mesh->GetMaterialIndex();
-			Strand::Ref<Strand::Material> material = m_Backpack->GetMaterials()[materialIndex];
+		//for (const auto& mesh : m_Backpack->GetMeshes())
+		//{
+		//	uint32_t materialIndex = mesh->GetMaterialIndex();
+		//	Strand::Ref<Strand::Material> material = m_Backpack->GetMaterials()[materialIndex];
 
 			
-			Strand::Renderer3D::DrawMesh(glm::mat4(1), mesh, material);
-			Strand::Renderer3D::Submit(mesh, material, model);
-		}*/
+			//Strand::Renderer3D::DrawMesh(glm::mat4(1), mesh, material);
+			//Strand::Renderer3D::Submit(mesh, material, model);
+		//}
 
 
 		for (uint32_t i = 0; i < pointLightPositions.size(); ++i)
@@ -335,7 +335,7 @@ void Sandbox3D::OnUpdate(Strand::Timestep ts)
 			model = glm::translate(model, glm::vec3(pointLightPositions[i]));
 			model = glm::scale(model, glm::vec3(0.2f));
 			//Strand::Renderer3D::DrawLightCube(model, m_CubeMesh, m_CubeColor);
-			Strand::Renderer3D::Submit(m_CubeMesh, m_LightMaterial, model);
+		//	Strand::Renderer3D::Submit(m_CubeMesh, m_LightMaterial, model);
 		}
 
 		Strand::Renderer3D::BeginSkyboxPass(m_CubeMapTextur);

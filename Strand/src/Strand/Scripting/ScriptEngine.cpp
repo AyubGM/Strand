@@ -151,6 +151,9 @@ namespace Strand {
 	};
 
 	static ScriptEngineData* s_ScriptData = nullptr;
+	static bool s_MonoJitInitialized = false;
+	static bool s_MonoDebugInitialized = false;
+	static bool s_MonoJitOptionsParsed = false;
 
 	static void OnAppAssemblyFileSystemEvent(const std::string& path, const filewatch::Event change_type)
 	{
@@ -168,6 +171,12 @@ namespace Strand {
 
 	void ScriptEngine::Init()
 	{
+		if (s_ScriptData)
+		{
+			SD_CORE_WARN("[ScriptEngine] Init called while already initialized. Reinitializing.");
+			ShutdownMono();
+		}
+
 		s_ScriptData = new ScriptEngineData();
 
 		InitMono();
@@ -196,13 +205,19 @@ namespace Strand {
 
 	}
 
+	
 
 	void ScriptEngine::Shutdown()
 	{
 		ShutdownMono();
 		delete s_ScriptData;
+		s_ScriptData = nullptr;
 	}
 
+	bool ScriptEngine::IsInitialized()
+	{
+		return s_ScriptData != nullptr;
+	}
 	
 	void ScriptEngine::InitMono()
 	{
@@ -215,12 +230,41 @@ namespace Strand {
 				"--soft-breakpoints"
 			};
 
-			mono_jit_parse_options(2, (char**)argv);
-			mono_debug_init(MONO_DEBUG_FORMAT_MONO);
+			// Parse options only once per process (parsing twice can re-register agents/options).
+			if (!s_MonoJitOptionsParsed)
+			{
+				mono_jit_parse_options(2, (char**)argv);
+				s_MonoJitOptionsParsed = true;
+			}
+
+			// Only initialize Mono debug subsystem once per process.
+			if (!s_MonoDebugInitialized)
+			{
+				mono_debug_init(MONO_DEBUG_FORMAT_MONO);
+				s_MonoDebugInitialized = true;
+			}
+			else
+			{
+				SD_CORE_WARN("[ScriptEngine] Mono debug already initialized; skipping mono_debug_init.");
+			}
 		}
 
-		MonoDomain* rootDomain = mono_jit_init("StrandJITRuntime");
-		SD_CORE_ASSERT(rootDomain);
+		MonoDomain* rootDomain = nullptr;
+
+		// Initialize JIT only once per process. Re-initializing the JIT causes duplicate registrations
+		// (counters, profiler, etc.) which produce the "registering the same counter address twice" warnings.
+		if (!s_MonoJitInitialized)
+		{
+			rootDomain = mono_jit_init("StrandJITRuntime");
+			SD_CORE_ASSERT(rootDomain);
+			s_MonoJitInitialized = true;
+		}
+		else
+		{
+			// Reuse existing root domain when reinitializing script system inside process.
+			rootDomain = mono_get_root_domain();
+			SD_CORE_WARN("[ScriptEngine] Mono JIT already initialized; reusing root domain.");
+		}
 
 		// Store the root domain pointer
 		s_ScriptData->RootDomain = rootDomain;
@@ -240,8 +284,16 @@ namespace Strand {
 		mono_domain_unload(s_ScriptData->AppDomain);
 		s_ScriptData->AppDomain = nullptr;
 
-		mono_jit_cleanup(s_ScriptData->RootDomain);
+		if (s_ScriptData->EnableDebugging && s_MonoDebugInitialized && s_ScriptData->RootDomain)
+		{
+			mono_debug_domain_unload(s_ScriptData->RootDomain);
+		}
+
+		//mono_jit_cleanup(s_ScriptData->RootDomain);
 		s_ScriptData->RootDomain = nullptr;
+
+		// Clean up Mono debugging subsystem
+		//mono_debug_cleanup();
 	}
 
 	bool ScriptEngine::LoadAssembly(const std::filesystem::path& filepath)

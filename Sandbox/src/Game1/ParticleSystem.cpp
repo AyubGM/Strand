@@ -69,6 +69,6 @@ void ParticleSystem::OnRender()
 		color.a = color.a * life;
 
 		float size = glm::lerp(particle.SizeEnd, particle.SizeBegin, life);
-		//Strand::Renderer2D::DrawQuad(particle.Position, { size, size }, particle.Rotation, color);
+		Strand::Renderer2D::DrawRotatedQuad(particle.Position, { size, size }, particle.Rotation, color);
 	}
 }

@@ -32,20 +32,19 @@ void GameLayer::OnUpdate(Strand::Timestep ts)
 	if ((int)(m_Time * 10.0f) % 8 > 4)
 		m_Blink = !m_Blink;
 
-	if (m_Level.IsGameOver())
-		m_State = GameState::GameOver;
-
-	const auto& playerPos = m_Level.GetPlayer().GetPosition();
-	m_Camera->SetPosition({ playerPos.x, playerPos.y, 0.0f });
-
-	switch (m_State)
+	if (m_State == GameState::Play)
 	{
-	case GameState::Play:
-	{
+		
+		if (m_Level.IsGameOver())
+			m_State = GameState::GameOver;
+
+		const auto& playerPos = m_Level.GetPlayer().GetPosition();
+		m_Camera->SetPosition({ playerPos.x, playerPos.y, 0.0f });
+
 		m_Level.OnUpdate(ts);
-		break;
+
 	}
-	}
+	
 
 	// Render
 	Strand::RenderCommand::SetClearColor({ 0.0f, 0.0f, 0.0f, 1 });
@@ -99,8 +98,14 @@ void GameLayer::OnImGuiRender()
 		
 	case GameLayer::GameState::Pause:
 	{
-		//TODO
-		break; 
+		auto pos = ImGui::GetWindowPos();
+		auto width = Application::Get().GetWindow().GetWidth();
+		auto hight = Application::Get().GetWindow().GetHeight();
+		pos.x += width * 0.5f - 300.0f;
+		pos.y += 50.0f;
+
+		ImGui::GetForegroundDrawList()->AddText(m_Font, 120.0f, pos, 0xffffffff, "Game Is Paused Click to Play!");
+		break;
 	}
 		
     }
@@ -111,6 +116,7 @@ void GameLayer::OnEvent(Strand::Event& e)
 {
 	EventDispatcher dispatcher(e);
 	dispatcher.Dispatch<WindowResizeEvent>(SD_BIND_EVENT_FN(GameLayer::OnWindowResize));
+	dispatcher.Dispatch<KeyPressedEvent>(SD_BIND_EVENT_FN(GameLayer::OnKeyBoardPressed));
 	dispatcher.Dispatch<MouseButtonPressedEvent>(SD_BIND_EVENT_FN(GameLayer::OnMouseButtonPressed));
 
 }
@@ -125,6 +131,25 @@ bool GameLayer::OnMouseButtonPressed(Strand::MouseButtonPressedEvent& e)
 
 	m_State = GameState::Play;
 	return false;
+}
+bool GameLayer::OnKeyBoardPressed(Strand::KeyPressedEvent& e)
+{
+	if (Input::IsKeyPressed(Key::Escape))
+	{
+		if (m_State == GameState::Play)
+		{
+			m_State = GameState::Pause; // Pause the game
+		}
+		else if (m_State == GameState::Pause)
+		{
+			m_State = GameState::Play; // Unpause the game
+		}
+		
+	}
+		 
+
+	return false;
+
 }
 
 bool GameLayer::OnWindowResize(Strand::WindowResizeEvent& e)

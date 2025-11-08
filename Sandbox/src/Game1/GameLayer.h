@@ -20,6 +20,7 @@ public:
 	virtual void OnImGuiRender() override;
 	void OnEvent(Strand::Event& e) override;
 	bool OnMouseButtonPressed(Strand::MouseButtonPressedEvent& e);
+	bool OnKeyBoardPressed(Strand::KeyPressedEvent& e);
 	bool OnWindowResize(Strand::WindowResizeEvent& e);
 
 private:
@@ -30,6 +31,7 @@ private:
 	ImFont* m_Font;
 	float m_Time = 0.0f;
 	bool m_Blink = false;
+	bool m_IsPaused = false;
 
 	enum class GameState
 	{

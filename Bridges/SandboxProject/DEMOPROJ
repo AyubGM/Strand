@@ -1,0 +1,6 @@
+Project:
+  Name: DEMOPROJ
+  StartScene: 1113779981381318267
+  AssetDirectory: assets
+  AssetRegistryPath: AssetRegistry.yaml
+  ScriptModulePath: ""

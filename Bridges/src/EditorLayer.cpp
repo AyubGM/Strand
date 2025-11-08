@@ -215,6 +215,8 @@ namespace Strand {
 				// which we can't undo at the moment without finer window depth/z control.
 				//ImGui::MenuItem("Fullscreen", NULL, &opt_fullscreen_persistant);
 
+				if (ImGui::MenuItem("new Project", "not Implemented"))
+					NewProject();
 
 				if (ImGui::MenuItem("Open Project...", "Ctrl+O"))
 					OpenProject();
@@ -662,7 +664,29 @@ namespace Strand {
 
 	void EditorLayer::NewProject()
 	{
-		Project::New();
+		//Project::New();
+		std::string filepath = FileDialogs::SaveFile("Strand Project (*.sproj)\0*.sproj\0");
+		if (filepath.empty())
+			return;
+		std::filesystem::path projectFilePath = filepath;
+		std::filesystem::path projectDirectory = projectFilePath.parent_path();
+		Ref<Project> proj = Project::New(projectDirectory);
+		if (!proj)
+		{
+			SD_CORE_ERROR("Failed to create new project at '{}'", projectDirectory.string());
+			return;
+		}
+
+		proj->GetConfig().Name = projectFilePath.stem().string();
+
+		if (!Project::SaveActive(projectFilePath))
+		{
+			SD_CORE_ERROR("Failed to save new project file '{}'", projectFilePath.string());
+			return;
+		}
+		// Initialize scripting and UI similar to OpenProject
+		ScriptEngine::Init();
+		m_ContentBrowserPanel = CreateScope<ContentBrowserPanel>(Project::GetActive());
 	}
 
 	void EditorLayer::OpenProject(const std::filesystem::path& path)

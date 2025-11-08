@@ -14,12 +14,46 @@ namespace Strand {
 	{
 		s_ActiveProject = CreateRef<Project>();
 
-		//TODO CHECK THIS
-		// Initialized the AssetManager for a new project.
-		//std::shared_ptr<EditorAssetManager> editorAssetManager = std::make_shared<EditorAssetManager>();
-		//s_ActiveProject->m_AssetManager = editorAssetManager;
-
 		return s_ActiveProject;
+	}
+
+	Ref<Project> Project::New(const std::filesystem::path& projectDirectory)
+	{
+		SD_CORE_ASSERT(!projectDirectory.empty(), "Project directory must not be empty");
+
+		Ref<Project> project = CreateRef<Project>();
+
+		if (project->m_Config.AssetDirectory.empty())
+			project->m_Config.AssetDirectory = "assets";
+
+		// Ensure the project directory and asset directory exist on disk
+		std::error_code ec;
+		std::filesystem::create_directories(projectDirectory, ec);
+		if (ec)
+		{
+			SD_CORE_ERROR("Failed to create project directory '{0}': {1}", projectDirectory.string(), ec.message());
+			return nullptr;
+		}
+		
+		auto assetDir = projectDirectory / project->m_Config.AssetDirectory;
+		std::filesystem::create_directories(assetDir, ec);
+		if (ec)
+		{
+			SD_CORE_ERROR("Failed to create asset directory '{0}': {1}", assetDir.string(), ec.message());
+			return nullptr;
+		}
+
+		project->m_ProjectDirectory = projectDirectory;
+
+		s_ActiveProject = project;
+
+		// Initialize the EditorAssetManager and write an empty registry
+		std::shared_ptr<EditorAssetManager> editorAssetManager = std::make_shared<EditorAssetManager>();
+		s_ActiveProject->m_AssetManager = editorAssetManager;
+		editorAssetManager->SerializeAssetRegistry(); // writes empty registry to AssetRegistry.yaml
+		
+		return s_ActiveProject;
+
 	}
 
 	Ref<Project> Project::Load(const std::filesystem::path& path)
