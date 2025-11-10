@@ -1,6 +1,6 @@
 Project:
-  Name: newProj
-  StartScene: 11297159609251836319
-  AssetDirectory: assets
+  Name: NewProj
+  StartScene: 13693453819642433077
+  AssetDirectory: Assets
   AssetRegistryPath: AssetRegistry.yaml
   ScriptModulePath: ""

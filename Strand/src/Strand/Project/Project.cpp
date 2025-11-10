@@ -24,7 +24,7 @@ namespace Strand {
 		Ref<Project> project = CreateRef<Project>();
 
 		if (project->m_Config.AssetDirectory.empty())
-			project->m_Config.AssetDirectory = "assets";
+			project->m_Config.AssetDirectory = "Assets";
 
 		// Ensure the project directory and asset directory exist on disk
 		std::error_code ec;

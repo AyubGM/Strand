@@ -665,7 +665,7 @@ namespace Strand {
 	void EditorLayer::NewProject()
 	{
 		//Project::New();
-		std::string filepath = FileDialogs::SaveFile("Strand Project (*.sproj)\0*.sproj\0");
+		std::string filepath = FileDialogs::SaveFile("Strand Project (*.sproj)\0*.sproj\0", "Project.sproj", "sproj");
 		if (filepath.empty())
 			return;
 		std::filesystem::path projectFilePath = filepath;
@@ -776,7 +776,7 @@ namespace Strand {
 
 	void EditorLayer::SaveSceneAs()
 	{
-		std::string filepath = FileDialogs::SaveFile("Strand Scene (*.strand)\0*.strand\0");
+		std::string filepath = FileDialogs::SaveFile("Strand Scene (*.strand)\0*.strand\0", "Scene.strand", "strand");
 		if (!filepath.empty())
 		{
 			SerializeScene(m_ActiveScene, filepath);

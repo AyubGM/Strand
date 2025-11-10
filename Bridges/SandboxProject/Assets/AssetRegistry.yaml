@@ -1,2 +1,4 @@
 AssetRegistry:
-  []
+  - Handle: 15246062511249116633
+    FilePath: Scenes/Physics2D.strand
+    Type: AssetType::Scene
