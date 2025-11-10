@@ -5,6 +5,8 @@ namespace Strand {
 
 	ProjectHubLayer::ProjectHubLayer(EditorLayer* editorLayer) : Layer("ProjectHubLayer"), m_EditorLayer(editorLayer)
 	{
+		m_RecentProjectsPanel = CreateScope<RecentProjectsPanel>(editorLayer);
+		m_GetStartedPanel = CreateScope<GetStartedPanel>(editorLayer);
 	}
 
 	void ProjectHubLayer::OnImGuiRender()
@@ -27,7 +29,10 @@ namespace Strand {
 			ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoSavedSettings |
 			ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
 
+		// Push some padding for a more professional look
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(20.0f, 20.0f));
 		ImGui::Begin("Project Hub", &p_open, window_flags);
+		ImGui::PopStyleVar(); // Pop main window padding
 
 		// Center the content
 		auto contentRegionAvail = ImGui::GetContentRegionAvail();
@@ -41,30 +46,24 @@ namespace Strand {
 		ImGui::PopFont();
 
 
-		ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 20);
+		ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 30); // Add more space after title
 
-		// --- Buttons ---
-		float buttonWidth = 200;
-		float buttonHeight = 50;
-		ImVec2 buttonSize(buttonWidth, buttonHeight);
+		// --- Main Layout Panels ---
 
-		// "Create New Project" Button
-		ImGui::SetCursorPosX((contentRegionAvail.x - buttonWidth) * 0.5f);
-		if (ImGui::Button("Create New Project", buttonSize))
-		{
-			// Call the EditorLayer's function
-			m_EditorLayer->NewProject();
-		}
+		// Push style for child windows
+		ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 5.0f);
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(15.0f, 15.0f));
 
-		ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 10);
+		// --- Render Panels ---
+		// The logic is now inside their own classes
+		m_RecentProjectsPanel->OnImGuiRender();
 
-		// "Open Existing Project" Button
-		ImGui::SetCursorPosX((contentRegionAvail.x - buttonWidth) * 0.5f);
-		if (ImGui::Button("Open Existing Project", buttonSize))
-		{
-			// Call the EditorLayer's function
-			m_EditorLayer->OpenProject();
-		}
+		ImGui::SameLine();
+
+		m_GetStartedPanel->OnImGuiRender();
+		// --- End of Render Panels ---
+
+		ImGui::PopStyleVar(2); // Pop child window styles
 
 		ImGui::End();
 

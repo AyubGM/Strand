@@ -3,6 +3,7 @@
 
 #include "EditorLayer.h"
 #include "ProjectHubLayer.h"
+#include "Utils/EditorSettings.h"
 
 namespace Strand {
 
@@ -12,6 +13,8 @@ namespace Strand {
 		Bridges(const ApplicationSpecification& spec)
 			: Application(spec)
 		{
+			EditorSettings::Get().Load();
+
 			m_EditorLayer = new EditorLayer();
 			PushLayer(m_EditorLayer);
 

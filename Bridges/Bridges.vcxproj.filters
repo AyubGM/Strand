@@ -15,6 +15,9 @@
     </ClInclude>
     <ClInclude Include="src\Panels\ThumbnailCache.h" />
     <ClInclude Include="src\ProjectHubLayer.h" />
+    <ClInclude Include="src\ProjectHubPanels\RecentProjectsPanel.h" />
+    <ClInclude Include="src\Utils\EditorSettings.h" />
+    <ClInclude Include="src\ProjectHubPanels\GetStartedPanel.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BridgesApp.cpp" />
@@ -27,5 +30,8 @@
     </ClCompile>
     <ClCompile Include="src\Panels\ThumbnailCache.cpp" />
     <ClCompile Include="src\ProjectHubLayer.cpp" />
+    <ClCompile Include="src\ProjectHubPanels\RecentProjectsPanel.cpp" />
+    <ClCompile Include="src\Utils\EditorSettings.cpp" />
+    <ClCompile Include="src\ProjectHubPanels\GetStartedPanel.cpp" />
   </ItemGroup>
 </Project>

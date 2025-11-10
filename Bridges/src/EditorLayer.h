@@ -99,7 +99,11 @@ namespace Strand {
 
 		bool m_ProjectOpen = false;
 
+		//TODO maybe make needed fuctions public
 		friend class ProjectHubLayer;
+		friend class RecentProjectsPanel;
+		friend class GetStartedPanel;
+		
 	};
 
 }

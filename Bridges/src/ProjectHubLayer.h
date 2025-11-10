@@ -2,6 +2,8 @@
 
 #include "Strand.h"
 #include "EditorLayer.h"
+#include "ProjectHubPanels/GetStartedPanel.h"
+#include "ProjectHubPanels/RecentProjectsPanel.h"
 
 namespace Strand {
 
@@ -14,6 +16,9 @@ namespace Strand {
 		virtual void OnImGuiRender() override;
 	private:
 		EditorLayer* m_EditorLayer;
+
+		Scope<RecentProjectsPanel> m_RecentProjectsPanel;
+		Scope<GetStartedPanel> m_GetStartedPanel;
 
 	};
 }

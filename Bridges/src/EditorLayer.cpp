@@ -1,4 +1,7 @@
 #include "EditorLayer.h"
+
+#include "Utils/EditorSettings.h"
+
 #include <imgui/imgui.h>
 
 #include <glm/gtc/matrix_transform.hpp>
@@ -697,6 +700,9 @@ namespace Strand {
 		m_ContentBrowserPanel = CreateScope<ContentBrowserPanel>(Project::GetActive());
 
 		m_ProjectOpen = true;
+
+		// Add to recent projects
+		EditorSettings::Get().AddRecentProject(projectFilePath);
 	}
 
 	void EditorLayer::OpenProject(const std::filesystem::path& path)
@@ -711,6 +717,9 @@ namespace Strand {
 			m_ContentBrowserPanel = CreateScope<ContentBrowserPanel>(Project::GetActive());
 
 			m_ProjectOpen = true;
+
+			// Add to recent projects
+			EditorSettings::Get().AddRecentProject(path);
 		}
 	}
 

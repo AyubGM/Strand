@@ -149,6 +149,9 @@
     <ClInclude Include="src\Panels\SceneHierarchyPanel.h" />
     <ClInclude Include="src\Panels\ThumbnailCache.h" />
     <ClInclude Include="src\ProjectHubLayer.h" />
+    <ClInclude Include="src\ProjectHubPanels\GetStartedPanel.h" />
+    <ClInclude Include="src\ProjectHubPanels\RecentProjectsPanel.h" />
+    <ClInclude Include="src\Utils\EditorSettings.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BridgesApp.cpp" />
@@ -157,6 +160,9 @@
     <ClCompile Include="src\Panels\SceneHierarchyPanel.cpp" />
     <ClCompile Include="src\Panels\ThumbnailCache.cpp" />
     <ClCompile Include="src\ProjectHubLayer.cpp" />
+    <ClCompile Include="src\ProjectHubPanels\GetStartedPanel.cpp" />
+    <ClCompile Include="src\ProjectHubPanels\RecentProjectsPanel.cpp" />
+    <ClCompile Include="src\Utils\EditorSettings.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Strand\vendor\Box2D\Box2D.vcxproj">
