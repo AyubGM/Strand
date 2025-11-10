@@ -19,6 +19,8 @@ namespace Strand {
 		virtual void OnImGuiRender() override;
 		void OnEvent(Event& e) override;
 
+		bool IsProjectOpen() const { return m_ProjectOpen; }
+
 	private:
 		bool OnKeyPressed(KeyPressedEvent& e);
 		bool OnMouseButtonPressed(MouseButtonPressedEvent& e);
@@ -94,6 +96,10 @@ namespace Strand {
 
 		// Editor resources
 		Ref<Texture2D> m_IconPlay, m_IconPause, m_IconStep, m_IconSimulate, m_IconStop;
+
+		bool m_ProjectOpen = false;
+
+		friend class ProjectHubLayer;
 	};
 
 }

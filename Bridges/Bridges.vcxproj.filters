@@ -26,5 +26,6 @@
       <Filter>Panels</Filter>
     </ClCompile>
     <ClCompile Include="src\Panels\ThumbnailCache.cpp" />
+    <ClCompile Include="src\ProjectHubLayer.cpp" />
   </ItemGroup>
 </Project>

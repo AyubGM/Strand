@@ -2,6 +2,7 @@
 #include <Strand/Core/EntryPoint.h>
 
 #include "EditorLayer.h"
+#include "ProjectHubLayer.h"
 
 namespace Strand {
 
@@ -11,9 +12,13 @@ namespace Strand {
 		Bridges(const ApplicationSpecification& spec)
 			: Application(spec)
 		{
-			PushLayer(new EditorLayer());
-		}
+			m_EditorLayer = new EditorLayer();
+			PushLayer(m_EditorLayer);
 
+			PushOverlay(new ProjectHubLayer(m_EditorLayer));
+		}
+	private:
+		EditorLayer* m_EditorLayer;
 		
 	};
 

@@ -53,6 +53,15 @@ namespace Strand {
 		layer->OnAttach();
 	}
 
+	void Application::PopLayer(Layer* layer)
+	{
+		SD_PROFILE_FUNCTION();
+
+		m_LayerStack.PopLayer(layer);
+		//layer->OnDetach();
+		delete layer;
+	}
+
 	void Application::PushOverlay(Layer* layer)
 	{
 		SD_PROFILE_FUNCTION();
@@ -60,6 +69,16 @@ namespace Strand {
 		m_LayerStack.PushOverlay(layer);
 		layer->OnAttach();
 	}
+
+	void Application::PopOverlay(Layer* layer)
+	{
+		SD_PROFILE_FUNCTION();
+
+		m_LayerStack.PopOverlay(layer);
+		//layer->OnDetach();
+		delete layer;
+	}
+
 
 	void Application::Close()
 	{

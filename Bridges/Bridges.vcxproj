@@ -156,6 +156,7 @@
     <ClCompile Include="src\Panels\ContentBrowserPanel.cpp" />
     <ClCompile Include="src\Panels\SceneHierarchyPanel.cpp" />
     <ClCompile Include="src\Panels\ThumbnailCache.cpp" />
+    <ClCompile Include="src\ProjectHubLayer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Strand\vendor\Box2D\Box2D.vcxproj">

@@ -50,22 +50,22 @@ namespace Strand {
 
 		m_EditorCamera = EditorCamera(30.0f, 1.778f, 0.1f, 1000.0f);
 
-		auto commandLineArgs = Application::Get().GetSpecification().CommandLineArgs;
-		if (commandLineArgs.Count > 1)
-		{
-			auto projectFilePath = commandLineArgs[1];
-			OpenProject(projectFilePath);
-		}
-		else
-		{
-			// TODO: prompt the user to select a directory
-			// NewProject();
+		//auto commandLineArgs = Application::Get().GetSpecification().CommandLineArgs;
+		//if (commandLineArgs.Count > 1)
+		//{
+		//	auto projectFilePath = commandLineArgs[1];
+		//	OpenProject(projectFilePath);
+		//}
+		//else
+		//{
+		//	// TODO: prompt the user to select a directory
+		//	// NewProject();
 
-			// If no project is opened, close Bridges
-			// NOTE: this is while we don't have a new project path
-			if (!OpenProject())
-				Application::Get().Close();
-		}
+		//	// If no project is opened, close Bridges
+		//	// NOTE: this is while we don't have a new project path
+		//	if (!OpenProject())
+		//		Application::Get().Close();
+		//}
 
 
 		Renderer2D::SetLineWidth(4.0f);
@@ -81,6 +81,9 @@ namespace Strand {
 	{
 		SD_PROFILE_FUNCTION();
 
+		// Don't update editor if no project is open
+		if (!m_ProjectOpen)
+			return;
 
 		m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
 
@@ -161,6 +164,11 @@ namespace Strand {
 	void EditorLayer::OnImGuiRender()
 	{
 		SD_PROFILE_FUNCTION();
+
+		// Don't render editor UI if no project is open
+		if (!m_ProjectOpen)
+			return;
+
 
 		// Note: Switch this to true to enable dockspace
 		static bool dockspaceOpen = true;
@@ -687,6 +695,8 @@ namespace Strand {
 		// Initialize scripting and UI similar to OpenProject
 		ScriptEngine::Init();
 		m_ContentBrowserPanel = CreateScope<ContentBrowserPanel>(Project::GetActive());
+
+		m_ProjectOpen = true;
 	}
 
 	void EditorLayer::OpenProject(const std::filesystem::path& path)
@@ -699,6 +709,8 @@ namespace Strand {
 			if (startScene)
 				OpenScene(startScene);
 			m_ContentBrowserPanel = CreateScope<ContentBrowserPanel>(Project::GetActive());
+
+			m_ProjectOpen = true;
 		}
 	}
 
