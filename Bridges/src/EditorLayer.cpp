@@ -680,7 +680,12 @@ namespace Strand {
 		if (filepath.empty())
 			return;
 		std::filesystem::path projectFilePath = filepath;
-		std::filesystem::path projectDirectory = projectFilePath.parent_path();
+		std::filesystem::path parentDirectory = projectFilePath.parent_path();
+		std::string projectName = projectFilePath.stem().string();
+		std::filesystem::path projectDirectory = parentDirectory / projectName;
+
+		projectFilePath = projectDirectory / (projectName + ".sproj");
+
 		Ref<Project> proj = Project::New(projectDirectory);
 		if (!proj)
 		{
@@ -688,13 +693,21 @@ namespace Strand {
 			return;
 		}
 
-		proj->GetConfig().Name = projectFilePath.stem().string();
+		proj->GetConfig().Name = projectName;
 
 		if (!Project::SaveActive(projectFilePath))
 		{
 			SD_CORE_ERROR("Failed to save new project file '{}'", projectFilePath.string());
 			return;
 		}
+
+		// Compile starter scripts
+		if(!CompileScripts(projectDirectory, projectName))
+			SD_CORE_ERROR("Scripts compilation failed for '{}'", projectName);
+		else
+			SD_CORE_INFO("Compiled scripts: {}/Scripts/{}.dll", projectDirectory.string(), projectName);
+
+
 		// Initialize scripting and UI similar to OpenProject
 		ScriptEngine::Init();
 		m_ContentBrowserPanel = CreateScope<ContentBrowserPanel>(Project::GetActive());
@@ -872,5 +885,32 @@ namespace Strand {
 			m_SceneHierarchyPanel.SetSelectedEntity(newEntity);
 		}
 	}
+
+	bool EditorLayer::CompileScripts(const std::filesystem::path& projectDir, const std::string& projectName)
+	{
+		auto scriptsDir = projectDir / "Scripts";
+		auto outputDll = scriptsDir / "Binaries" / (projectName + ".dll");
+
+#if defined(_WIN32)
+		// Prefer csc if available; otherwise mcs. You can detect availability beforehand.
+		//std::string command = "dotnet-csc -target:library -out:\""
+			//+ outputDll.string() + "\" \"" + scriptsDir.string() + "\\*.cs\"";
+		// Fallback:
+		 //std::string command = "mcs -target:library -out=\"" + outputDll.string() + "\" \"" + scriptsDir.string() + "\\*.cs\"";
+		//std::string command = "dotnet build \"" + scriptsDir.string() + "\" -c Release";
+		//std::string command = "csc -target:library -out=\"" + outputDll.string() + "\" \"" + scriptsDir.string() + "\\*.cs\"";
+		std::string command =
+			"C:\\Progra~1\\Mono\\bin\\mcs.bat -target:library -out=\""
+			+ outputDll.string() + "\" \"" + scriptsDir.string() + "\\*.cs\"";
+
+
+#else
+		std::string command = "mcs -target:library -out=\"" + outputDll.string() + "\" \"" + scriptsDir.string() + "/*.cs\"";
+#endif
+
+		int result = std::system(command.c_str());
+		return result == 0 && std::filesystem::exists(outputDll);
+	}
+
 
 }

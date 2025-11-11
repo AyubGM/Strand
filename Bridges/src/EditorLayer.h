@@ -48,6 +48,9 @@ namespace Strand {
 
 		void OnDuplicateEntity();
 
+		bool CompileScripts(const std::filesystem::path& projectDir, const std::string& projectName);
+
+
 		// UI Panels
 		void UI_Toolbar();
 

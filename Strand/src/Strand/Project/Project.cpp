@@ -34,14 +34,50 @@ namespace Strand {
 			SD_CORE_ERROR("Failed to create project directory '{0}': {1}", projectDirectory.string(), ec.message());
 			return nullptr;
 		}
-		
+		// Create subfolders
 		auto assetDir = projectDirectory / project->m_Config.AssetDirectory;
+		auto scenesDir = projectDirectory / "Scenes";
+		auto scriptsDir = projectDirectory / "Scripts";
+
 		std::filesystem::create_directories(assetDir, ec);
 		if (ec)
 		{
 			SD_CORE_ERROR("Failed to create asset directory '{0}': {1}", assetDir.string(), ec.message());
 			return nullptr;
 		}
+
+		std::filesystem::create_directories(scenesDir, ec);
+		std::filesystem::create_directories(scriptsDir, ec);
+
+		// Default scene
+		auto defaultScene = scenesDir / "Default.strand";
+		if (!std::filesystem::exists(defaultScene))
+		{
+			std::ofstream sceneFile(defaultScene);
+			sceneFile << "// Empty default scene\n";
+			sceneFile.close();
+		}
+
+		// Starter C# script
+		auto starterScript = scriptsDir / "Startup.cs";
+		if (!std::filesystem::exists(starterScript))
+		{
+			std::ofstream scriptFile(starterScript);
+			scriptFile <<
+				"using System;\n"
+				"namespace GameNamespace\n"
+				"{\n"
+				"    public class Startup\n"
+				"    {\n"
+				"        public static void Init()\n"
+				"        {\n"
+				"            Console.WriteLine(\"Hello from Startup script!\");\n"
+				"        }\n"
+				"    }\n"
+				"}\n";
+			scriptFile.close();
+		}
+
 
 		project->m_ProjectDirectory = projectDirectory;
 
