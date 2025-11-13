@@ -1,6 +1,6 @@
 using Strand;
 using System;
-namespace GameNamespace
+namespace SProject
 {
     public class Startup : Entity
     {

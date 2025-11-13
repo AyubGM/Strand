@@ -62,13 +62,14 @@ namespace Strand {
 
 		// Starter C# script
 		auto starterScript = scriptsDir / "Startup.cs";
+		std::string_view namespaceName = projectName;
 		if (!std::filesystem::exists(starterScript))
 		{
 			std::ofstream scriptFile(starterScript);
 			scriptFile <<
 				"using Strand;\n"
 				"using System;\n"
-				"namespace GameNamespace\n"
+				"namespace " << namespaceName << "\n"
 				"{\n"
 				"    public class Startup : Entity\n"
 				"    {\n"
@@ -88,7 +89,9 @@ namespace Strand {
 		project->GetConfig().Name = projectName;
 		project->m_ProjectDirectory = projectDirectory;
 		auto engineDllSource = std::filesystem::path("Resources/Scripts/Strand-ScriptCore.dll");
+		auto enginePdbSource = std::filesystem::path("Resources/Scripts/Strand-ScriptCore.pdb");
 		std::filesystem::copy_file(engineDllSource, binariesDir / "Strand-ScriptCore.dll" , std::filesystem::copy_options::overwrite_existing);
+		std::filesystem::copy_file(enginePdbSource, binariesDir / "Strand-ScriptCore.pdb" , std::filesystem::copy_options::overwrite_existing);
 		project->GetConfig().ScriptModulePath = binariesDir / (project->GetConfig().Name + ".dll");
 
 
