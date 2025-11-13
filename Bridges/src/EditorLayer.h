@@ -48,7 +48,7 @@ namespace Strand {
 
 		void OnDuplicateEntity();
 
-		bool CompileScripts(const std::filesystem::path& projectDir, const std::string& projectName);
+		bool CompileScripts(const std::filesystem::path& assetsDir, const std::string& projectName);
 
 
 		// UI Panels

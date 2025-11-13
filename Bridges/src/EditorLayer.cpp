@@ -686,14 +686,14 @@ namespace Strand {
 
 		projectFilePath = projectDirectory / (projectName + ".sproj");
 
-		Ref<Project> proj = Project::New(projectDirectory);
+		Ref<Project> proj = Project::New(projectDirectory, projectName);
 		if (!proj)
 		{
 			SD_CORE_ERROR("Failed to create new project at '{}'", projectDirectory.string());
 			return;
 		}
 
-		proj->GetConfig().Name = projectName;
+		
 
 		if (!Project::SaveActive(projectFilePath))
 		{
@@ -702,7 +702,8 @@ namespace Strand {
 		}
 
 		// Compile starter scripts
-		if(!CompileScripts(projectDirectory, projectName))
+		auto prjoCompleteAssetDir = projectDirectory / proj->GetConfig().AssetDirectory;
+		if(!CompileScripts(prjoCompleteAssetDir, projectName))
 			SD_CORE_ERROR("Scripts compilation failed for '{}'", projectName);
 		else
 			SD_CORE_INFO("Compiled scripts: {}/Scripts/{}.dll", projectDirectory.string(), projectName);
@@ -886,30 +887,63 @@ namespace Strand {
 		}
 	}
 
-	bool EditorLayer::CompileScripts(const std::filesystem::path& projectDir, const std::string& projectName)
+	bool EditorLayer::CompileScripts(const std::filesystem::path& assetsDir, const std::string& projectName)
 	{
-		auto scriptsDir = projectDir / "Scripts";
+		auto scriptsDir = assetsDir / "Scripts";
 		auto outputDll = scriptsDir / "Binaries" / (projectName + ".dll");
 
-#if defined(_WIN32)
-		// Prefer csc if available; otherwise mcs. You can detect availability beforehand.
-		//std::string command = "dotnet-csc -target:library -out:\""
-			//+ outputDll.string() + "\" \"" + scriptsDir.string() + "\\*.cs\"";
-		// Fallback:
-		 //std::string command = "mcs -target:library -out=\"" + outputDll.string() + "\" \"" + scriptsDir.string() + "\\*.cs\"";
-		//std::string command = "dotnet build \"" + scriptsDir.string() + "\" -c Release";
-		//std::string command = "csc -target:library -out=\"" + outputDll.string() + "\" \"" + scriptsDir.string() + "\\*.cs\"";
-		std::string command =
-			"C:\\Progra~1\\Mono\\bin\\mcs.bat -target:library -out=\""
-			+ outputDll.string() + "\" \"" + scriptsDir.string() + "\\*.cs\"";
+		// Ensure output directory exists
+		std::error_code ec;
+		std::filesystem::create_directories(outputDll.parent_path(), ec);
+		if (ec)
+		{
+			SD_CORE_ERROR("Failed to create script output directory '{}': {}", outputDll.parent_path().string(), ec.message());
+			return false;
+		}
 
+		std::string inputPattern = (scriptsDir / "*.cs").string();
+		std::string logPath = (scriptsDir / "compile_log.txt").string();
 
-#else
-		std::string command = "mcs -target:library -out=\"" + outputDll.string() + "\" \"" + scriptsDir.string() + "/*.cs\"";
-#endif
+		std::vector<std::string> compilers = {
+			// Prefer Microsoft csc for .NET Framework projects, then Mono, then PATH lookups
+			"C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\csc.exe",
+			"C:\\Windows\\Microsoft.NET\\Framework\\v4.0.30319\\csc.exe",
+			"C:\\Program Files\\Mono\\bin\\mcs.bat",
+			"csc",
+			"mcs"
+		};
 
-		int result = std::system(command.c_str());
-		return result == 0 && std::filesystem::exists(outputDll);
+		for (const auto& compiler : compilers)
+		{
+			// If compiler is an absolute path and missing, skip it
+			if ((compiler.find(':') != std::string::npos) && !std::filesystem::exists(compiler))
+				continue;
+
+			// Quote executable if it contains spaces
+			std::string exe = compiler;
+			if (exe.find(' ') != std::string::npos && exe.front() != '"')
+				exe = "\"" + exe + "\"";
+
+			// Build command and redirect stdout/stderr to a log file
+			std::string command = exe + " -target:library -out:\"" + outputDll.string() + "\" \"" + inputPattern + "\" > \"" + logPath + "\" 2>&1";
+
+			SD_CORE_INFO("Running script compile command: {}", command);
+
+			int result = std::system(command.c_str());
+
+			if (result == 0 && std::filesystem::exists(outputDll))
+			{
+				SD_CORE_INFO("Scripts compiled successfully to '{}'", outputDll.string());
+				return true;
+			}
+			else
+			{
+				SD_CORE_WARN("Compiler '{}' returned {}. See '{}'", compiler, result, logPath);
+			}
+		}
+
+		SD_CORE_ERROR("All script compilers failed. Inspect '{}'", logPath);
+		return false;
 	}
 
 

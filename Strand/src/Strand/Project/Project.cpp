@@ -17,7 +17,7 @@ namespace Strand {
 		return s_ActiveProject;
 	}
 
-	Ref<Project> Project::New(const std::filesystem::path& projectDirectory)
+	Ref<Project> Project::New(const std::filesystem::path& projectDirectory, const std::string& projectName)
 	{
 		SD_CORE_ASSERT(!projectDirectory.empty(), "Project directory must not be empty");
 
@@ -36,8 +36,8 @@ namespace Strand {
 		}
 		// Create subfolders
 		auto assetDir = projectDirectory / project->m_Config.AssetDirectory;
-		auto scenesDir = projectDirectory / "Scenes";
-		auto scriptsDir = projectDirectory / "Scripts";
+		auto scenesDir = assetDir / "Scenes";
+		auto scriptsDir = assetDir / "Scripts";
 
 		std::filesystem::create_directories(assetDir, ec);
 		if (ec)
@@ -78,8 +78,10 @@ namespace Strand {
 			scriptFile.close();
 		}
 
-
+		project->GetConfig().Name = projectName;
 		project->m_ProjectDirectory = projectDirectory;
+		project->GetConfig().ScriptModulePath = scriptsDir / "Binaries" / (project->GetConfig().Name + ".dll");
+
 
 		s_ActiveProject = project;
 
