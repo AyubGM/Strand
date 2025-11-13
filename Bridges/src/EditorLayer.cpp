@@ -893,6 +893,7 @@ namespace Strand {
 		auto outputDll = scriptsDir / "Binaries" / (projectName + ".dll");
 
 		// Ensure output directory exists
+		// TODO REMOVE THIS FORM HERE
 		std::error_code ec;
 		std::filesystem::create_directories(outputDll.parent_path(), ec);
 		if (ec)
@@ -903,6 +904,8 @@ namespace Strand {
 
 		std::string inputPattern = (scriptsDir / "*.cs").string();
 		std::string logPath = (scriptsDir / "compile_log.txt").string();
+		auto referenceDll = scriptsDir / "Binaries" / "Strand-ScriptCore.dll";
+
 
 		std::vector<std::string> compilers = {
 			// Prefer Microsoft csc for .NET Framework projects, then Mono, then PATH lookups
@@ -925,7 +928,11 @@ namespace Strand {
 				exe = "\"" + exe + "\"";
 
 			// Build command and redirect stdout/stderr to a log file
-			std::string command = exe + " -target:library -out:\"" + outputDll.string() + "\" \"" + inputPattern + "\" > \"" + logPath + "\" 2>&1";
+			std::string command =
+				exe + " -target:library -out:\"" + outputDll.string() + "\" "
+				"-r:\"" + referenceDll.string() + "\" "
+				"\"" + inputPattern + "\" > \"" + logPath + "\" 2>&1";
+
 
 			SD_CORE_INFO("Running script compile command: {}", command);
 

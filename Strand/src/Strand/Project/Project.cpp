@@ -38,6 +38,7 @@ namespace Strand {
 		auto assetDir = projectDirectory / project->m_Config.AssetDirectory;
 		auto scenesDir = assetDir / "Scenes";
 		auto scriptsDir = assetDir / "Scripts";
+		auto binariesDir = scriptsDir / "Binaries";
 
 		std::filesystem::create_directories(assetDir, ec);
 		if (ec)
@@ -48,6 +49,7 @@ namespace Strand {
 
 		std::filesystem::create_directories(scenesDir, ec);
 		std::filesystem::create_directories(scriptsDir, ec);
+		std::filesystem::create_directories(binariesDir, ec);
 
 		// Default scene
 		auto defaultScene = scenesDir / "Default.strand";
@@ -64,12 +66,17 @@ namespace Strand {
 		{
 			std::ofstream scriptFile(starterScript);
 			scriptFile <<
+				"using Strand;\n"
 				"using System;\n"
 				"namespace GameNamespace\n"
 				"{\n"
-				"    public class Startup\n"
+				"    public class Startup : Entity\n"
 				"    {\n"
 				"        public static void Init()\n"
+				"        {\n"
+				"            Console.WriteLine(\"Hello from Startup script!\");\n"
+				"        }\n"
+				"    public void OnCreate()\n"
 				"        {\n"
 				"            Console.WriteLine(\"Hello from Startup script!\");\n"
 				"        }\n"
@@ -80,7 +87,9 @@ namespace Strand {
 
 		project->GetConfig().Name = projectName;
 		project->m_ProjectDirectory = projectDirectory;
-		project->GetConfig().ScriptModulePath = scriptsDir / "Binaries" / (project->GetConfig().Name + ".dll");
+		auto engineDllSource = std::filesystem::path("Resources/Scripts/Strand-ScriptCore.dll");
+		std::filesystem::copy_file(engineDllSource, binariesDir / "Strand-ScriptCore.dll" , std::filesystem::copy_options::overwrite_existing);
+		project->GetConfig().ScriptModulePath = binariesDir / (project->GetConfig().Name + ".dll");
 
 
 		s_ActiveProject = project;
