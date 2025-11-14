@@ -172,6 +172,11 @@
       <Project>{D179EED1-BD1B-19A8-A6D6-2CFC9217A0F8}</Project>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Templates\DefaultScene.strand.template" />
+    <None Include="Resources\Templates\ProjectConfig.yaml.template" />
+    <None Include="Resources\Templates\Startup.cs.template" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

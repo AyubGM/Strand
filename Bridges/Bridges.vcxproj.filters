@@ -34,4 +34,9 @@
     <ClCompile Include="src\Utils\EditorSettings.cpp" />
     <ClCompile Include="src\ProjectHubPanels\GetStartedPanel.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Templates\DefaultScene.strand.template" />
+    <None Include="Resources\Templates\Startup.cs.template" />
+    <None Include="Resources\Templates\ProjectConfig.yaml.template" />
+  </ItemGroup>
 </Project>

@@ -1,7 +1,7 @@
 using Strand;
 using System;
 
-namespace SProject
+namespace {{NAMESPACE}}
 {
     public class Startup : Entity
     {

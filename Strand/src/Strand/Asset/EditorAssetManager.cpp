@@ -51,6 +51,16 @@ namespace Strand {
 		return m_AssetRegistry.at(handle).Type;
 	}
 
+	void EditorAssetManager::AddAsset(Ref<Asset> asset, const std::filesystem::path& filepath) {
+		AssetHandle handle = asset->Handle;
+		AssetMetadata metadata;
+		metadata.FilePath = filepath;
+		metadata.Type = asset->GetType();
+		m_AssetRegistry[handle] = metadata;
+		m_LoadedAssets[handle] = asset;
+	}
+
+
 	void EditorAssetManager::ImportAsset(const std::filesystem::path& filepath)
 	{
 		AssetHandle handle; // generate new handle

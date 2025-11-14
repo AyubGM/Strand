@@ -18,6 +18,7 @@ namespace Strand {
 		virtual bool IsAssetLoaded(AssetHandle handle) const override;
 		virtual AssetType GetAssetType(AssetHandle handle) const override;
 
+		void AddAsset(Ref<Asset> asset, const std::filesystem::path& filepath);
 		void ImportAsset(const std::filesystem::path& filepath);
 
 		const AssetMetadata& GetMetadata(AssetHandle handle) const;

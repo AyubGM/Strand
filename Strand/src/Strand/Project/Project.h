@@ -69,6 +69,12 @@ namespace Strand {
 		static Ref<Project> New(const std::filesystem::path& projectDirectory, const std::string& projectName);
 		static Ref<Project> Load(const std::filesystem::path& path);
 		static bool SaveActive(const std::filesystem::path& path);
+
+	private:
+		static std::string LoadTemplate(const std::filesystem::path& path);
+		static std::string ReplacePlaceholders(std::string text, const std::unordered_map<std::string, std::string>& values);
+		static std::string SanitizeNamespace(const std::string& name);
+
 	private:
 		ProjectConfig m_Config;
 		std::filesystem::path m_ProjectDirectory;

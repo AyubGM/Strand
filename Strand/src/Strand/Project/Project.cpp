@@ -2,6 +2,8 @@
 #include "Strand/Project/Project.h"
 
 #include "Strand/Project/ProjectSerializer.h"
+#include "Strand/Scene/Scene.h"
+#include "Strand/Scene/SceneSerializer.h"
 
 namespace Strand {
 
@@ -52,17 +54,49 @@ namespace Strand {
 		std::filesystem::create_directories(binariesDir, ec);
 
 		// Default scene
-		auto defaultScene = scenesDir / "Default.strand";
-		if (!std::filesystem::exists(defaultScene))
+		auto defaultSceneDir = scenesDir / "Default.strand";
+		if (!std::filesystem::exists(defaultSceneDir))
 		{
-			std::ofstream sceneFile(defaultScene);
-			sceneFile << "// Empty default scene\n";
-			sceneFile.close();
+			UUID cameraID;
+			UUID squareID;
+			UUID scriptEntityID;
+
+			std::string sceneTemplate = LoadTemplate("Resources/Templates/DefaultScene.strand.template");
+			std::unordered_map<std::string, std::string> values = 
+			{
+				{"SCENE_NAME", "Default"},
+				{"CAMERA_ID", std::to_string(cameraID)},
+				{"OBJECT_ID", std::to_string(squareID)},
+				{"SCRIPT_ENTITY_ID", std::to_string(scriptEntityID)},
+				{"NAMESPACE", SanitizeNamespace(projectName)}
+			};
+
+			std::string finalScene = ReplacePlaceholders(sceneTemplate, values);
+
+			std::ofstream sceneFile(defaultSceneDir);
+			sceneFile << finalScene;
+
 		}
 
 		// Starter C# script
 		auto starterScript = scriptsDir / "Startup.cs";
-		std::string_view namespaceName = projectName;
+		if (!std::filesystem::exists(starterScript))
+		{
+			std::string scriptTemplate = LoadTemplate("Resources/Templates/Startup.cs.template");
+			std::unordered_map<std::string, std::string> values =
+			{
+				{"NAMESPACE", SanitizeNamespace(projectName)},
+			//	{"CLASSNAME", "Startup"},
+			//	{"PROJECT_NAME", projectName}
+			};
+
+			scriptTemplate = ReplacePlaceholders(scriptTemplate, values);
+
+			std::ofstream scriptFile(starterScript);
+			scriptFile << scriptTemplate;
+		}
+
+	/*	std::string_view namespaceName = projectName;
 		if (!std::filesystem::exists(starterScript))
 		{
 			std::ofstream scriptFile(starterScript);
@@ -84,9 +118,15 @@ namespace Strand {
 				"    }\n"
 				"}\n";
 			scriptFile.close();
-		}
+		}*/
+
+		Ref<Scene> defualtScene = CreateRef<Scene>();
+		SceneSerializer serializer(defualtScene);
+		serializer.Deserialize(defaultSceneDir);
+
 
 		project->GetConfig().Name = projectName;
+		project->GetConfig().StartScene = defualtScene->Handle;
 		project->m_ProjectDirectory = projectDirectory;
 		auto engineDllSource = std::filesystem::path("Resources/Scripts/Strand-ScriptCore.dll");
 		auto enginePdbSource = std::filesystem::path("Resources/Scripts/Strand-ScriptCore.pdb");
@@ -100,7 +140,8 @@ namespace Strand {
 		// Initialize the EditorAssetManager and write an empty registry
 		std::shared_ptr<EditorAssetManager> editorAssetManager = std::make_shared<EditorAssetManager>();
 		s_ActiveProject->m_AssetManager = editorAssetManager;
-		editorAssetManager->SerializeAssetRegistry(); // writes empty registry to AssetRegistry.yaml
+		editorAssetManager->AddAsset(defualtScene, std::filesystem::relative(defaultSceneDir , assetDir));
+		editorAssetManager->SerializeAssetRegistry(); // writes registry to AssetRegistry.yaml
 		
 		return s_ActiveProject;
 
@@ -135,5 +176,38 @@ namespace Strand {
 
 		return false;
 	}
+
+	std::string Project::LoadTemplate(const std::filesystem::path& path)
+	{
+		std::ifstream file(path);
+		std::stringstream buffer;
+		buffer << file.rdbuf();
+		return buffer.str();
+	}
+
+	std::string Project::ReplacePlaceholders(std::string text, const std::unordered_map<std::string, std::string>& values)
+	{
+		for (const auto& [key, value] : values)
+		{
+			std::string placeholder = "{{" + key + "}}";
+			size_t pos = 0;
+			while ((pos = text.find(placeholder, pos)) != std::string::npos)
+			{
+				text.replace(pos, placeholder.length(), value);
+				pos += value.length();
+			}
+		}
+		
+		return text;
+	}
+
+	std::string Project::SanitizeNamespace(const std::string& name) {
+		std::string ns = name;
+		for (auto& c : ns) {
+			if (!std::isalnum(c)) c = '_';
+		}
+		return ns;
+	}
+
 
 }

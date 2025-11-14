@@ -1,6 +1,6 @@
-Scene: Untitled
+Scene: Default
 Entities:
-  - Entity: 4375676158345043326
+  - Entity: 9033766925479349057
     TagComponent:
       Tag: MainCamera
     TransformComponent:
@@ -18,11 +18,11 @@ Entities:
         OrthographicFar: 1
       Primary: true
       FixedAspectRatio: false
-  - Entity: 16794556651954806215
+  - Entity: 6555479873334452044
     TagComponent:
       Tag: Square
     TransformComponent:
-      Translation: [1.89999998, -1.89999998, 0]
+      Translation: [0, 0, 0]
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     SpriteRendererComponent:
@@ -39,7 +39,7 @@ Entities:
       Friction: 0.5
       Restitution: 0
       RestitutionThreshold: 0.5
-  - Entity: 12720192789684262956
+  - Entity: 17650962242900733563
     TagComponent:
       Tag: GameController
     TransformComponent:
@@ -47,4 +47,4 @@ Entities:
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     ScriptComponent:
-      ClassName: SProject.Startup
+      ClassName: DEProject.Startup
