@@ -17,6 +17,7 @@ C:\dev\Strand\Strand\src\Strand\Asset\AssetManagerBase.cpp;C:\dev\Strand\bin-int
 C:\dev\Strand\Strand\src\Strand\Asset\EditorAssetManager.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\EditorAssetManager.obj
 C:\dev\Strand\Strand\src\Strand\Asset\RuntimeAssetManager.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\RuntimeAssetManager.obj
 C:\dev\Strand\Strand\src\Strand\Asset\SceneImporter.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\SceneImporter.obj
+C:\dev\Strand\Strand\src\Strand\Asset\ScriptImporter.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\ScriptImporter.obj
 C:\dev\Strand\Strand\src\Strand\Asset\TextureImporter.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\TextureImporter.obj
 C:\dev\Strand\Strand\src\Strand\Core\Application.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\Application.obj
 C:\dev\Strand\Strand\src\Strand\Core\FileSystem.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\FileSystem.obj
