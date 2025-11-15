@@ -10,6 +10,7 @@ namespace Strand {
 
 	static std::map<std::filesystem::path, AssetType> s_AssetExtensionMap = {
 		{ ".strand", AssetType::Scene },
+		{ ".cs",   AssetType::Script},
 		{ ".png", AssetType::Texture2D },
 		{ ".jpg", AssetType::Texture2D },
 		{ ".jpeg", AssetType::Texture2D }

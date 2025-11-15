@@ -3,13 +3,17 @@
 
 #include "Strand/Project/Project.h"
 #include "Strand/Asset/TextureImporter.h"
+#include "Strand/EventBus/EditorEventBus.h"
+#include "Strand/Events/EditorEvents.h"
+#include "ScriptEditorPanel.h"
 
 #include <imgui/imgui.h>
 
 namespace Strand {
 
 	ContentBrowserPanel::ContentBrowserPanel(Ref<Project> project)
-		: m_Project(project), m_ThumbnailCache(CreateRef<ThumbnailCache>(project)), m_BaseDirectory(m_Project->GetAssetDirectory()), m_CurrentDirectory(m_BaseDirectory)
+		: m_Project(project), m_ThumbnailCache(CreateRef<ThumbnailCache>(project)),
+		m_BaseDirectory(m_Project->GetAssetDirectory()), m_CurrentDirectory(m_BaseDirectory)
 	{
 		m_TreeNodes.push_back(TreeNode(".", 0));
 
@@ -20,6 +24,8 @@ namespace Strand {
 
 		m_Mode = Mode::FileSystem;
 	}
+
+
 
 	void ContentBrowserPanel::OnImGuiRender()
 	{
@@ -109,6 +115,16 @@ namespace Strand {
 				{
 					if (isDirectory)
 						m_CurrentDirectory /= item.filename();
+					else
+					{
+						// Updated logic: Dispatch event
+						if (item.extension() == ".cs")
+						{
+							ScriptFileOpenedEvent event(m_CurrentDirectory / item);
+							EditorEventBus::Dispatch(event);
+						}
+					}
+					
 				}
 
 				ImGui::TextWrapped(itemStr.c_str());
@@ -155,6 +171,16 @@ namespace Strand {
 				{
 					if (directoryEntry.is_directory())
 						m_CurrentDirectory /= path.filename();
+					else
+					{
+						// Updated logic: Dispatch event
+						if (path.extension() == ".cs")
+						{
+							ScriptFileOpenedEvent event(path);
+							EditorEventBus::Dispatch(event);
+						}
+					}
+					
 				}
 
 				ImGui::TextWrapped(filenameString.c_str());

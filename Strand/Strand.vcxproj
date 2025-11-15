@@ -169,6 +169,7 @@
     <ClInclude Include="src\Strand\Asset\EditorAssetManager.h" />
     <ClInclude Include="src\Strand\Asset\RuntimeAssetManager.h" />
     <ClInclude Include="src\Strand\Asset\SceneImporter.h" />
+    <ClInclude Include="src\Strand\Asset\ScriptImporter.h" />
     <ClInclude Include="src\Strand\Asset\TextureImporter.h" />
     <ClInclude Include="src\Strand\Common\Algos\Polygon.h" />
     <ClInclude Include="src\Strand\Core\Application.h" />
@@ -191,7 +192,9 @@
     <ClInclude Include="src\Strand\Core\Window.h" />
     <ClInclude Include="src\Strand\Core\input.h" />
     <ClInclude Include="src\Strand\Debug\Instrumentor.h" />
+    <ClInclude Include="src\Strand\EventBus\EditorEventBus.h" />
     <ClInclude Include="src\Strand\Events\ApplicationEvent.h" />
+    <ClInclude Include="src\Strand\Events\EditorEvents.h" />
     <ClInclude Include="src\Strand\Events\Event.h" />
     <ClInclude Include="src\Strand\Events\KeyEvent.h" />
     <ClInclude Include="src\Strand\Events\MouseEvent.h" />
@@ -698,6 +701,7 @@
     <ClCompile Include="src\Strand\Asset\EditorAssetManager.cpp" />
     <ClCompile Include="src\Strand\Asset\RuntimeAssetManager.cpp" />
     <ClCompile Include="src\Strand\Asset\SceneImporter.cpp" />
+    <ClCompile Include="src\Strand\Asset\ScriptImporter.cpp" />
     <ClCompile Include="src\Strand\Asset\TextureImporter.cpp" />
     <ClCompile Include="src\Strand\Core\Application.cpp" />
     <ClCompile Include="src\Strand\Core\FileSystem.cpp" />
@@ -706,6 +710,7 @@
     <ClCompile Include="src\Strand\Core\Log.cpp" />
     <ClCompile Include="src\Strand\Core\UUID.cpp" />
     <ClCompile Include="src\Strand\Core\Window.cpp" />
+    <ClCompile Include="src\Strand\EventBus\EditorEventBus.cpp" />
     <ClCompile Include="src\Strand\ImGui\ImGuiBuild.cpp" />
     <ClCompile Include="src\Strand\ImGui\ImGuiLayer.cpp" />
     <ClCompile Include="src\Strand\Math\Math.cpp" />

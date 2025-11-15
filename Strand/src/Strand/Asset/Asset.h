@@ -12,7 +12,8 @@ namespace Strand {
 		Scene,
 		Texture2D,
 		Texture3D,
-		TextureCube
+		TextureCube,
+		Script
 
 
 	};

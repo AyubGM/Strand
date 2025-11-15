@@ -1,6 +1,8 @@
 #include "sdpch.h"
-#include "../EditorLayer.h"
 #include "ScriptEditorPanel.h"
+#include "Strand/EventBus/EditorEventBus.h"
+#include "Strand/Events/EditorEvents.h"
+#include "Strand/Scripting/ScriptEngine.h"
 #include <ImGui/imgui.h>
 
 #include <fstream>
@@ -8,12 +10,24 @@
 
 namespace Strand {
 
-	ScriptEditorPanel::ScriptEditorPanel(EditorLayer* editorLayer)
-		: m_EditorLayer(editorLayer)
+	ScriptEditorPanel::ScriptEditorPanel()
 	{
 		auto lang = GetCSharpLanguageDefinition();
 		m_TextEditor.SetLanguageDefinition(lang);
 
+	}
+
+	void ScriptEditorPanel::OnAttach()
+	{
+		// Subscribe to events
+		EditorEventBus::Subscribe(EventType::ScriptFileOpened, SD_BIND_EVENT_FN(ScriptEditorPanel::OnScriptFileOpened));
+	}
+
+	void ScriptEditorPanel::OnScriptFileOpened(Event& e)
+	{
+		// Handle the event dispatched from ContentBrowser
+		auto& event = static_cast<ScriptFileOpenedEvent&>(e);
+		OpenFile(event.GetPath());
 	}
 
 	void ScriptEditorPanel::OpenFile(const std::filesystem::path& path)
@@ -65,10 +79,10 @@ namespace Strand {
 		file.close();
 		m_FileDirty = false;
 
-		if (m_EditorLayer)
-		{
-			m_EditorLayer->ReloadProjectScripts();
-		}
+		//if (m_EditorLayer)
+		//{
+		//	m_EditorLayer->ReloadProjectScripts();
+		//}
 
 		SD_CORE_TRACE("Saved script file: {0}", m_CurrentFile.string());
 

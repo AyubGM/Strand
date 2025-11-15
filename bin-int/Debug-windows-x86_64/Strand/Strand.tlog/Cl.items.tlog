@@ -25,6 +25,7 @@ C:\dev\Strand\Strand\src\Strand\Core\LayerStack.cpp;C:\dev\Strand\bin-int\Debug-
 C:\dev\Strand\Strand\src\Strand\Core\Log.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\Log.obj
 C:\dev\Strand\Strand\src\Strand\Core\UUID.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\UUID.obj
 C:\dev\Strand\Strand\src\Strand\Core\Window.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\Window.obj
+C:\dev\Strand\Strand\src\Strand\EventBus\EditorEventBus.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\EditorEventBus.obj
 C:\dev\Strand\Strand\src\Strand\ImGui\ImGuiBuild.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\ImGuiBuild.obj
 C:\dev\Strand\Strand\src\Strand\ImGui\ImGuiLayer.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\ImGuiLayer.obj
 C:\dev\Strand\Strand\src\Strand\Math\Math.cpp;C:\dev\Strand\bin-int\Debug-windows-x86_64\Strand\Math.obj

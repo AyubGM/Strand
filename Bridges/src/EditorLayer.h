@@ -24,6 +24,10 @@ namespace Strand {
 
 		void ReloadProjectScripts();
 
+		void OnProjectOpened(Event& e);
+		void OnNewProjectRequest(Event& e);
+		void OnScriptFileSaved(Event& e);
+
 	private:
 		bool OnKeyPressed(KeyPressedEvent& e);
 		bool OnMouseButtonPressed(MouseButtonPressedEvent& e);

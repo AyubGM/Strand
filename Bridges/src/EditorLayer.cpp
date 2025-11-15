@@ -17,6 +17,7 @@
 #include "Strand/Asset/SceneImporter.h"
 
 #include "Strand/Math/Math.h"
+#include "Strand/EventBus/EditorEventBus.h"
 
 #include "ImGuizmo.h"
 
@@ -26,11 +27,21 @@ namespace Strand {
 	EditorLayer::EditorLayer()
 		: Layer("EditorLayer"), m_CameraController(1280.0f / 720.0f), m_SquareColor({ 0.2f, 0.3f, 0.8f, 1.0f })
 	{
+		m_ScriptEditorPanel = CreateScope<ScriptEditorPanel>();
+		//m_ScriptEditorPanel->OpenFile(Project::GetActiveAssetDirectory());
 	}
 
 	void EditorLayer::OnAttach()
 	{
 		SD_PROFILE_FUNCTION();
+
+		EditorEventBus::Subscribe(EventType::ProjectOpened, SD_BIND_EVENT_FN(EditorLayer::OnProjectOpened));
+		EditorEventBus::Subscribe(EventType::NewProjectRequest, SD_BIND_EVENT_FN(EditorLayer::OnNewProjectRequest));
+
+		// Subscribe to the script saved event
+		EditorEventBus::Subscribe(EventType::ScriptFileSaved, SD_BIND_EVENT_FN(EditorLayer::OnScriptFileSaved));
+
+		m_ScriptEditorPanel->OnAttach();
 
 		m_CheckerboardTexture = TextureImporter::LoadTexture2D("assets/textures/Checkerboard.png");
 		m_IconPlay = TextureImporter::LoadTexture2D("Resources/Icons/PlayButton.png");
@@ -522,6 +533,24 @@ namespace Strand {
 		dispatcher.Dispatch<WindowDropEvent>(SD_BIND_EVENT_FN(EditorLayer::OnWindowDrop));
 	}
 
+	void EditorLayer::OnProjectOpened(Event& e)
+	{
+		//TODO
+	}
+
+	void EditorLayer::OnNewProjectRequest(Event& e)
+	{
+		//TODO
+		//NewProject();
+	}
+
+	void EditorLayer::OnScriptFileSaved(Event& e)
+	{
+		// This is now called when the ScriptEditorPanel dispatches the event
+		SD_CORE_TRACE("EditorLayer received ScriptFileSavedEvent, reloading scripts...");
+		ReloadProjectScripts();
+	}
+
 	bool EditorLayer::OnKeyPressed(KeyPressedEvent& e)
 	{
 		// Shortcuts
@@ -746,8 +775,7 @@ namespace Strand {
 			OpenScene(startScene);
 
 		m_ContentBrowserPanel = CreateScope<ContentBrowserPanel>(Project::GetActive());
-		m_ScriptEditorPanel = CreateScope<ScriptEditorPanel>(this);
-		m_ScriptEditorPanel->OpenFile(Project::GetActiveAssetDirectory());
+		
 
 		m_ProjectOpen = true;
 
@@ -765,8 +793,7 @@ namespace Strand {
 			if (startScene)
 				OpenScene(startScene);
 			m_ContentBrowserPanel = CreateScope<ContentBrowserPanel>(Project::GetActive());
-			m_ScriptEditorPanel = CreateScope<ScriptEditorPanel>(this);
-			m_ScriptEditorPanel->OpenFile(Project::GetActiveAssetDirectory() / "Scripts" / "Startup.cs");
+			
 
 
 			m_ProjectOpen = true;

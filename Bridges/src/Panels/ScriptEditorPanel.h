@@ -2,6 +2,7 @@
 
 #include <filesystem>
 #include <TextEditor.h>
+#include "Strand/Events/Event.h"
 
 namespace Strand {
 
@@ -10,13 +11,15 @@ namespace Strand {
 	class ScriptEditorPanel
 	{
 	public:
-		ScriptEditorPanel(EditorLayer* editorLayer);
+		ScriptEditorPanel();
 		~ScriptEditorPanel() = default;
 
+		void OnAttach();
 		void OnImGuiRender();
 		void OpenFile(const std::filesystem::path& path);
 
 	private:
+		void OnScriptFileOpened(Event& e);
 		void SaveFile();
 		void HandleShortcuts();
 		static TextEditor::LanguageDefinition GetCSharpLanguageDefinition();
@@ -25,7 +28,6 @@ namespace Strand {
 		TextEditor m_TextEditor;
 		std::filesystem::path m_CurrentFile;
 		bool m_FileDirty = false;
-		EditorLayer* m_EditorLayer = nullptr; 
 
 
 	};

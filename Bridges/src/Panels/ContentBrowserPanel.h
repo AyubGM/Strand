@@ -11,6 +11,7 @@
 
 namespace Strand {
 
+
 	class ContentBrowserPanel
 	{
 	public:
