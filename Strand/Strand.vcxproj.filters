@@ -1659,6 +1659,7 @@
     <ClInclude Include="src\Strand\Asset\RuntimeAssetManager.h" />
     <ClInclude Include="src\Strand\Asset\TextureImporter.h" />
     <ClInclude Include="src\Strand\Asset\SceneImporter.h" />
+    <ClInclude Include="vendor\ImGuiColorTextEdit\TextEditor.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp">

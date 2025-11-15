@@ -257,6 +257,7 @@
     <ClInclude Include="src\Strand\Utils\PlatformUtils.h" />
     <ClInclude Include="src\Strand\Utils\ThreadPool.h" />
     <ClInclude Include="src\sdpch.h" />
+    <ClInclude Include="vendor\ImGuiColorTextEdit\TextEditor.h" />
     <ClInclude Include="vendor\ImGuizmo\ImGuizmo.h" />
     <ClInclude Include="vendor\glm\glm\common.hpp" />
     <ClInclude Include="vendor\glm\glm\detail\_features.hpp" />

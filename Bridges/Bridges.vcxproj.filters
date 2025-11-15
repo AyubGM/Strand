@@ -4,6 +4,12 @@
     <Filter Include="Panels">
       <UniqueIdentifier>{A80D95C9-94AF-BF9F-7D6A-D3F369AB46F0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ProjectHubPanels">
+      <UniqueIdentifier>{BE31A880-AA2A-C7D2-D35C-AC57BFB4A6DE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils">
+      <UniqueIdentifier>{F68B420E-62A0-6ABF-2B22-0E1F97F566F0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\EditorLayer.h" />
@@ -13,11 +19,19 @@
     <ClInclude Include="src\Panels\SceneHierarchyPanel.h">
       <Filter>Panels</Filter>
     </ClInclude>
-    <ClInclude Include="src\Panels\ThumbnailCache.h" />
+    <ClInclude Include="src\Panels\ThumbnailCache.h">
+      <Filter>Panels</Filter>
+    </ClInclude>
     <ClInclude Include="src\ProjectHubLayer.h" />
-    <ClInclude Include="src\ProjectHubPanels\RecentProjectsPanel.h" />
-    <ClInclude Include="src\Utils\EditorSettings.h" />
-    <ClInclude Include="src\ProjectHubPanels\GetStartedPanel.h" />
+    <ClInclude Include="src\ProjectHubPanels\GetStartedPanel.h">
+      <Filter>ProjectHubPanels</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ProjectHubPanels\RecentProjectsPanel.h">
+      <Filter>ProjectHubPanels</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utils\EditorSettings.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BridgesApp.cpp" />
@@ -28,15 +42,18 @@
     <ClCompile Include="src\Panels\SceneHierarchyPanel.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
-    <ClCompile Include="src\Panels\ThumbnailCache.cpp" />
+    <ClCompile Include="src\Panels\ThumbnailCache.cpp">
+      <Filter>Panels</Filter>
+    </ClCompile>
     <ClCompile Include="src\ProjectHubLayer.cpp" />
-    <ClCompile Include="src\ProjectHubPanels\RecentProjectsPanel.cpp" />
-    <ClCompile Include="src\Utils\EditorSettings.cpp" />
-    <ClCompile Include="src\ProjectHubPanels\GetStartedPanel.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Templates\DefaultScene.strand.template" />
-    <None Include="Resources\Templates\Startup.cs.template" />
-    <None Include="Resources\Templates\ProjectConfig.yaml.template" />
+    <ClCompile Include="src\ProjectHubPanels\GetStartedPanel.cpp">
+      <Filter>ProjectHubPanels</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ProjectHubPanels\RecentProjectsPanel.cpp">
+      <Filter>ProjectHubPanels</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Utils\EditorSettings.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

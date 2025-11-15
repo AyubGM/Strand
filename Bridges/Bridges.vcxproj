@@ -79,7 +79,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>SD_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\Strand\vendor\spdlog\include;..\Strand\vendor\Box2D\include;..\Strand\src;..\Strand\vendor;..\Strand\vendor\glm;..\Strand\vendor\entt\include;..\Strand\vendor\filewatch;..\Strand\vendor\ImGuizmo;..\Strand\vendor\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Strand\vendor\spdlog\include;..\Strand\vendor\Box2D\include;..\Strand\src;..\Strand\vendor;..\Strand\vendor\glm;..\Strand\vendor\entt\include;..\Strand\vendor\filewatch;..\Strand\vendor\ImGuiColorTextEdit;..\Strand\vendor\ImGuizmo;..\Strand\vendor\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <MinimalRebuild>false</MinimalRebuild>
@@ -102,7 +102,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>SD_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\Strand\vendor\spdlog\include;..\Strand\vendor\Box2D\include;..\Strand\src;..\Strand\vendor;..\Strand\vendor\glm;..\Strand\vendor\entt\include;..\Strand\vendor\filewatch;..\Strand\vendor\ImGuizmo;..\Strand\vendor\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Strand\vendor\spdlog\include;..\Strand\vendor\Box2D\include;..\Strand\src;..\Strand\vendor;..\Strand\vendor\glm;..\Strand\vendor\entt\include;..\Strand\vendor\filewatch;..\Strand\vendor\ImGuiColorTextEdit;..\Strand\vendor\ImGuizmo;..\Strand\vendor\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -125,7 +125,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>SD_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\Strand\vendor\spdlog\include;..\Strand\vendor\Box2D\include;..\Strand\src;..\Strand\vendor;..\Strand\vendor\glm;..\Strand\vendor\entt\include;..\Strand\vendor\filewatch;..\Strand\vendor\ImGuizmo;..\Strand\vendor\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Strand\vendor\spdlog\include;..\Strand\vendor\Box2D\include;..\Strand\src;..\Strand\vendor;..\Strand\vendor\glm;..\Strand\vendor\entt\include;..\Strand\vendor\filewatch;..\Strand\vendor\ImGuiColorTextEdit;..\Strand\vendor\ImGuizmo;..\Strand\vendor\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -171,11 +171,6 @@
     <ProjectReference Include="..\Strand\Strand.vcxproj">
       <Project>{D179EED1-BD1B-19A8-A6D6-2CFC9217A0F8}</Project>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Templates\DefaultScene.strand.template" />
-    <None Include="Resources\Templates\ProjectConfig.yaml.template" />
-    <None Include="Resources\Templates\Startup.cs.template" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
