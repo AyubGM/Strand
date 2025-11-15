@@ -270,7 +270,7 @@ namespace Strand {
 
 		m_SceneHierarchyPanel.OnImGuiRender();
 		m_ContentBrowserPanel->OnImGuiRender();
-
+		m_ScriptEditorPanel->OnImGuiRender();
 		ImGui::Begin("Stats");
 
 
@@ -392,6 +392,35 @@ namespace Strand {
 		UI_Toolbar();
 
 		ImGui::End();
+	}
+
+	void EditorLayer::ReloadProjectScripts()
+	{
+		Ref<Project> activeProject = Project::GetActive();
+		if (!activeProject)
+		{
+			SD_CORE_ERROR("Cannot reload scripts: No active project is loaded.");
+			return;
+		}
+
+		const auto& config = activeProject->GetConfig();
+		// Construct the full path to the Assets directory
+		std::filesystem::path assetsDir = Project::GetActiveProjectDirectory() / config.AssetDirectory;
+		const std::string& projectName = config.Name;
+
+		// 2. Call the private compilation function
+		if (CompileScripts(assetsDir, projectName))
+		{
+			SD_CORE_INFO("C# scripts compiled successfully. Triggering assembly reload...");
+
+			// 3. If compilation succeeded, trigger the hot reload in the ScriptEngine
+			ScriptEngine::ReloadAssembly();
+		}
+		else
+		{
+			SD_CORE_ERROR("Script compilation failed. Check compile_log.txt for details.");
+			// TODO, you would pop up an error notification here.
+		}
 	}
 
 	void EditorLayer::UI_Toolbar()
@@ -717,6 +746,8 @@ namespace Strand {
 			OpenScene(startScene);
 
 		m_ContentBrowserPanel = CreateScope<ContentBrowserPanel>(Project::GetActive());
+		m_ScriptEditorPanel = CreateScope<ScriptEditorPanel>(this);
+		m_ScriptEditorPanel->OpenFile(Project::GetActiveAssetDirectory());
 
 		m_ProjectOpen = true;
 
@@ -734,6 +765,9 @@ namespace Strand {
 			if (startScene)
 				OpenScene(startScene);
 			m_ContentBrowserPanel = CreateScope<ContentBrowserPanel>(Project::GetActive());
+			m_ScriptEditorPanel = CreateScope<ScriptEditorPanel>(this);
+			m_ScriptEditorPanel->OpenFile(Project::GetActiveAssetDirectory() / "Scripts" / "Startup.cs");
+
 
 			m_ProjectOpen = true;
 

@@ -3,6 +3,7 @@
 #include "Strand.h"
 #include "Panels/SceneHierarchyPanel.h"
 #include "Panels/ContentBrowserPanel.h"
+#include "Panels/ScriptEditorPanel.h"
 
 namespace Strand {
 
@@ -20,6 +21,8 @@ namespace Strand {
 		void OnEvent(Event& e) override;
 
 		bool IsProjectOpen() const { return m_ProjectOpen; }
+
+		void ReloadProjectScripts();
 
 	private:
 		bool OnKeyPressed(KeyPressedEvent& e);
@@ -96,6 +99,7 @@ namespace Strand {
 		// Panels
 		SceneHierarchyPanel m_SceneHierarchyPanel;
 		Scope<ContentBrowserPanel> m_ContentBrowserPanel;
+		Scope<ScriptEditorPanel> m_ScriptEditorPanel;
 
 		// Editor resources
 		Ref<Texture2D> m_IconPlay, m_IconPause, m_IconStep, m_IconSimulate, m_IconStop;

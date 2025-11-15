@@ -16,6 +16,9 @@
     <Filter Include="src\Strand">
       <UniqueIdentifier>{08534D2F-F40A-8F7C-5D12-68D849E9296D}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Strand\Asset">
+      <UniqueIdentifier>{972D0DB1-8326-2C03-AC58-118898B00B0F}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Strand\Common">
       <UniqueIdentifier>{40A711D7-ACBD-0F6D-F534-9B8E618AE0F4}</UniqueIdentifier>
     </Filter>
@@ -128,6 +131,33 @@
     </ClInclude>
     <ClInclude Include="src\Strand.h">
       <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Strand\Asset\Asset.h">
+      <Filter>src\Strand\Asset</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Strand\Asset\AssetImporter.h">
+      <Filter>src\Strand\Asset</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Strand\Asset\AssetManager.h">
+      <Filter>src\Strand\Asset</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Strand\Asset\AssetManagerBase.h">
+      <Filter>src\Strand\Asset</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Strand\Asset\AssetMetadata.h">
+      <Filter>src\Strand\Asset</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Strand\Asset\EditorAssetManager.h">
+      <Filter>src\Strand\Asset</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Strand\Asset\RuntimeAssetManager.h">
+      <Filter>src\Strand\Asset</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Strand\Asset\SceneImporter.h">
+      <Filter>src\Strand\Asset</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Strand\Asset\TextureImporter.h">
+      <Filter>src\Strand\Asset</Filter>
     </ClInclude>
     <ClInclude Include="src\Strand\Common\Algos\Polygon.h">
       <Filter>src\Strand\Common\Algos</Filter>
@@ -1650,16 +1680,6 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="src\Strand\Asset\Asset.h" />
-    <ClInclude Include="src\Strand\Asset\AssetImporter.h" />
-    <ClInclude Include="src\Strand\Asset\AssetManager.h" />
-    <ClInclude Include="src\Strand\Asset\AssetManagerBase.h" />
-    <ClInclude Include="src\Strand\Asset\AssetMetadata.h" />
-    <ClInclude Include="src\Strand\Asset\EditorAssetManager.h" />
-    <ClInclude Include="src\Strand\Asset\RuntimeAssetManager.h" />
-    <ClInclude Include="src\Strand\Asset\TextureImporter.h" />
-    <ClInclude Include="src\Strand\Asset\SceneImporter.h" />
-    <ClInclude Include="vendor\ImGuiColorTextEdit\TextEditor.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp">
@@ -1697,6 +1717,30 @@
     </ClCompile>
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">
       <Filter>src\Platform\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Strand\Asset\Asset.cpp">
+      <Filter>src\Strand\Asset</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Strand\Asset\AssetImporter.cpp">
+      <Filter>src\Strand\Asset</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Strand\Asset\AssetManager.cpp">
+      <Filter>src\Strand\Asset</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Strand\Asset\AssetManagerBase.cpp">
+      <Filter>src\Strand\Asset</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Strand\Asset\EditorAssetManager.cpp">
+      <Filter>src\Strand\Asset</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Strand\Asset\RuntimeAssetManager.cpp">
+      <Filter>src\Strand\Asset</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Strand\Asset\SceneImporter.cpp">
+      <Filter>src\Strand\Asset</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Strand\Asset\TextureImporter.cpp">
+      <Filter>src\Strand\Asset</Filter>
     </ClCompile>
     <ClCompile Include="src\Strand\Core\Application.cpp">
       <Filter>src\Strand\Core</Filter>
@@ -1842,13 +1886,5 @@
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="src\Strand\Asset\Asset.cpp" />
-    <ClCompile Include="src\Strand\Asset\AssetImporter.cpp" />
-    <ClCompile Include="src\Strand\Asset\AssetManager.cpp" />
-    <ClCompile Include="src\Strand\Asset\AssetManagerBase.cpp" />
-    <ClCompile Include="src\Strand\Asset\EditorAssetManager.cpp" />
-    <ClCompile Include="src\Strand\Asset\RuntimeAssetManager.cpp" />
-    <ClCompile Include="src\Strand\Asset\TextureImporter.cpp" />
-    <ClCompile Include="src\Strand\Asset\SceneImporter.cpp" />
   </ItemGroup>
 </Project>

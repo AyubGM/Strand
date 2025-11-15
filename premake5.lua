@@ -82,6 +82,7 @@ Library["BCrypt"] = "Bcrypt.lib"
 
 group "Dependencies"
     include "Strand/vendor/Box2D"
+	include "Strand/vendor/ImGuiColorTextEdit"
 	include "Strand/vendor/GLFW"
 	include "Strand/vendor/Glad"
 	include "Strand/vendor/imgui"
@@ -150,6 +151,7 @@ project "Strand"
 		"GLFW",
 		"Glad",
 		"ImGui",
+		"ImGuiColorTextEdit",
 		"yaml-cpp",
 		"opengl32.lib",
 		"%{Library.mono}",
