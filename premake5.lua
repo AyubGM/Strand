@@ -28,6 +28,8 @@ IncludeDir["Glad"] = "Strand/vendor/Glad/include"
 IncludeDir["ImGui"] = "Strand/vendor/imgui"
 IncludeDir["glm"] = "Strand/vendor/glm"
 IncludeDir["Box2D"] = "Strand/vendor/Box2D/include"
+IncludeDir["googletest"] = "Strand/vendor/googletest/googletest/include"
+IncludeDir["googlemock"] = "Strand/vendor/googletest/googlemock/include"
 IncludeDir["filewatch"] = "%{wks.location}/Strand/vendor/filewatch"
 IncludeDir["ImGuiColorTextEdit"] = "%{wks.location}/Strand/vendor/ImGuiColorTextEdit"
 IncludeDir["stb_image"] = "Strand/vendor/stb_image"
@@ -82,11 +84,13 @@ Library["BCrypt"] = "Bcrypt.lib"
 
 group "Dependencies"
     include "Strand/vendor/Box2D"
+	include "Strand/vendor/googletest"
 	include "Strand/vendor/ImGuiColorTextEdit"
 	include "Strand/vendor/GLFW"
 	include "Strand/vendor/Glad"
 	include "Strand/vendor/imgui"
 	include "Strand/vendor/yaml-cpp"
+	
 
 group ""
 
@@ -129,6 +133,8 @@ project "Strand"
 		"%{prj.name}/src",
 		"%{prj.name}/vendor/spdlog/include",
 		"%{IncludeDir.Box2D}",
+		"%{IncludeDir.googletest}",
+		"%{IncludeDir.googlemock}",
 		"%{IncludeDir.filewatch}",
 		"%{IncludeDir.ImGuiColorTextEdit}",
 		"%{IncludeDir.GLFW}",
@@ -148,6 +154,7 @@ project "Strand"
 	links 
 	{ 
 		"Box2D",
+		"gtest",
 		"GLFW",
 		"Glad",
 		"ImGui",
@@ -281,6 +288,69 @@ project "Sandbox"
 			optimize "on"
 
 
+project "StrandLabs"
+	location "StrandLabs"
+	kind "ConsoleApp"
+	language "C++"
+	cppdialect "C++20"
+	staticruntime "off"
+
+	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+
+	files
+	{
+		"%{prj.name}/src/**.h",
+		"%{prj.name}/src/**.cpp"
+	}
+
+	includedirs
+	{
+		"Strand/vendor/spdlog/include",
+		"%{IncludeDir.Box2D}",
+		"%{IncludeDir.googletest}",
+		"%{IncludeDir.googlemock}",
+		"Strand/src",
+		"Strand/vendor",
+		"%{IncludeDir.glm}",
+		"%{IncludeDir.entt}",
+		"%{IncludeDir.filewatch}",
+		"%{IncludeDir.ImGuiColorTextEdit}",
+		"%{IncludeDir.ImGuizmo}",
+		"%{IncludeDir.assimp}",
+	}
+
+	links
+	{
+		"Box2D",
+		"Strand"
+	}
+
+	filter "system:windows"
+		systemversion "latest"
+		buildoptions { "/utf-8" }
+		
+	filter "configurations:Debug"
+		defines "SD_DEBUG"
+		runtime "Debug"
+		symbols "on"
+
+    postbuildcommands
+	{
+		"{COPYDIR} \"%{LibraryDir.VulkanSDK_DebugDLL}\" \"%{cfg.targetdir}\""
+	}
+
+	filter "configurations:Release"
+		defines "SD_RELEASE"
+		runtime "Release"
+		optimize "on"
+
+	filter "configurations:Dist"
+		defines "SD_DIST"
+		runtime "Release"
+		optimize "on"
+
+
 project "Bridges"
 	location "Bridges"
 	kind "ConsoleApp"
@@ -340,6 +410,7 @@ project "Bridges"
 		defines "SD_DIST"
 		runtime "Release"
 		optimize "on"
+
 
 
 include "Strand-ScriptCore"

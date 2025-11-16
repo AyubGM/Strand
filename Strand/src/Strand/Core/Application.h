@@ -79,6 +79,9 @@ namespace Strand {
 	private:
 		static Application* s_Instance;
 		friend int ::main(int argc, char** argv);
+
+		friend class ApplicationTest;
+		friend class FriendApplication;
 	};
 
 	// To be defined in CLIENT

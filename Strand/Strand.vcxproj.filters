@@ -31,6 +31,9 @@
     <Filter Include="src\Strand\Debug">
       <UniqueIdentifier>{7E833BB1-6A7C-5A03-93AE-3F887F063A0F}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Strand\EventBus">
+      <UniqueIdentifier>{03B0DEC2-6F11-BCD0-F87E-028364DFF28F}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Strand\Events">
       <UniqueIdentifier>{EC4536DC-585C-3472-A1D3-BF930D2905FA}</UniqueIdentifier>
     </Filter>
@@ -156,6 +159,9 @@
     <ClInclude Include="src\Strand\Asset\SceneImporter.h">
       <Filter>src\Strand\Asset</Filter>
     </ClInclude>
+    <ClInclude Include="src\Strand\Asset\ScriptImporter.h">
+      <Filter>src\Strand\Asset</Filter>
+    </ClInclude>
     <ClInclude Include="src\Strand\Asset\TextureImporter.h">
       <Filter>src\Strand\Asset</Filter>
     </ClInclude>
@@ -222,7 +228,13 @@
     <ClInclude Include="src\Strand\Debug\Instrumentor.h">
       <Filter>src\Strand\Debug</Filter>
     </ClInclude>
+    <ClInclude Include="src\Strand\EventBus\EditorEventBus.h">
+      <Filter>src\Strand\EventBus</Filter>
+    </ClInclude>
     <ClInclude Include="src\Strand\Events\ApplicationEvent.h">
+      <Filter>src\Strand\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Strand\Events\EditorEvents.h">
       <Filter>src\Strand\Events</Filter>
     </ClInclude>
     <ClInclude Include="src\Strand\Events\Event.h">
@@ -1680,9 +1692,6 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="src\Strand\Events\EditorEvents.h" />
-    <ClInclude Include="src\Strand\EventBus\EditorEventBus.h" />
-    <ClInclude Include="src\Strand\Asset\ScriptImporter.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp">
@@ -1742,6 +1751,9 @@
     <ClCompile Include="src\Strand\Asset\SceneImporter.cpp">
       <Filter>src\Strand\Asset</Filter>
     </ClCompile>
+    <ClCompile Include="src\Strand\Asset\ScriptImporter.cpp">
+      <Filter>src\Strand\Asset</Filter>
+    </ClCompile>
     <ClCompile Include="src\Strand\Asset\TextureImporter.cpp">
       <Filter>src\Strand\Asset</Filter>
     </ClCompile>
@@ -1765,6 +1777,9 @@
     </ClCompile>
     <ClCompile Include="src\Strand\Core\Window.cpp">
       <Filter>src\Strand\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Strand\EventBus\EditorEventBus.cpp">
+      <Filter>src\Strand\EventBus</Filter>
     </ClCompile>
     <ClCompile Include="src\Strand\ImGui\ImGuiBuild.cpp">
       <Filter>src\Strand\ImGui</Filter>
@@ -1889,7 +1904,5 @@
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="src\Strand\EventBus\EditorEventBus.cpp" />
-    <ClCompile Include="src\Strand\Asset\ScriptImporter.cpp" />
   </ItemGroup>
 </Project>
