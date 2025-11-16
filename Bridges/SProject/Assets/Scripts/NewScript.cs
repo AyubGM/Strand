@@ -3,7 +3,7 @@ using System;
 
 namespace SProject
 {
-    public class Startup : Entity
+    public class NewScript_cs : Entity
     {
         public static void Init()
         {

@@ -46,6 +46,26 @@ namespace Strand {
 			}
 		}
 
+		bool isScriptsDir = (m_CurrentDirectory.stem() == "Scripts");
+		bool isSceneDir = (m_CurrentDirectory.stem() == "Scenes");
+
+		if (isScriptsDir)
+		{
+			ImGui::SameLine();
+			if (ImGui::Button("New Script"))
+			{
+				CreateNewScriptFile(m_CurrentDirectory, "NewScript.cs");
+			}
+		}
+		if (isSceneDir)
+		{
+			ImGui::SameLine();
+			if (ImGui::Button("New Scene"))
+			{
+				CreateNewSceneFile(m_CurrentDirectory, "NewScene.strand");
+			}
+		}
+
 
 		static float padding = 16.0f;
 		static float thumbnailSize = 128.0f;
@@ -163,6 +183,7 @@ namespace Strand {
 						Project::GetActive()->GetEditorAssetManager()->ImportAsset(relativePath);
 						RefreshAssetTree();
 					}
+
 					ImGui::EndPopup();
 				}
 
@@ -183,12 +204,48 @@ namespace Strand {
 					
 				}
 
+
+			
+
+			/*	if (ImGui::BeginPopupContextWindow("ContentBrowserPopup", ImGuiPopupFlags_NoOpenOverItems))
+				{
+					if (ImGui::MenuItem("New Script"))
+					{
+						CreateNewScriptFile(m_CurrentDirectory, "NewScript.cs");
+					}
+					ImGui::EndPopup();
+				}*/
+
+
+
 				ImGui::TextWrapped(filenameString.c_str());
 
 				ImGui::NextColumn();
 
 				ImGui::PopID();
+
+
+		
+	
+
 			}
+		}
+
+		// Right-click on empty space: open our popup explicitly (prevents accidental left-click opens)
+		if (ImGui::IsWindowHovered(ImGuiHoveredFlags_AllowWhenBlockedByPopup) && ImGui::IsMouseClicked(ImGuiMouseButton_Right))
+			ImGui::OpenPopup("ContentBrowserPopup");
+
+		if (ImGui::BeginPopup("ContentBrowserPopup"))
+		{
+			if (isScriptsDir && ImGui::MenuItem("New Script"))
+			{
+				CreateNewScriptFile(m_CurrentDirectory, "NewScript.cs");
+			}
+			if (isSceneDir && ImGui::MenuItem("New Scene"))
+			{
+				CreateNewSceneFile(m_CurrentDirectory, "NewScene.scene");
+			}
+			ImGui::EndPopup();
 		}
 
 		ImGui::Columns(1);
@@ -229,4 +286,21 @@ namespace Strand {
 		}
 	}
 
+
+	void ContentBrowserPanel::CreateNewScriptFile(const std::filesystem::path& directory, const std::string& filename)
+	{
+		Project::CreateScriptFile(directory, filename);
+
+		// Refresh so the new file shows up
+		RefreshAssetTree();
+	}
+
+
+	void ContentBrowserPanel::CreateNewSceneFile(const std::filesystem::path& directory, const std::string& filename)
+	{
+		Project::CreateSceneFile(directory, filename);
+
+		// Refresh so the new file shows up
+		RefreshAssetTree();
+	}
 }

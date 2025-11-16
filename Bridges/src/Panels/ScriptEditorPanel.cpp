@@ -30,6 +30,7 @@ namespace Strand {
 		OpenFile(event.GetPath());
 	}
 
+
 	void ScriptEditorPanel::OpenFile(const std::filesystem::path& path)
 	{
 		if (!std::filesystem::exists(path) || !std::filesystem::is_regular_file(path))
@@ -83,6 +84,9 @@ namespace Strand {
 		//{
 		//	m_EditorLayer->ReloadProjectScripts();
 		//}
+
+		ScriptFileSavedEvent event(m_CurrentFile);
+		EditorEventBus::Dispatch(event);
 
 		SD_CORE_TRACE("Saved script file: {0}", m_CurrentFile.string());
 

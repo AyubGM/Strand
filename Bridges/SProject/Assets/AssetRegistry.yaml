@@ -2,3 +2,6 @@ AssetRegistry:
   - Handle: 3820068525587786808
     FilePath: Scenes/Default.strand
     Type: AssetType::Scene
+  - Handle: 5309501197000838010
+    FilePath: Scenes/NewScene.strand
+    Type: AssetType::Scene

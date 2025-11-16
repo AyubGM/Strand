@@ -21,7 +21,10 @@ namespace Strand {
 
 	private:
 		void RefreshAssetTree();
-
+		void CreateNewScriptFile(const std::filesystem::path& directory, const std::string& filename);
+		void CreateNewSceneFile(const std::filesystem::path& directory, const std::string& filename);
+		
+		
 	private:
 		Ref<Project> m_Project;
 		Ref<ThumbnailCache> m_ThumbnailCache;
