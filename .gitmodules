@@ -27,3 +27,6 @@
 [submodule "Strand/vendor/assimp"]
 	path = Strand/vendor/assimp
 	url = https://github.com/AyubGM/assimp
+[submodule "Strand/vendor/googletest"]
+	path = Strand/vendor/googletest
+	url = https://github.com/AyubGM/googletest.git
