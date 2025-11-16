@@ -54,7 +54,8 @@ namespace Strand {
 			ImGui::SameLine();
 			if (ImGui::Button("New Script"))
 			{
-				CreateNewScriptFile(m_CurrentDirectory, "NewScript.cs");
+				std::string uniqueName = FindUniqueFileName(m_CurrentDirectory, "NewScript", ".cs");
+				CreateNewScriptFile(m_CurrentDirectory, uniqueName);
 			}
 		}
 		if (isSceneDir)
@@ -62,7 +63,8 @@ namespace Strand {
 			ImGui::SameLine();
 			if (ImGui::Button("New Scene"))
 			{
-				CreateNewSceneFile(m_CurrentDirectory, "NewScene.strand");
+				std::string uniqueName = FindUniqueFileName(m_CurrentDirectory, "NewScene", ".strand");
+				CreateNewSceneFile(m_CurrentDirectory, uniqueName);
 			}
 		}
 
@@ -239,11 +241,13 @@ namespace Strand {
 		{
 			if (isScriptsDir && ImGui::MenuItem("New Script"))
 			{
-				CreateNewScriptFile(m_CurrentDirectory, "NewScript.cs");
+				std::string uniqueName = FindUniqueFileName(m_CurrentDirectory, "NewScript", ".cs");
+				CreateNewScriptFile(m_CurrentDirectory, uniqueName);
 			}
 			if (isSceneDir && ImGui::MenuItem("New Scene"))
 			{
-				CreateNewSceneFile(m_CurrentDirectory, "NewScene.scene");
+				std::string uniqueName = FindUniqueFileName(m_CurrentDirectory, "NewScene", ".strand");
+				CreateNewSceneFile(m_CurrentDirectory, uniqueName);
 			}
 			ImGui::EndPopup();
 		}
@@ -287,8 +291,44 @@ namespace Strand {
 	}
 
 
+	std::string ContentBrowserPanel::FindUniqueFileName(const std::filesystem::path& directory, const std::string& baseName, const std::string& extension)
+	{
+		SD_PROFILE_FUNCTION();
+
+		// 1. Check the base name (e.g., "NewScript.cs")
+		std::filesystem::path uniquePath = directory / (baseName + extension);
+		if (!std::filesystem::exists(uniquePath))
+		{
+			return uniquePath.filename().string();
+		}
+
+		// 2. Check for indexed names (e.g., "NewScript (1).cs", "NewScript (2).cs")
+		int index = 1;
+		while (true)
+		{
+			std::string indexedName = baseName + " (" + std::to_string(index) + ")" + extension;
+			uniquePath = directory / indexedName;
+
+			if (!std::filesystem::exists(uniquePath))
+			{
+				return indexedName;
+			}
+
+			// Safety break to prevent excessive looping
+			if (index > 999)
+			{
+				SD_CORE_ERROR("Failed to find a unique file name after 999 attempts for base: {0}", baseName);
+				return baseName + "_OVERFLOW" + extension;
+			}
+
+			index++;
+		}
+	}
+
 	void ContentBrowserPanel::CreateNewScriptFile(const std::filesystem::path& directory, const std::string& filename)
 	{
+		SD_PROFILE_FUNCTION();
+
 		Project::CreateScriptFile(directory, filename);
 
 		// Refresh so the new file shows up
@@ -298,6 +338,8 @@ namespace Strand {
 
 	void ContentBrowserPanel::CreateNewSceneFile(const std::filesystem::path& directory, const std::string& filename)
 	{
+		SD_PROFILE_FUNCTION();
+
 		Project::CreateSceneFile(directory, filename);
 
 		// Refresh so the new file shows up

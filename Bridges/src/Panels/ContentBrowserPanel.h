@@ -24,6 +24,7 @@ namespace Strand {
 		void CreateNewScriptFile(const std::filesystem::path& directory, const std::string& filename);
 		void CreateNewSceneFile(const std::filesystem::path& directory, const std::string& filename);
 		
+		std::string FindUniqueFileName(const std::filesystem::path& directory, const std::string& baseName, const std::string& extension);
 		
 	private:
 		Ref<Project> m_Project;
