@@ -1,6 +1,6 @@
 Project:
   Name: Sandbox
-  StartScene: 0
+  StartScene: 5295436663550527496
   AssetDirectory: Assets
   AssetRegistryPath: AssetRegistry.yaml
   ScriptModulePath: Scripts/Binaries/Sandbox.dll

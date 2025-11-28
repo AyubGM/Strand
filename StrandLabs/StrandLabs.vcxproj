@@ -145,6 +145,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\ApplicationTests.cpp" />
+    <ClCompile Include="src\Renderer2DTests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Strand\vendor\Box2D\Box2D.vcxproj">
