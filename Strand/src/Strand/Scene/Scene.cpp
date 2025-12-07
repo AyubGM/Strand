@@ -134,6 +134,8 @@ namespace Strand {
 		auto& tag = entity.AddComponent<TagComponent>();
 		tag.Tag = name.empty() ? "Entity" : name;
 
+		//entity.AddComponent<RelationshipComponent>();
+
 		m_EntityMap[uuid] = entity;
 		return entity;
 	}
@@ -145,6 +147,27 @@ namespace Strand {
 
 	}
 
+	glm::mat4 Scene::GetWorldTransform(Entity entity)
+	{
+		glm::mat4 transform = glm::mat4(1.0f);
+
+		//TODO not sure if I have to do this since every entity has transfrom
+		if (entity.HasComponent<TransformComponent>())
+			transform = entity.GetComponent<TransformComponent>().GetTransform();
+
+		if (entity.HasComponent<RelationshipComponent>())
+		{
+			auto& relation = entity.GetComponent<RelationshipComponent>();
+			if (relation.ParentHandle != 0)
+			{
+				Entity parent = GetEntityByUUID(relation.ParentHandle);
+				if (parent)
+					transform = GetWorldTransform(parent) * transform;
+			}
+		}
+
+		return transform;
+	}
 
 	void Scene::OnRuntimeStart()
 	{
@@ -232,9 +255,35 @@ namespace Strand {
 					b2Body* body = (b2Body*)rb2d.RuntimeBody;
 
 					const auto& position = body->GetPosition();
-					transform.Translation.x = position.x;
-					transform.Translation.y = position.y;
-					transform.Rotation.z = body->GetAngle();
+
+					UUID parentHandel = 0;
+					if (entity.HasComponent<RelationshipComponent>())
+						parentHandel = entity.GetComponent<RelationshipComponent>().ParentHandle;
+
+					if (parentHandel != 0)
+					{
+						Entity parent = GetEntityByUUID(parentHandel);
+						if (parent)
+						{
+							glm::mat4 parentTransform = GetWorldTransform(parent);
+							glm::mat4 parentInverse = glm::inverse(parentTransform);
+							glm::vec4 localPosition = parentInverse * glm::vec4(position.x, position.y, 0.0f, 1.0f);
+
+							transform.Translation.x = localPosition.x;
+							transform.Translation.y = localPosition.y;
+							// Rotation math in 2D hierarchy + physics is complex; 
+							// simplest is to take body angle and subtract parent's world rotation Z
+							// For now, we set Z rotation directly, but be aware this might desync if parents rotate
+							transform.Rotation.z = body->GetAngle();
+
+						}
+					}
+					else
+					{
+						transform.Translation.x = position.x;
+						transform.Translation.y = position.y;
+						transform.Rotation.z = body->GetAngle();
+					}
 				}
 			}
 		}
@@ -270,7 +319,9 @@ namespace Strand {
 				{
 					auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
 
-					Renderer2D::DrawSprite(transform.GetTransform(), sprite, (int)entity);
+					Renderer2D::DrawSprite(GetWorldTransform({ entity, this }), sprite, (int)entity);
+
+					//Renderer2D::DrawSprite(transform.GetTransform(), sprite, (int)entity);
 				}
 			}
 
@@ -281,7 +332,9 @@ namespace Strand {
 				{
 					auto [transform, circle] = view.get<TransformComponent, CircleRendererComponent>(entity);
 
-					Renderer2D::DrawCircle(transform.GetTransform(), circle.Color, circle.Thickness, circle.Fade, (int)entity);
+					Renderer2D::DrawCircle(GetWorldTransform({ entity, this }), circle.Color, circle.Thickness, circle.Fade, (int)entity);
+
+					//Renderer2D::DrawCircle(transform.GetTransform(), circle.Color, circle.Thickness, circle.Fade, (int)entity);
 				}
 			}
 
@@ -507,6 +560,12 @@ namespace Strand {
 	void Scene::OnComponentAdded<TransformComponent>(Entity entity, TransformComponent& component)
 	{
 	}
+
+	template<>
+	void Scene::OnComponentAdded<RelationshipComponent>(Entity entity, RelationshipComponent& component)
+	{
+	}
+
 
 	template<>
 	void Scene::OnComponentAdded<CircleRendererComponent>(Entity entity, CircleRendererComponent& component)

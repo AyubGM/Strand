@@ -96,6 +96,67 @@ namespace Strand {
 			m_SelectionContext = entity;
 		}
 
+
+		// Drag source so entities can be dragged into relationship targets
+		if (ImGui::BeginDragDropSource())
+		{
+			UUID id = entity.GetUUID();
+			ImGui::SetDragDropPayload("ENTITY", &id, sizeof(UUID));
+			ImGui::Text("%s", tag.c_str());
+			ImGui::EndDragDropSource();
+		}
+
+		// Drop target: make the dragged entity a child of this entity (set its parent)
+		if (ImGui::BeginDragDropTarget())
+		{
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ENTITY"))
+			{
+				SD_PROFILE_FUNCTION();
+
+				UUID* payloadUUID = (UUID*)payload->Data;
+				if (payloadUUID)
+				{
+					UUID sourceUUID = *payloadUUID;
+					// Prevent setting self as parent
+					if (sourceUUID != entity.GetUUID())
+					{
+						Entity sourceEntity = m_Context->GetEntityByUUID(sourceUUID);
+						if (sourceEntity)
+						{
+							// Ensure source has RelationshipComponent
+							if (!sourceEntity.HasComponent<RelationshipComponent>())
+								sourceEntity.AddComponent<RelationshipComponent>();
+
+							auto& sourceRel = sourceEntity.GetComponent<RelationshipComponent>();
+
+							// Remove from old parent children list if any
+							if (sourceRel.ParentHandle != 0)
+							{
+								Entity oldParent = m_Context->GetEntityByUUID(sourceRel.ParentHandle);
+								if (oldParent && oldParent.HasComponent<RelationshipComponent>())
+								{
+									auto& oldChildren = oldParent.GetComponent<RelationshipComponent>().Children;
+									oldChildren.erase(std::remove(oldChildren.begin(), oldChildren.end(), sourceUUID), oldChildren.end());
+								}
+							}
+
+							// Set new parent
+							sourceRel.ParentHandle = entity.GetUUID();
+
+							// Add to new parent's children (if not already present)
+							if (!entity.HasComponent<RelationshipComponent>())
+								entity.AddComponent<RelationshipComponent>();
+
+							auto& parentRel = entity.GetComponent<RelationshipComponent>();
+							if (std::find(parentRel.Children.begin(), parentRel.Children.end(), sourceUUID) == parentRel.Children.end())
+								parentRel.Children.push_back(sourceUUID);
+						}
+					}
+				}
+			}
+			ImGui::EndDragDropTarget();
+		}
+
 		bool entityDeleted = false;
 		if (ImGui::BeginPopupContextItem())
 		{
@@ -261,6 +322,7 @@ namespace Strand {
 			DisplayAddComponentEntry<Rigidbody2DComponent>("Rigidbody 2D");
 			DisplayAddComponentEntry<BoxCollider2DComponent>("Box Collider 2D");
 			DisplayAddComponentEntry<CircleCollider2DComponent>("Circle Collider 2D");
+			DisplayAddComponentEntry<RelationshipComponent>("Relation");
 			ImGui::EndPopup();
 		}
 
@@ -526,6 +588,17 @@ namespace Strand {
 				ImGui::DragFloat("Friction", &component.Friction, 0.01f, 0.0f, 1.0f);
 				ImGui::DragFloat("Restitution", &component.Restitution, 0.01f, 0.0f, 1.0f);
 				ImGui::DragFloat("Restitution Threshold", &component.RestitutionThreshold, 0.01f, 0.0f);
+			});
+
+		DrawComponent<RelationshipComponent>("Relation", entity, [](auto& component)
+			{
+				ImGui::InputScalar("Parent Handle", ImGuiDataType_U64, &component.ParentHandle);
+				ImGui::Text("Children Count: %zu", component.Children.size());
+				// Optionally, display children UUIDs
+				for (size_t i = 0; i < component.Children.size(); ++i)
+				{
+					ImGui::Text("Child %zu: %llu", i, component.Children[i]);
+				}
 			});
 
 	}

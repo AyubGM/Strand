@@ -50,6 +50,8 @@ namespace Strand {
 
 		Entity GetPrimaryCameraEntity();
 
+		glm::mat4 GetWorldTransform(Entity entity);
+
 		bool IsRunning() const { return m_IsRunning; }
 		bool IsPaused() const { return m_IsPaused; }
 
