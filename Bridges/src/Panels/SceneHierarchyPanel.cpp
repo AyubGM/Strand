@@ -44,13 +44,25 @@ namespace Strand {
 				m_SelectionContext = {};
 
 			// Right-click on blank space
-			if (ImGui::BeginPopupContextWindow(0, 1))
+			if (ImGui::IsMouseClicked(ImGuiMouseButton_Right) && ImGui::IsWindowHovered() && !ImGui::IsAnyItemHovered())
+			{
+				ImGui::OpenPopup("SceneHierarchy_EmptySpacePopup");
+			}
+
+			if (ImGui::BeginPopup("SceneHierarchy_EmptySpacePopup"))
 			{
 				if (ImGui::MenuItem("Create Empty Entity"))
 					m_Context->CreateEntity("Empty Entity");
 
 				ImGui::EndPopup();
 			}
+		/*	if (ImGui::BeginPopupContextWindow(0, 1))
+			{
+				if (ImGui::MenuItem("Create Empty Entity"))
+					m_Context->CreateEntity("Empty Entity");
+
+				ImGui::EndPopup();
+			}*/
 		}
 
 
@@ -92,6 +104,7 @@ namespace Strand {
 
 			ImGui::EndPopup();
 		}
+
 
 		if (opened)
 		{
