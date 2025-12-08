@@ -28,6 +28,9 @@ namespace Strand {
 		Entity CreateEntity(const std::string& name = std::string());
 		Entity CreateEntityWithUUID(UUID uuid, const std::string& name = std::string());
 		void DestroyEntity(Entity entity);
+		void CascadeDelete(Entity entity);
+		void QueueDestroyEntity(Entity entity);
+		void ProcessQueuedDeletes();
 
 		void OnRuntimeStart();
 		void OnRuntimeStop();
@@ -80,6 +83,7 @@ namespace Strand {
 		
 	private:
 		entt::registry m_Registry;
+		std::vector<UUID> m_PendingDeletes;
 		uint32_t m_ViewportWidth = 0, m_ViewportHeight = 0;
 		bool m_IsRunning = false;
 		bool m_IsPaused = false;

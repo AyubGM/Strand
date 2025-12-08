@@ -598,6 +598,31 @@ namespace Strand {
 			}
 		}
 
+		// Rebuild children lists from ParentHandle
+		{
+			auto relView = m_Scene->m_Registry.view<RelationshipComponent>();
+			for (auto e : relView)
+			{
+				Entity child{ e, m_Scene.get() };
+				auto& rc = child.GetComponent<RelationshipComponent>();
+
+				if (rc.ParentHandle == 0)
+					continue;
+
+				Entity parent = m_Scene->GetEntityByUUID(rc.ParentHandle);
+				if (!parent)
+					continue;
+
+				if (!parent.HasComponent<RelationshipComponent>())
+					parent.AddComponent<RelationshipComponent>();
+
+				auto& parentRc = parent.GetComponent<RelationshipComponent>();
+				// avoid duplicates
+				if (std::find(parentRc.Children.begin(), parentRc.Children.end(), child.GetUUID()) == parentRc.Children.end())
+					parentRc.Children.push_back(child.GetUUID());
+			}
+		}
+
 		return true;
 	}
 

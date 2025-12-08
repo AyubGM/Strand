@@ -40,6 +40,8 @@ namespace Strand {
 				DrawEntityNode(entity);
 			}
 
+			m_Context->ProcessQueuedDeletes();
+
 			if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())
 				m_SelectionContext = {};
 
@@ -178,7 +180,9 @@ namespace Strand {
 
 		if (entityDeleted)
 		{
-			m_Context->DestroyEntity(entity);
+			//m_Context->DestroyEntity(entity);
+			//m_Context->CascadeDelete(entity);
+			m_Context->QueueDestroyEntity(entity);
 			if (m_SelectionContext == entity)
 				m_SelectionContext = {};
 		}

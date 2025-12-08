@@ -148,6 +148,54 @@ namespace Strand {
 
 	}
 
+	void Scene::CascadeDelete(Entity entity)
+	{
+		if (entity.HasComponent<RelationshipComponent>())
+		{
+			auto& rel = entity.GetComponent<RelationshipComponent>();
+			// Copy children to avoid iterator invalidation
+			std::vector<UUID> children = rel.Children;
+			for (UUID childUUID : children)
+			{
+				Entity child = GetEntityByUUID(childUUID);
+				if (child)
+					CascadeDelete(child);
+			}
+		}
+		DestroyEntity(entity);
+	}
+
+	void Scene::QueueDestroyEntity(Entity entity)
+	{
+		if (!entity)
+			return;
+
+		UUID id = entity.GetUUID();
+		// avoid duplicate entries
+		if (std::find(m_PendingDeletes.begin(), m_PendingDeletes.end(), id) == m_PendingDeletes.end())
+			m_PendingDeletes.push_back(id);
+	}
+
+	void Scene::ProcessQueuedDeletes()
+	{
+		if (m_PendingDeletes.empty())
+			return;
+
+		// Swap into local vector to allow QueueDestroyEntity during processing without interfering
+		std::vector<UUID> toDelete;
+		toDelete.swap(m_PendingDeletes);
+
+		for (UUID id : toDelete)
+		{
+			Entity e = GetEntityByUUID(id);
+			if (e)
+			{
+				// CascadeDelete removes children then destroys the entity
+				CascadeDelete(e);
+			}
+		}
+	}
+
 	glm::mat4 Scene::GetWorldTransform(Entity entity)
 	{
 		glm::mat4 transform = glm::mat4(1.0f);
