@@ -467,39 +467,6 @@ namespace Strand {
 		m_PhysicsWorld = nullptr;
 	}
 
-	void Scene::RenderScene(EditorCamera& camera)
-	{
-		Renderer2D::BeginScene(camera);
-
-		// Draw sprites
-		{
-			auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
-			for (auto entity : group)
-			{
-				auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
-				glm::mat4 worldTransform = GetWorldTransform({ entity, this });
-
-				Renderer2D::DrawSprite(worldTransform, sprite, (int)entity);
-				//Renderer2D::DrawSprite(transform.GetTransform(), sprite, (int)entity);
-			}
-		}
-
-		// Draw circles
-		{
-			auto view = m_Registry.view<TransformComponent, CircleRendererComponent>();
-			for (auto entity : view)
-			{
-				auto [transform, circle] = view.get<TransformComponent, CircleRendererComponent>(entity);
-				glm::mat4 worldTransform = GetWorldTransform({ entity, this });
-
-				Renderer2D::DrawCircle(worldTransform, circle.Color, circle.Thickness, circle.Fade, (int)entity);
-				//Renderer2D::DrawCircle(transform.GetTransform(), circle.Color, circle.Thickness, circle.Fade, (int)entity);
-			}
-		}
-
-		Renderer2D::EndScene();
-	}
-
 	void Scene::OnPhysics2DStep(Timestep ts)
 	{
 		const int32_t velocityIterations = 6;
@@ -548,6 +515,41 @@ namespace Strand {
 			}
 		}
 	}
+
+	void Scene::RenderScene(EditorCamera& camera)
+	{
+		Renderer2D::BeginScene(camera);
+
+		// Draw sprites
+		{
+			auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
+			for (auto entity : group)
+			{
+				auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
+				glm::mat4 worldTransform = GetWorldTransform({ entity, this });
+
+				Renderer2D::DrawSprite(worldTransform, sprite, (int)entity);
+				//Renderer2D::DrawSprite(transform.GetTransform(), sprite, (int)entity);
+			}
+		}
+
+		// Draw circles
+		{
+			auto view = m_Registry.view<TransformComponent, CircleRendererComponent>();
+			for (auto entity : view)
+			{
+				auto [transform, circle] = view.get<TransformComponent, CircleRendererComponent>(entity);
+				glm::mat4 worldTransform = GetWorldTransform({ entity, this });
+
+				Renderer2D::DrawCircle(worldTransform, circle.Color, circle.Thickness, circle.Fade, (int)entity);
+				//Renderer2D::DrawCircle(transform.GetTransform(), circle.Color, circle.Thickness, circle.Fade, (int)entity);
+			}
+		}
+
+		Renderer2D::EndScene();
+	}
+
+
 
 	template<typename T>
 	void Scene::OnComponentAdded(Entity entity, T& component)

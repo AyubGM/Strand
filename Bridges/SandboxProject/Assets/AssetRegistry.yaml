@@ -1,4 +1,7 @@
 AssetRegistry:
+  - Handle: 568333097596547457
+    FilePath: Textures/container2.png
+    Type: AssetType::Texture2D
   - Handle: 3655909341498842569
     FilePath: Textures/container2.png
     Type: AssetType::Texture2D

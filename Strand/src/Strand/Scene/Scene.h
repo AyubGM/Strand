@@ -70,10 +70,13 @@ namespace Strand {
 
 		void OnPhysics2DStart();
 		void OnPhysics2DStop();
+		void OnPhysics2DStep(Timestep ts);
 
 		void RenderScene(EditorCamera& camera);
 
-		void OnPhysics2DStep(Timestep ts);
+
+		//void UpdateSceneTransforms();
+		//void UpdateTransformForEntity(entt::entity entity, const glm::mat4& parentTransform);
 		
 	private:
 		entt::registry m_Registry;

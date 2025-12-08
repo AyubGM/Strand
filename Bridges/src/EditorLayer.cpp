@@ -357,20 +357,14 @@ namespace Strand {
 
 			ImGuizmo::SetRect(m_ViewportBounds[0].x, m_ViewportBounds[0].y, m_ViewportBounds[1].x - m_ViewportBounds[0].x, m_ViewportBounds[1].y - m_ViewportBounds[0].y);
 
-			// Camera
-			// Runtime camera from entity
-			// auto cameraEntity = m_ActiveScene->GetPrimaryCameraEntity();
-			// const auto& camera = cameraEntity.GetComponent<CameraComponent>().Camera;
-			// const glm::mat4& cameraProjection = camera.GetProjection();
-			// glm::mat4 cameraView = glm::inverse(cameraEntity.GetComponent<TransformComponent>().GetTransform());
-
 			// Editor camera
 			const glm::mat4& cameraProjection = m_EditorCamera.GetProjection();
 			glm::mat4 cameraView = m_EditorCamera.GetViewMatrix();
 
 			// Entity transform
 			auto& tc = selectedEntity.GetComponent<TransformComponent>();
-			glm::mat4 transform = tc.GetTransform();
+			//glm::mat4 transform = tc.GetTransform();
+			glm::mat4 transform = m_ActiveScene->GetWorldTransform(selectedEntity);
 
 			// Snapping
 			bool snap = Input::IsKeyPressed(Key::LeftControl);
@@ -387,6 +381,27 @@ namespace Strand {
 
 			if (ImGuizmo::IsUsing())
 			{
+				glm::mat4 newWorldTransform = transform;
+
+				if (selectedEntity.HasComponent<RelationshipComponent>())
+				{
+					UUID parentUUID = selectedEntity.GetComponent<RelationshipComponent>().ParentHandle;
+					if (parentUUID != 0)
+					{
+						Entity parentEntity = m_ActiveScene->GetEntityByUUID(parentUUID);
+						if (parentEntity)
+						{
+							// Calculate Parent's Inverse World Matrix
+							glm::mat4 parentWorldTransform = m_ActiveScene->GetWorldTransform(parentEntity);
+							glm::mat4 parentInverse = glm::inverse(parentWorldTransform);
+
+							// Local = Inv(Parent) * World
+							transform = parentInverse * newWorldTransform;
+						}
+					}
+				}
+
+
 				glm::vec3 translation, rotation, scale;
 				Math::DecomposeTransform(transform, translation, rotation, scale);
 
