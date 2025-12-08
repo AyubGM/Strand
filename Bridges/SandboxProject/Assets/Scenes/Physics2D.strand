@@ -94,5 +94,15 @@ Entities:
       Color: [0.934362948, 0.362345755, 0.057721246, 1]
       Thickness: 0.100000001
       Fade: 0.00499999989
+    Rigidbody2DComponent:
+      BodyType: Dynamic
+      FixedRotation: false
+    CircleCollider2DComponent:
+      Offset: [0, 0]
+      Radius: 0.5
+      Density: 1
+      Friction: 0.5
+      Restitution: 0
+      RestitutionThreshold: 0.5
     RelationshipComponent:
       Parent: 15045535320033348975

@@ -6,6 +6,7 @@
 #include "Strand/Scripting/ScriptEngine.h"
 #include "Strand/Renderer/Renderer2D.h"
 #include "Strand/Physics/Physics2D.h"
+#include "Strand/Math/Math.h"
 
 #include <glm/glm.hpp>
 
@@ -406,7 +407,10 @@ namespace Strand {
 
 			// Calculate World Transform for correct spawn position
 			glm::mat4 worldTransform = GetWorldTransform(entity);
-			glm::vec3 worldPosition = glm::vec3(worldTransform[3]); // 4th column is translation
+
+			glm::vec3 worldPosition, worldRotation, worldScale;
+			Math::DecomposeTransform(worldTransform, worldPosition, worldRotation, worldScale);
+			//glm::vec3 worldPosition = glm::vec3(worldTransform[3]); // 4th column is translation
 
 			b2BodyDef bodyDef;
 			bodyDef.type = Utils::Rigidbody2DTypeToBox2DBody(rb2d.Type);
@@ -425,7 +429,7 @@ namespace Strand {
 				b2PolygonShape boxShape;
 				// Scale is tricky in hierarchy, for now we use local scale
 				// Ideally we should extract scale from World Matrix (Length of columns)
-				boxShape.SetAsBox(bc2d.Size.x * transform.Scale.x, bc2d.Size.y * transform.Scale.y);
+				boxShape.SetAsBox(bc2d.Size.x * worldScale.x, bc2d.Size.y * worldScale.y);
 
 				b2FixtureDef fixtureDef;
 				fixtureDef.shape = &boxShape;
@@ -442,7 +446,7 @@ namespace Strand {
 
 				b2CircleShape circleShape;
 				circleShape.m_p.Set(cc2d.Offset.x, cc2d.Offset.y);
-				circleShape.m_radius = transform.Scale.x * cc2d.Radius;
+				circleShape.m_radius = worldScale.x * cc2d.Radius;
 
 				b2FixtureDef fixtureDef;
 				fixtureDef.shape = &circleShape;
