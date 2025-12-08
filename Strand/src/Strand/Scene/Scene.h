@@ -73,6 +73,7 @@ namespace Strand {
 
 		void RenderScene(EditorCamera& camera);
 
+		void OnPhysics2DStep(Timestep ts);
 		
 	private:
 		entt::registry m_Registry;

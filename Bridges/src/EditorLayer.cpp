@@ -692,29 +692,65 @@ namespace Strand {
 				{
 					auto [tc, bc2d] = view.get<TransformComponent, BoxCollider2DComponent>(entity);
 
-					glm::vec3 translation = tc.Translation + glm::vec3(bc2d.Offset, 0.001f);
-					glm::vec3 scale = tc.Scale * glm::vec3(bc2d.Size * 2.0f, 1.0f);
+					// World transform for this entity (includes parent hierarchy)
+					glm::mat4 worldTransform = m_ActiveScene->GetWorldTransform({ entity, m_ActiveScene.get() });
 
-					glm::mat4 transform = glm::translate(glm::mat4(1.0f), translation)
-						* glm::rotate(glm::mat4(1.0f), tc.Rotation.z, glm::vec3(0.0f, 0.0f, 1.0f))
-						* glm::scale(glm::mat4(1.0f), scale);
+					glm::vec3 worldTranslation, worldRotation, worldScale;
+					if (!Math::DecomposeTransform(worldTransform, worldTranslation, worldRotation, worldScale))
+					{
+						// Fallback to local component if decomposition fails
+						worldTranslation = tc.Translation;
+						worldRotation = tc.Rotation;
+						worldScale = tc.Scale;
+					}
+
+					glm::vec4 worldOffset4 = worldTransform * glm::vec4(bc2d.Offset, 0.0f, 1.0f);
+					glm::vec3 worldOffset = glm::vec3(worldOffset4);
+
+					glm::vec3 colliderScale;
+					colliderScale.x = worldScale.x * (bc2d.Size.x * 2.0f);
+					colliderScale.y = worldScale.y * (bc2d.Size.y * 2.0f);
+					colliderScale.z = 1.0f;
+
+					// Rotation around Z (2D)
+					float rotationZ = worldRotation.z;
+
+					glm::mat4 transform = glm::translate(glm::mat4(1.0f), worldOffset)
+						* glm::rotate(glm::mat4(1.0f), rotationZ, glm::vec3(0.0f, 0.0f, 1.0f))
+						* glm::scale(glm::mat4(1.0f), colliderScale);
 
 					Renderer2D::DrawRect(transform, glm::vec4(0, 1, 0, 1));
 				}
 			}
-
 			// Circle Colliders
 			{
 				auto view = m_ActiveScene->GetAllEntitiesWith<TransformComponent, CircleCollider2DComponent>();
 				for (auto entity : view)
 				{
-					auto [tc, cc2d] = view.get<TransformComponent, CircleCollider2DComponent>(entity);
+					auto& tc = view.get<TransformComponent>(entity);
+					auto& cc2d = view.get<CircleCollider2DComponent>(entity);
 
-					glm::vec3 translation = tc.Translation + glm::vec3(cc2d.Offset, 0.001f);
-					glm::vec3 scale = tc.Scale * glm::vec3(cc2d.Radius * 2.0f);
+					// World transform (includes parents)
+					glm::mat4 worldTransform = m_ActiveScene->GetWorldTransform({ entity, m_ActiveScene.get() });
 
-					glm::mat4 transform = glm::translate(glm::mat4(1.0f), translation)
-						* glm::scale(glm::mat4(1.0f), scale);
+					glm::vec3 worldTranslation, worldRotation, worldScale;
+					if (!Math::DecomposeTransform(worldTransform, worldTranslation, worldRotation, worldScale))
+					{
+						// fallback to local if decomposition fails
+						worldTranslation = tc.Translation;
+						worldRotation = tc.Rotation;
+						worldScale = tc.Scale;
+					}
+
+					// Transform local collider offset to world space
+					glm::vec4 worldCenter4 = worldTransform * glm::vec4(cc2d.Offset, 0.0f, 1.0f);
+					glm::vec3 worldCenter = glm::vec3(worldCenter4);
+
+					// Compute world diameter from the maximum XY world scale to preserve circular shape
+					float worldDiameter = glm::max(worldScale.x, worldScale.y) * cc2d.Radius * 2.0f;
+
+					glm::mat4 transform = glm::translate(glm::mat4(1.0f), worldCenter)
+						* glm::scale(glm::mat4(1.0f), glm::vec3(worldDiameter, worldDiameter, 1.0f));
 
 					Renderer2D::DrawCircle(transform, glm::vec4(0, 1, 0, 1), 0.01f);
 				}
@@ -724,8 +760,11 @@ namespace Strand {
 		// Draw selected entity outline 
 		if (Entity selectedEntity = m_SceneHierarchyPanel.GetSelectedEntity())
 		{
-			const TransformComponent& transform = selectedEntity.GetComponent<TransformComponent>();
-			Renderer2D::DrawRect(transform.GetTransform(), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+			glm::mat4 worldTransform = m_ActiveScene->GetWorldTransform(selectedEntity);
+			Renderer2D::DrawRect(worldTransform, glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+			//const TransformComponent& transform = selectedEntity.GetComponent<TransformComponent>();
+			//Renderer2D::DrawRect(transform.GetTransform(), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+			
 		}
 
 		Renderer2D::EndScene();

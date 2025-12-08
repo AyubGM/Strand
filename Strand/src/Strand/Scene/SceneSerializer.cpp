@@ -350,6 +350,18 @@ namespace Strand {
 			out << YAML::EndMap; // CircleCollider2DComponent
 		}
 
+		if (entity.HasComponent<RelationshipComponent>())
+		{
+			out << YAML::Key << "RelationshipComponent";
+			out << YAML::BeginMap; // RelationshipComponent
+
+			auto& relationshipComponent = entity.GetComponent<RelationshipComponent>();
+			out << YAML::Key << "Parent" << YAML::Value << relationshipComponent.ParentHandle;
+			//out << YAML::Key << "ChildrenCount" << YAML::Value << relationshipComponent.Children;
+
+			out << YAML::EndMap; // RelationshipComponent
+		}
+
 		out << YAML::EndMap; // Entity
 	}
 
@@ -574,6 +586,14 @@ namespace Strand {
 					cc2d.Friction = circleCollider2DComponent["Friction"].as<float>();
 					cc2d.Restitution = circleCollider2DComponent["Restitution"].as<float>();
 					cc2d.RestitutionThreshold = circleCollider2DComponent["RestitutionThreshold"].as<float>();
+				}
+
+				auto relationshipComponent = entity["RelationshipComponent"];
+				if (relationshipComponent)
+				{
+					auto& rc = deserializedEntity.AddComponent<RelationshipComponent>();
+					rc.ParentHandle = relationshipComponent["Parent"].as<uint64_t>();
+					//rc.Children = relationshipComponent["ChildrenCount"].as<uint64_t>();
 				}
 			}
 		}
