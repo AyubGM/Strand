@@ -32,12 +32,22 @@ namespace Strand {
 
 		if (m_Context)
 		{
+			std::unordered_set<UUID> visited;
+
 			// Iterate all entities by looping over the registry's storage
 			auto view = m_Context->m_Registry.view<TagComponent>();
 			for (auto entityID : view)
 			{
 				Entity entity{ entityID , m_Context.get() };
-				DrawEntityNode(entity);
+
+				if (entity.HasComponent<RelationshipComponent>())
+				{
+					auto& rel = entity.GetComponent<RelationshipComponent>();
+					if (rel.ParentHandle != 0)
+						continue; // child — will be drawn under parent
+				}
+
+				DrawEntityNode(entity, &visited);
 			}
 
 			m_Context->ProcessQueuedDeletes();
@@ -86,8 +96,20 @@ namespace Strand {
 	}
 
 
-	void SceneHierarchyPanel::DrawEntityNode(Entity entity)
+	void SceneHierarchyPanel::DrawEntityNode(Entity entity, std::unordered_set<UUID>* visited)
 	{
+		if (!entity)
+			return;
+
+		// Cycle protection
+		if (visited)
+		{
+			UUID id = entity.GetUUID();
+			if (visited->find(id) != visited->end())
+				return;
+			visited->insert(id);
+		}
+
 		auto& tag = entity.GetComponent<TagComponent>().Tag;
 
 		ImGuiTreeNodeFlags flags = ((m_SelectionContext == entity) ? ImGuiTreeNodeFlags_Selected : 0) | ImGuiTreeNodeFlags_OpenOnArrow;
@@ -171,10 +193,21 @@ namespace Strand {
 
 		if (opened)
 		{
-			ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth;
-			bool opened = ImGui::TreeNodeEx((void*)9817239, flags, tag.c_str());
-			if (opened)
-				ImGui::TreePop();
+			// Draw children (if any) under this node
+			if (entity.HasComponent<RelationshipComponent>())
+			{
+				auto& rel = entity.GetComponent<RelationshipComponent>();
+				for (UUID childUUID : rel.Children)
+				{
+					Entity child = m_Context->GetEntityByUUID(childUUID);
+					if (child)
+					{
+						// Recursively draw child node (pass visited set to avoid cycles)
+						DrawEntityNode(child, visited);
+					}
+				}
+			}
+
 			ImGui::TreePop();
 		}
 
