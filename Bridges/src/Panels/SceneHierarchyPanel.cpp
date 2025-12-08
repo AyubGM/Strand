@@ -130,6 +130,25 @@ namespace Strand {
 			ImGui::EndDragDropSource();
 		}
 
+		// Helper: detect whether 'possibleAncestor' is actually an ancestor of 'node'
+		auto IsAncestorOf = [this](Entity possibleAncestor, Entity node) -> bool
+			{
+				if (!possibleAncestor || !node)
+					return false;
+				UUID ancestorId = possibleAncestor.GetUUID();
+				Entity current = node;
+				while (current && current.HasComponent<RelationshipComponent>())
+				{
+					auto& rel = current.GetComponent<RelationshipComponent>();
+					if (rel.ParentHandle == 0)
+						break;
+					if (rel.ParentHandle == ancestorId)
+						return true;
+					current = m_Context->GetEntityByUUID(rel.ParentHandle);
+				}
+				return false;
+			};
+
 		// Drop target: make the dragged entity a child of this entity (set its parent)
 		if (ImGui::BeginDragDropTarget())
 		{
@@ -147,33 +166,41 @@ namespace Strand {
 						Entity sourceEntity = m_Context->GetEntityByUUID(sourceUUID);
 						if (sourceEntity)
 						{
-							// Ensure source has RelationshipComponent
-							if (!sourceEntity.HasComponent<RelationshipComponent>())
-								sourceEntity.AddComponent<RelationshipComponent>();
-
-							auto& sourceRel = sourceEntity.GetComponent<RelationshipComponent>();
-
-							// Remove from old parent children list if any
-							if (sourceRel.ParentHandle != 0)
+							// Prevent cycles: disallow making an entity a child of its own descendant
+							if (IsAncestorOf(sourceEntity, entity))
 							{
-								Entity oldParent = m_Context->GetEntityByUUID(sourceRel.ParentHandle);
-								if (oldParent && oldParent.HasComponent<RelationshipComponent>())
-								{
-									auto& oldChildren = oldParent.GetComponent<RelationshipComponent>().Children;
-									oldChildren.erase(std::remove(oldChildren.begin(), oldChildren.end(), sourceUUID), oldChildren.end());
-								}
+								SD_CORE_WARN("Reparenting would create a cycle: operation ignored.");
 							}
+							else
+							{
+								// Ensure source has RelationshipComponent
+								if (!sourceEntity.HasComponent<RelationshipComponent>())
+									sourceEntity.AddComponent<RelationshipComponent>();
 
-							// Set new parent
-							sourceRel.ParentHandle = entity.GetUUID();
+								auto& sourceRel = sourceEntity.GetComponent<RelationshipComponent>();
 
-							// Add to new parent's children (if not already present)
-							if (!entity.HasComponent<RelationshipComponent>())
-								entity.AddComponent<RelationshipComponent>();
+								// Remove from old parent children list if any
+								if (sourceRel.ParentHandle != 0)
+								{
+									Entity oldParent = m_Context->GetEntityByUUID(sourceRel.ParentHandle);
+									if (oldParent && oldParent.HasComponent<RelationshipComponent>())
+									{
+										auto& oldChildren = oldParent.GetComponent<RelationshipComponent>().Children;
+										oldChildren.erase(std::remove(oldChildren.begin(), oldChildren.end(), sourceUUID), oldChildren.end());
+									}
+								}
 
-							auto& parentRel = entity.GetComponent<RelationshipComponent>();
-							if (std::find(parentRel.Children.begin(), parentRel.Children.end(), sourceUUID) == parentRel.Children.end())
-								parentRel.Children.push_back(sourceUUID);
+								// Set new parent
+								sourceRel.ParentHandle = entity.GetUUID();
+
+								// Add to new parent's children (if not already present)
+								if (!entity.HasComponent<RelationshipComponent>())
+									entity.AddComponent<RelationshipComponent>();
+
+								auto& parentRel = entity.GetComponent<RelationshipComponent>();
+								if (std::find(parentRel.Children.begin(), parentRel.Children.end(), sourceUUID) == parentRel.Children.end())
+									parentRel.Children.push_back(sourceUUID);
+							}
 						}
 					}
 				}
