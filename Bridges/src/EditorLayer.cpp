@@ -25,13 +25,41 @@ namespace Strand {
 
 
 	EditorLayer::EditorLayer()
-		: Layer("EditorLayer"), m_CameraController(1280.0f / 720.0f), m_SquareColor({ 0.2f, 0.3f, 0.8f, 1.0f })
+		: Layer("EditorLayer") 
 	{
 		m_ScriptEditorPanel = CreateScope<ScriptEditorPanel>();
-		//m_ScriptEditorPanel->OpenFile(Project::GetActiveAssetDirectory());
 	}
 
 	void EditorLayer::OnAttach()
+	{
+		SD_PROFILE_FUNCTION();
+
+		InitEventSubscriptions();
+		LoadEditorResources();
+		CreateEditorFramebuffer();
+		InitEditorSceneAndCamera();
+
+		auto commandLineArgs = Application::Get().GetSpecification().CommandLineArgs;
+		if (commandLineArgs.Count > 1)
+		{
+			std::string projectFilePath = commandLineArgs[1];
+			if (!projectFilePath.empty() && std::filesystem::exists(projectFilePath))
+			{
+				OpenProject(projectFilePath);
+			}
+			else
+			{
+				SD_CORE_WARN("Command-line project path is invalid or missing: {}", projectFilePath);
+				NewProject();
+			}
+		}
+
+
+		Renderer2D::SetLineWidth(4.0f);
+
+	}
+
+	void EditorLayer::InitEventSubscriptions()
 	{
 		SD_PROFILE_FUNCTION();
 
@@ -40,50 +68,45 @@ namespace Strand {
 
 		// Subscribe to the script saved event
 		EditorEventBus::Subscribe(EventType::ScriptFileSaved, SD_BIND_EVENT_FN(EditorLayer::OnScriptFileSaved));
+	}
 
-		m_ScriptEditorPanel->OnAttach();
+	void EditorLayer::LoadEditorResources()
+	{
+		SD_PROFILE_FUNCTION();
 
-		m_CheckerboardTexture = TextureImporter::LoadTexture2D("assets/textures/Checkerboard.png");
+		// Attach script editor UI
+		if (m_ScriptEditorPanel)
+			m_ScriptEditorPanel->OnAttach();
+
+		// Load common editor textures/icons
 		m_IconPlay = TextureImporter::LoadTexture2D("Resources/Icons/PlayButton.png");
 		m_IconPause = TextureImporter::LoadTexture2D("Resources/Icons/PauseButton.png");
 		m_IconSimulate = TextureImporter::LoadTexture2D("Resources/Icons/SimulateButton.png");
 		m_IconStep = TextureImporter::LoadTexture2D("Resources/Icons/StepButton.png");
 		m_IconStop = TextureImporter::LoadTexture2D("Resources/Icons/StopButton.png");
+	}
+
+	void EditorLayer::CreateEditorFramebuffer()
+	{
+		SD_PROFILE_FUNCTION();
 
 		FramebufferSpecification fbSpec;
 		fbSpec.Attachments = { FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::RED_INTEGER, FramebufferTextureFormat::Depth };
 		fbSpec.Width = 1280;
 		fbSpec.Height = 720;
 		m_Framebuffer = Framebuffer::Create(fbSpec);
+	}
 
-		// SUS
+	void EditorLayer::InitEditorSceneAndCamera()
+	{
+		SD_PROFILE_FUNCTION();
+
+		// Create a fresh editor scene and set active pointers
 		m_EditorScene = CreateRef<Scene>();
 		m_ActiveScene = m_EditorScene;
 
-		//m_ActiveScene = CreateRef<Scene>();
-
+		// Initialize editor camera with sensible defaults
 		m_EditorCamera = EditorCamera(30.0f, 1.778f, 0.1f, 1000.0f);
-
-		//auto commandLineArgs = Application::Get().GetSpecification().CommandLineArgs;
-		//if (commandLineArgs.Count > 1)
-		//{
-		//	auto projectFilePath = commandLineArgs[1];
-		//	OpenProject(projectFilePath);
-		//}
-		//else
-		//{
-		//	// TODO: prompt the user to select a directory
-		//	// NewProject();
-
-		//	// If no project is opened, close Bridges
-		//	// NOTE: this is while we don't have a new project path
-		//	if (!OpenProject())
-		//		Application::Get().Close();
-		//}
-
-
-		Renderer2D::SetLineWidth(4.0f);
-
 	}
 
 	void EditorLayer::OnDetach()
@@ -107,7 +130,6 @@ namespace Strand {
 			(spec.Width != m_ViewportSize.x || spec.Height != m_ViewportSize.y))
 		{
 			m_Framebuffer->Resize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
-			m_CameraController.OnResize(m_ViewportSize.x, m_ViewportSize.y);
 
 			m_EditorCamera.SetViewportSize(m_ViewportSize.x, m_ViewportSize.y);
 			
@@ -132,9 +154,7 @@ namespace Strand {
 		{
 			//SUS
 			if (m_ViewportFocused)
-				m_CameraController.OnUpdate(ts);
-
-			m_EditorCamera.OnUpdate(ts);
+				m_EditorCamera.OnUpdate(ts);
 
 			//Just Render
 			m_ActiveScene->OnUpdateEditor(ts, m_EditorCamera);
@@ -536,7 +556,6 @@ namespace Strand {
 
 	void EditorLayer::OnEvent(Event& e)
 	{
-		m_CameraController.OnEvent(e);
 		if (m_SceneState == SceneState::Edit)
 		{
 			m_EditorCamera.OnEvent(e);
