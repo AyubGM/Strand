@@ -300,6 +300,8 @@ namespace Strand {
 		{
 
 			auto view = m_Registry.view<TransformComponent, CameraComponent>();
+			//TODO CHECK THIS
+			//for (auto [entity, transform, camera] : view.each())
 			for (auto entity : view)
 			{
 				auto [transform, camera] = view.get<TransformComponent, CameraComponent>(entity);

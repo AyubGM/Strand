@@ -134,6 +134,42 @@ namespace Strand {
 		return asset;
 	}
 
+
+	AssetHandle EditorAssetManager::GetHandleForFilePath(const std::filesystem::path& path) const
+	{
+		for (const auto& [handle, metadata] : m_AssetRegistry)
+		{
+			if (metadata.FilePath == path)
+			return handle;
+		}
+		 return 0;
+	}
+
+
+	void EditorAssetManager::ReloadAsset(AssetHandle handle)
+	{
+		if (!IsAssetHandleValid(handle))
+			 return;
+		
+		// Remove cached loaded asset if present
+		auto it = m_LoadedAssets.find(handle);
+		if (it != m_LoadedAssets.end())
+		 m_LoadedAssets.erase(it);
+		
+		// Re-import/load the asset from disk
+		const AssetMetadata& metadata = GetMetadata(handle);
+		Ref<Asset> asset = AssetImporter::ImportAsset(handle, metadata);
+		if (asset)
+		{
+			asset->Handle = handle;
+			m_LoadedAssets[handle] = asset;
+		}
+		else
+		{
+			SD_CORE_ERROR("EditorAssetManager::ReloadAsset - failed to reload asset for handle {}", (uint64_t)handle);
+		}
+	}
+
 	void EditorAssetManager::SerializeAssetRegistry()
 	{
 		auto path = Project::GetActiveAssetRegistryPath();

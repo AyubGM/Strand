@@ -942,6 +942,18 @@ namespace Strand {
 	void EditorLayer::SerializeScene(Ref<Scene> scene, const std::filesystem::path& path)
 	{
 		SceneImporter::SaveScene(scene, path);
+
+		// If this scene corresponds to an imported editor asset, reload the cached asset so later
+		// AssetManager::GetAsset(handle) returns the updated scene rather than a stale cached copy.
+			
+		auto editorAM = Project::GetActive()->GetEditorAssetManager();
+		AssetHandle handle = editorAM->GetHandleForFilePath(path);
+		if (handle != 0)
+		{
+			editorAM->ReloadAsset(handle);
+			SD_CORE_TRACE("Reloaded asset for saved scene: {}", path.string());
+		}
+		
 	}
 
 	void EditorLayer::OnScenePlay()

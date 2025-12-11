@@ -91,15 +91,32 @@ namespace Strand {
 				if (node->Path == currentDir)
 					break;
 
-				if (node->Children.find(p) != node->Children.end())
+				auto childIt = node->Children.find(p);
+				if (childIt != node->Children.end())
 				{
-					node = &m_TreeNodes[node->Children[p]];
+					//node = &m_TreeNodes[node->Children[p]];
+					node = &m_TreeNodes[childIt->second];;
 					continue;
 				}
 				else
 				{
-					// can't find path
-					SD_CORE_ASSERT(false);
+
+					SD_CORE_WARN("ContentBrowser: Path component '{}' not found in asset tree. Refreshing tree and falling back to root.", p.string());
+					//TODO not sure about this Refresh Here
+					//RefreshAssetTree();
+
+					//// Try to find the child again after refresh
+					//childIt = m_TreeNodes[0].Children.find(p);
+					//if (childIt != m_TreeNodes[0].Children.end())
+					//{
+					//	node = &m_TreeNodes[childIt->second];
+					//	continue;
+					//}
+
+					// Still missing: fallback to root and stop descent
+					node = &m_TreeNodes[0];
+					m_CurrentDirectory = m_BaseDirectory;
+					break;
 				}
 
 			}

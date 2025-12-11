@@ -1,4 +1,4 @@
-Scene: NewScene.strand
+Scene: Untitled
 Entities:
   - Entity: 9051708817296187668
     TagComponent:
@@ -26,7 +26,7 @@ Entities:
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     SpriteRendererComponent:
-      Color: [1, 1, 1, 1]
+      Color: [0.489093661, 0.513513505, 0.295418978, 1]
       TextureHandle: 0
       TilingFactor: 1
     Rigidbody2DComponent:
@@ -43,8 +43,12 @@ Entities:
     TagComponent:
       Tag: GameController
     TransformComponent:
-      Translation: [0, 0, 0]
+      Translation: [-2.20000005, 0, 0]
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     ScriptComponent:
       ClassName: SProject.Startup
+    SpriteRendererComponent:
+      Color: [0.98841697, 0.0228976682, 0.0228976682, 1]
+      TextureHandle: 0
+      TilingFactor: 1

@@ -26,6 +26,9 @@ namespace Strand {
 
 		const AssetRegistry& GetAssetRegistry() const { return m_AssetRegistry; }
 
+		AssetHandle GetHandleForFilePath(const std::filesystem::path & path) const;
+		void ReloadAsset(AssetHandle handle);
+
 		void SerializeAssetRegistry();
 		bool DeserializeAssetRegistry();
 	private:
