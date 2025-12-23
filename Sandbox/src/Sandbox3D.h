@@ -15,6 +15,10 @@ public:
 	void OnUpdate(Strand::Timestep ts) override;
 	virtual void OnImGuiRender() override;
 	void OnEvent(Strand::Event& e) override;
+	
+private:
+	void SetUpLights();
+
 private:
 	//---------DEBUG-------
 	Strand::Timestep m_DeltaTime = 0.0f;
@@ -35,6 +39,9 @@ private:
 
 	Strand::OrthographicCameraController m_CameraController;
 	std::vector<Strand::PointLight> m_Lights;
+	Strand::DirectLight m_DirectLight;
+	std::array<Strand::PointLight, 4> m_LightsArray;
+	Strand::Spotlight m_SpotLight;
 	Strand::EditorCamera m_EditorCamera;
 	//Strand::Mesh m_CubeMesh;
 	Strand::Ref<Strand::Mesh> m_CubeMesh;

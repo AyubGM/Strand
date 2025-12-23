@@ -100,8 +100,6 @@ layout(std140, binding = 2) uniform MaterialData
     Material u_MaterialData;
 } u_Material;
 
-layout (binding = 0) uniform sampler2D u_DiffuseTexture;
-layout (binding = 1) uniform sampler2D u_SpecularTexture;
 
 layout(std140, binding = 3) uniform SceneData
 {
@@ -112,6 +110,9 @@ layout(std140, binding = 3) uniform SceneData
     Spotlight u_Spotlight;
 };
 
+
+layout (binding = 0) uniform sampler2D u_DiffuseTexture;
+layout (binding = 1) uniform sampler2D u_SpecularTexture;
 
 vec3 CalcDirLight(DirectLight light, vec3 normal, vec3 viewDir);  
 vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir);

@@ -85,7 +85,8 @@ namespace Strand {
 
 		s_Data.CameraUniformBuffer = UniformBuffer::Create(sizeof(Renderer3DData::CameraData), 0);
 		s_Data.ObjectUniformBuffer = UniformBuffer::Create(sizeof(Renderer3DData::ObjectData), 1);
-		s_Data.SceneUniformBuffer = UniformBuffer::Create(sizeof(SceneData), 2);
+		//TODO FIX THE BINDING
+		s_Data.SceneUniformBuffer = UniformBuffer::Create(sizeof(SceneData), 3);
 
 		std::vector<Strand::StaticMeshVertex> cubeVertices = {
 	{glm::vec3(-1.0f, -1.0f, 1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f)},

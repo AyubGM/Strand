@@ -45,9 +45,6 @@ namespace Strand {
 		float Linear;
 		float Quadratic;
 
-		float _padding_1;
-		float _padding_2;
-		float _padding_3;
 	};
 
 

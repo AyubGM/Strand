@@ -40,6 +40,50 @@ std::vector<std::string> paths
 		"assets/textures/skybox/back.jpg"
 };
 
+
+void Sandbox3D::SetUpLights()
+{
+	glm::vec4 pointPostion = glm::vec4(1.2f, 1.0f, 2.0f, 1.0f);
+	glm::vec4 pointAmbient = glm::vec4(0.2f, 0.2f, 0.2f, 1.0f);
+	glm::vec4 pointDiffuse = glm::vec4(0.5f, 0.5f, 0.5f, 1.0f);
+	glm::vec4 pointSpecular = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	float pointConstant = 1.0f;
+	float pointLinear = 0.09f;
+	float pointQuadratic = 0.032f;
+
+	for (uint32_t i = 0; i < pointLightPositions.size(); ++i)
+	{
+		Strand::PointLight light = { pointLightPositions[i], pointAmbient, pointDiffuse, pointSpecular, pointConstant, pointLinear, pointQuadratic };
+		m_Lights.emplace_back(light);
+	}
+
+	glm::vec4 directLightDirection = glm::vec4(-0.2f, -1.0f, -0.3f, 1.0f);
+	glm::vec4 directLightAmbient = glm::vec4(0.05f, 0.05f, 0.05f, 1.0f);
+	glm::vec4 directLightDiffuse = glm::vec4(0.4f, 0.4f, 0.4f, 1.0f);
+	glm::vec4 directLightSpecular = glm::vec4(0.5f, 0.5f, 0.5f, 1.0f);
+
+	m_DirectLight = { directLightDirection, directLightAmbient, directLightDiffuse, directLightSpecular };
+
+	glm::vec4 spotLightPostion = glm::vec4(m_EditorCamera.GetPosition(), 1.0f);
+	glm::vec4 spotLightDirection = glm::vec4(m_EditorCamera.GetForwardDirection(), 1.0f);
+	glm::vec4 spotLightAmbient = glm::vec4(0.2f, 0.2f, 0.2f, 1.0f);
+	glm::vec4 spotLightDiffuse = glm::vec4(0.5f, 0.5f, 0.5f, 1.0f);
+	glm::vec4 spotLightSpecular = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	float spotLightConstant = 1.0f;
+	float spotLightLinear = 0.09f;
+	float spotLightQuadratic = 0.032f;
+	float spotLightCutOff = glm::cos(glm::radians(12.5f));
+	float spotLightOuterCutOff = glm::cos(glm::radians(15.0f));
+
+	m_SpotLight = {
+	spotLightPostion, spotLightDirection, spotLightAmbient, spotLightDiffuse,
+	spotLightSpecular, spotLightCutOff, spotLightOuterCutOff, spotLightConstant,
+	spotLightLinear, spotLightQuadratic
+	};
+
+	std::copy_n(m_Lights.begin(), 4, m_LightsArray.begin());
+}
+
 void ProcessCollision(Strand::Manifold& manifold, float ts)
 {
 	const float totalSeparation = manifold.Depth + 0.01f;
@@ -204,6 +248,10 @@ void Sandbox3D::OnAttach()
 	//m_Rigidbody.Velocity = glm::vec3(1, 1, 1);
 	m_PhysicsWorld.AddRigidbody(&m_Rigidbody);
 	m_PhysicsWorld.AddCollisionObject(&m_Plane);
+
+
+	SetUpLights();
+
 }
 
 void Sandbox3D::OnDetach()
@@ -245,59 +293,21 @@ void Sandbox3D::OnUpdate(Strand::Timestep ts)
 	}
 
 	{
-		m_Lights.clear();
 		static float rotation = 0.0f;
 		rotation += ts * 50.0f;
 
-		glm::vec4 pointPostion = glm::vec4(1.2f, 1.0f, 2.0f, 1.0f);
-		glm::vec4 pointAmbient = glm::vec4(0.2f, 0.2f, 0.2f, 1.0f);
-		glm::vec4 pointDiffuse = glm::vec4(0.5f, 0.5f, 0.5f, 1.0f);
-		glm::vec4 pointSpecular = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
-		float pointConstant = 1.0f;
-		float pointLinear = 0.09f;
-		float pointQuadratic = 0.032f;
 		
-		for (uint32_t i = 0; i < pointLightPositions.size(); ++i)
-		{
-			Strand::PointLight light = { pointLightPositions[i], pointAmbient, pointDiffuse, pointSpecular, pointConstant, pointLinear, pointQuadratic };
-			m_Lights.emplace_back(light);
-		}
-
-		glm::vec4 directLightDirection = glm::vec4(-0.2f, -1.0f, -0.3f, 1.0f);
-		glm::vec4 directLightAmbient = glm::vec4(0.05f, 0.05f, 0.05f, 1.0f);
-		glm::vec4 directLightDiffuse = glm::vec4(0.4f, 0.4f, 0.4f, 1.0f);
-		glm::vec4 directLightSpecular = glm::vec4(0.5f, 0.5f, 0.5f, 1.0f);
-
-		Strand::DirectLight directLight = { directLightDirection, directLightAmbient, directLightDiffuse, directLightSpecular };
-
-		glm::vec4 spotLightPostion = glm::vec4(m_EditorCamera.GetPosition(), 1.0f);
-		glm::vec4 spotLightDirection = glm::vec4(m_EditorCamera.GetForwardDirection(), 1.0f);
-		glm::vec4 spotLightAmbient = glm::vec4(0.2f, 0.2f, 0.2f, 1.0f);
-		glm::vec4 spotLightDiffuse = glm::vec4(0.5f, 0.5f, 0.5f, 1.0f);
-		glm::vec4 spotLightSpecular = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
-		float spotLightConstant = 1.0f;
-		float spotLightLinear = 0.09f;
-		float spotLightQuadratic = 0.032f;
-		float spotLightCutOff = glm::cos(glm::radians(12.5f));
-		float spotLightOuterCutOff = glm::cos(glm::radians(15.0f));
-
-		Strand::Spotlight spotLight = {
-		spotLightPostion, spotLightDirection, spotLightAmbient, spotLightDiffuse,
-		spotLightSpecular, spotLightCutOff, spotLightOuterCutOff, spotLightConstant,
-		spotLightLinear, spotLightQuadratic
-		};
 
 		SD_PROFILE_SCOPE("Renderer Draw");
 
 		//Strand::Renderer3D::BeginScene(m_EditorCamera, m_Lights, directLight, spotLight);
 
-		std::array<Strand::PointLight, 4> lightsArray;
-		std::copy_n(m_Lights.begin(), 4, lightsArray.begin());
-		Strand::SceneData sceneData{ m_EditorCamera.GetPosition(), 4, lightsArray, directLight, spotLight };
+		
+		Strand::SceneData sceneData{ m_EditorCamera.GetPosition(), 4, m_LightsArray, m_DirectLight, m_SpotLight };
 
 		Strand::Renderer3D::BeginScene(m_EditorCamera, sceneData);
 
-		Strand::Renderer3D::Submit(m_CubeMesh, m_ReflectiveMaterial, m_Rigidbody.Transform.GetTransform());
+		//Strand::Renderer3D::Submit(m_CubeMesh, m_ReflectiveMaterial, m_Rigidbody.Transform.GetTransform());
 
 
 		glm::mat4 model = glm::mat4(1.0f);
@@ -313,10 +323,10 @@ void Sandbox3D::OnUpdate(Strand::Timestep ts)
 			models.emplace_back(model);
 			//Strand::Renderer3D::DrawCubeMesh(model, m_CubeMesh, m_CubeColor, m_Material);
 		}
-		Strand::Renderer3D::SubmitInstanced(m_CubeMesh, m_InstacedMaterial, models);
 		
-		Strand::Renderer3D::DrawCubeMesh(glm::mat4(1), m_CubeMesh, m_CubeColor, m_ReflectiveMaterial);
-		//Strand::Renderer3D::Submit(m_CubeMesh, m_ReflectiveMaterial, glm::mat4(1));
+		//Strand::Renderer3D::SubmitInstanced(m_CubeMesh, m_InstacedMaterial, models);
+		
+		Strand::Renderer3D::Submit(m_CubeMesh, m_ReflectiveMaterial, glm::mat4(1));
 
 		//for (const auto& mesh : m_Backpack->GetMeshes())
 		//{
@@ -340,7 +350,6 @@ void Sandbox3D::OnUpdate(Strand::Timestep ts)
 
 		Strand::Renderer3D::BeginSkyboxPass(m_CubeMapTextur);
 
-		//Strand::Renderer3D::DrawCubeMap( m_SkyBoxMesh, m_CubeMapTextur, m_CubeMapShader);
 		Strand::Renderer3D::SubmitSkybox();
 
 		Strand::Renderer3D::EndSkyboxPass();

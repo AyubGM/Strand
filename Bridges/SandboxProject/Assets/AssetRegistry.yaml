@@ -1,4 +1,7 @@
 AssetRegistry:
+  - Handle: 43777443846887601
+    FilePath: Scenes/Demo.strand
+    Type: AssetType::Scene
   - Handle: 568333097596547457
     FilePath: Textures/container2.png
     Type: AssetType::Texture2D
