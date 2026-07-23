@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="googlemock">
+      <UniqueIdentifier>{AC7B6BC4-9833-AD11-013B-866DED114802}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="googlemock\src">
+      <UniqueIdentifier>{C32FF5BF-AFFD-E8C5-9891-59EC84FEC42A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="googletest">
+      <UniqueIdentifier>{E2296FC4-CEE1-B011-37E9-896D23C04B02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="googletest\src">
+      <UniqueIdentifier>{F908F159-E5D6-E45F-CE6A-5586BAD7C0C4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="googletest\src\gtest-internal-inl.h">
+      <Filter>googletest\src</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="googlemock\src\gmock-all.cc">
+      <Filter>googlemock\src</Filter>
+    </ClCompile>
+    <ClCompile Include="googlemock\src\gmock-cardinalities.cc">
+      <Filter>googlemock\src</Filter>
+    </ClCompile>
+    <ClCompile Include="googlemock\src\gmock-internal-utils.cc">
+      <Filter>googlemock\src</Filter>
+    </ClCompile>
+    <ClCompile Include="googlemock\src\gmock-matchers.cc">
+      <Filter>googlemock\src</Filter>
+    </ClCompile>
+    <ClCompile Include="googlemock\src\gmock-spec-builders.cc">
+      <Filter>googlemock\src</Filter>
+    </ClCompile>
+    <ClCompile Include="googlemock\src\gmock.cc">
+      <Filter>googlemock\src</Filter>
+    </ClCompile>
+    <ClCompile Include="googlemock\src\gmock_main.cc">
+      <Filter>googlemock\src</Filter>
+    </ClCompile>
+    <ClCompile Include="googletest\src\gtest-all.cc">
+      <Filter>googletest\src</Filter>
+    </ClCompile>
+    <ClCompile Include="googletest\src\gtest-assertion-result.cc">
+      <Filter>googletest\src</Filter>
+    </ClCompile>
+    <ClCompile Include="googletest\src\gtest-death-test.cc">
+      <Filter>googletest\src</Filter>
+    </ClCompile>
+    <ClCompile Include="googletest\src\gtest-filepath.cc">
+      <Filter>googletest\src</Filter>
+    </ClCompile>
+    <ClCompile Include="googletest\src\gtest-matchers.cc">
+      <Filter>googletest\src</Filter>
+    </ClCompile>
+    <ClCompile Include="googletest\src\gtest-port.cc">
+      <Filter>googletest\src</Filter>
+    </ClCompile>
+    <ClCompile Include="googletest\src\gtest-printers.cc">
+      <Filter>googletest\src</Filter>
+    </ClCompile>
+    <ClCompile Include="googletest\src\gtest-test-part.cc">
+      <Filter>googletest\src</Filter>
+    </ClCompile>
+    <ClCompile Include="googletest\src\gtest-typed-test.cc">
+      <Filter>googletest\src</Filter>
+    </ClCompile>
+    <ClCompile Include="googletest\src\gtest.cc">
+      <Filter>googletest\src</Filter>
+    </ClCompile>
+    <ClCompile Include="googletest\src\gtest_main.cc">
+      <Filter>googletest\src</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
