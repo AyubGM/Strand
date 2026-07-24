@@ -257,6 +257,20 @@ else()
     message(WARNING "Mono not found! Set MONO_ROOT or build from vendor/mono")
 endif()
 
+add_custom_command(TARGET Strand POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${CMAKE_CURRENT_SOURCE_DIR}/vendor/mono/lib/mono"
+        "$<TARGET_FILE_DIR:Strand>/../lib/mono"
+    COMMENT "Copying Mono Base Class Libraries to output directory..."
+)
+
+add_custom_command(TARGET Strand POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${CMAKE_CURRENT_SOURCE_DIR}/vendor/mono/etc"
+        "$<TARGET_FILE_DIR:Strand>/../etc"
+    COMMENT "Copying Mono configuration files..."
+)
+
 # ------------------------------------------------------------------------------
 # Target Properties
 # ------------------------------------------------------------------------------
