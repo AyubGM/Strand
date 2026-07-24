@@ -45,9 +45,6 @@
 // --------TEMP-----------------------
 
 // ---Physics-------------------------
-#include "Strand/Physics/Dynamics/DynamicsSpace.h"
-#include "Strand/Physics/Collision/HullCollider.h"
-#include "Strand/Physics/Collision/PlaneCollider.h"
 //-----------------------------------
 
 // ---Entry Point--------------------
