@@ -30,7 +30,7 @@ Strand::Application* Strand::CreateApplication(ApplicationCommandLineArgs args)
 {
 	ApplicationSpecification spec;
 	spec.Name = "Sandbox";
-	spec.WorkingDirectory = "../Sandbox";
+	//spec.WorkingDirectory = "../Sandbox";
 	spec.CommandLineArgs = args;
 
 	return new Sandbox(spec);

@@ -27,16 +27,6 @@ private:
 	float m_FPS = 0.0f;
 	//---------DEBUG--------
 
-	Strand::DynamicsSpace m_PhysicsWorld;
-	Strand::Rigidbody m_Rigidbody;
-	Strand::TransformComponent m_TransformComponent;
-	Strand::HullCollider<Strand::Dimension::D3> m_TestCollider;
-
-	Strand::CollisionObject m_Plane;
-	Strand::PlaneCollider<Strand::Dimension::D3> m_PlaneCol;
-
-
-
 	Strand::OrthographicCameraController m_CameraController;
 	std::vector<Strand::PointLight> m_Lights;
 	Strand::DirectLight m_DirectLight;

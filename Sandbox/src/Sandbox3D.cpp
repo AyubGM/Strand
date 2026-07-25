@@ -84,51 +84,8 @@ void Sandbox3D::SetUpLights()
 	std::copy_n(m_Lights.begin(), 4, m_LightsArray.begin());
 }
 
-void ProcessCollision(Strand::Manifold& manifold, float ts)
-{
-	const float totalSeparation = manifold.Depth + 0.01f;
-
-
-	float separationA = 0.0f; // Amount to move A
-	float separationB = 0.0f; // Amount to move B
-
-	if (manifold.ObjA->IsStatic && manifold.ObjB->IsStatic) {
-		std::cout << " Both objects are static. No movement applied.\n";
-		return;
-	}
-	else if (manifold.ObjA->IsStatic) {
-		// A is Static, B must move the full amount (opposite normal)
-		separationB = totalSeparation;
-		std::cout << " A is Static, B moves the full distance.\n";
-	}
-	else if (manifold.ObjB->IsStatic) {
-		// B is Static, A must move the full amount (along normal)
-		separationA = totalSeparation ;
-		std::cout << "  B is Static, A moves the full distance.\n";
-	}
-	else {
-		// Both Dynamic: Share the separation equally (inverse mass weighting is more accurate)
-		separationA = totalSeparation * 0.5f;
-		separationB = totalSeparation * 0.5f;
-		std::cout << " Both Dynamic, separation split equally.\n";
-	}
-
-	// Apply movement to ObjA (in the direction of the Normal)
-	manifold.ObjA->Transform.Translation += manifold.Normal * separationA;
-
-	// Apply movement to ObjB (opposite the direction of the Normal)
-	manifold.ObjB->Transform.Translation += ts * manifold.Normal * -separationB;
-
-	std::cout << "  Separation Applied. A moved by " << separationA
-		<< ", B moved by " << separationB << ".\n";
-
-	// You would typically put logic here to:
-	// 1. Resolve the collision (e.g., separate the objects).
-	// 2. Reduce health, play a sound, etc.
-}
-
 Sandbox3D::Sandbox3D()
-	: Layer("Sandbox3D"), m_CameraController(1280.0f / 720.0f), m_EditorCamera(30.0f, 1.778f, 0.1f, 1000.0f), m_PlaneCol()
+	: Layer("Sandbox3D"), m_CameraController(1280.0f / 720.0f), m_EditorCamera(30.0f, 1.778f, 0.1f, 1000.0f)
 {
 	std::vector<Strand::StaticMeshVertex> cubeVertices = {
 	{glm::vec3(-1.0f, -1.0f, 1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f)},
@@ -186,9 +143,6 @@ Sandbox3D::Sandbox3D()
 	m_CubeMesh = Strand::CreateRef<Strand::Mesh>(cubeVertices, cubeindces);
 
 	m_SkyBoxMesh = Strand::CreateRef<Strand::Mesh>(cubeVertices, cubeindces);
-
-	m_PhysicsWorld.SetGravity(glm::vec3(0, -9.81f, 0));
-	m_PhysicsWorld.SetCollisionCallback(&ProcessCollision);
 	
 }
 
@@ -225,30 +179,6 @@ void Sandbox3D::OnAttach()
 	m_ReflectiveMaterial = Strand::Material::Create(m_ReflectShader);
 	m_ReflectiveMaterial->Set("skybox", m_CubeMapTextur);
 
-	Strand::HullCollider<Strand::Dimension::D3> temp = Strand::MakeCubeCollider();
-
-	m_TestCollider.Points = temp.Points;
-	Strand::Collider* cubeCollider = &m_TestCollider;
-	m_TransformComponent.Translation = glm::vec3(0, 100, 0);
-	m_TransformComponent.Scale = glm::vec3(1, 1, 1);
-	m_TransformComponent.Rotation = glm::vec3(0, 15, 0);
-	m_Rigidbody.SetTransform(&m_TransformComponent);
-	m_Rigidbody.Collider = cubeCollider;
-	m_Rigidbody.IsStatic = false;
-	m_Rigidbody.IsSimulated = true;
-	m_Rigidbody.Restitution = .5;
-	m_Rigidbody.DynamicFriction = .2;
-	m_Rigidbody.StaticFriction = .3;
-	m_Rigidbody.SetMass(10.0);
-
-	m_TransformComponent.Translation = glm::vec3(0, 0, 0);
-	m_Plane.SetTransform(&m_TransformComponent);
-	//Strand::Collider* planeCollider = &m_PlaneCol;
-	m_Plane.Collider = &m_PlaneCol;
-	//m_Rigidbody.Velocity = glm::vec3(1, 1, 1);
-	m_PhysicsWorld.AddRigidbody(&m_Rigidbody);
-	m_PhysicsWorld.AddCollisionObject(&m_Plane);
-
 
 	SetUpLights();
 
@@ -278,10 +208,6 @@ void Sandbox3D::OnUpdate(Strand::Timestep ts)
 
 	// Update
 	m_CameraController.OnUpdate(ts);
-
-	// Physics
-	m_PhysicsWorld.Step(ts);
-
 
 	// Render
 	Strand::Renderer3D::ResetStats();
