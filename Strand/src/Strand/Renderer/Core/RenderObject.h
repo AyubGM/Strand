@@ -37,9 +37,10 @@ namespace Strand {
 		static RenderSortKey Build(uint32_t materialID, uint32_t depth)
 		{
 			RenderSortKey key;
-			
+
+			uint32_t intDepth = std::bit_cast<uint32_t>(depth);
 			//[ 32 bits: Material ID ] [ 32 bits: Depth ]
-			key.Value = (static_cast<uint64_t>(materialID) << 32) | static_cast<uint64_t>(depth);
+			key.Value = (static_cast<uint64_t>(materialID) << 32) | intDepth;
 			return key;
 		}
 	};
