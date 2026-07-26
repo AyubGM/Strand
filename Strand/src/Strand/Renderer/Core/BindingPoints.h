@@ -3,21 +3,26 @@
 
 namespace Strand {
 
-	enum class BindingPoints : uint32_t
+	namespace BindingPoint
 	{
-		// UBOs
-		FrameConstants = 0,
+        //SET 0: GLOBAL FRAME DATA (Bound once per frame)
+        constexpr uint32_t FrameConstants = 0;  // View, Proj, Time, Camera
+        constexpr uint32_t LightBuffer = 1;  // Array of all lights in the scene
+        constexpr uint32_t ShadowMaps = 2;  // Array of shadow map depth textures
+        constexpr uint32_t GlobalTextures = 3;  // Bindless array of all loaded textures
 
-		// SSBOs
-		RenderObjectBuffer = 1,
-		DrawCommandBuffer = 2,
-		MeteraialSSBO = 3,
-		VisibleIndexBuffer = 4,
+        // SET 1: SCENE DATA (Bound once per scene/pass)
+        constexpr uint32_t RenderObjectBuffer = 4;  // SSBO: Transforms, AABBs, Material IDs
+        constexpr uint32_t MaterialSSBO = 5;  // SSBO: Colors, Roughness, Texture Indices
 
-		// Textures (compute write)
-		HZBTexture = 5,
-		ShadowMapTexture = 6,
+        // SET 2: COMPUTE CULLING & INDIRECT (Bound for compute + draw)
+        constexpr uint32_t DrawCommandBuffer = 6;  // SSBO: Output of culling (the draw commands)
+        constexpr uint32_t DrawCountBuffer = 7;  // SSBO: Atomic counter of visible objects
+        constexpr uint32_t VisibleIndexBuffer = 8;  // SSBO: 2-Pass occlusion visibility data
+        constexpr uint32_t HZBTexture = 9;  // Image: Hierarchical Z-Buffer for occlusion
 
-		Count
+        // SET 3: LEGACY / FALLBACKS (Phase these out eventually)
+        constexpr uint32_t LegacyObjectData = 10;
+        constexpr uint32_t LegacyMaterialData = 11;
 	};
 }
