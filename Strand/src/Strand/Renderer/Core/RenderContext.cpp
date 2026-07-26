@@ -7,6 +7,15 @@ namespace Strand {
         if (FrameConstantBuffer) {
             FrameConstantBuffer->SetData(&FrameData, sizeof(FrameConstants));
         }
+
+        uint32_t objectBufferSize = MaxRenderObjects * sizeof(RenderObject);
+        ObjectSSBO.Init(objectBufferSize);
+
+        uint32_t drawCmdBufferSize = MaxDrawCommands * sizeof(DrawCommand);
+        DrawCommandSSBO.Init(drawCmdBufferSize);
+
+        uint32_t initialCount = 0;
+        DrawCountBuffer.Init(sizeof(uint32_t), &initialCount);
     }
 
     void RenderContext::UploadRenderObjects() {
@@ -15,7 +24,7 @@ namespace Strand {
         if (count == 0 || !ObjectSSBO) return;
 
         size_t uploadSize = count * sizeof(RenderObject);
-        ObjectSSBO->SetData(Queue.GetData().data(), static_cast<uint32_t>(uploadSize));
+        ObjectSSBO.SetData(Queue.GetData().data(), static_cast<uint32_t>(uploadSize));
     }
 
     void RenderContext::Reset() {

@@ -2,9 +2,9 @@
 
 #include "FrameConstants.h"
 #include "Strand/Core/Base.h"
-#include "Strand/Renderer/RHI/Framebuffer.h"
-#include "Strand/Renderer/RHI/UniformBuffer.h"
-#include "Strand/Renderer/RHI/Buffer.h"
+#include "Strand/Renderer/RHI/FramebufferT.h"
+#include "Strand/Renderer/RHI/UniformBufferT.h"
+#include "Strand/Renderer/RHI/StorageBuffer.h"
 #include "RenderQueue.h"
 
 
@@ -19,14 +19,14 @@ namespace Strand
 	{
 		// Viewport Configuration
 		FrameConstants FrameData;
-		Ref<Framebuffer> TargetFramebuffer; // Does it have to be a sharedpointer? Should it be a uniquepointer instead?
+		Ref<FramebufferT> TargetFramebuffer; // Does it have to be a sharedpointer? Should it be a uniquepointer instead?
 		glm::vec4 ViewportRect = { 0.0f, 0.0f, 1280.0f, 720.0f };
 
 		// GPU buffers for this viewport (allocated from Renderer pools)
-		Ref<UniformBuffer> FrameConstantBuffer; // UBO at binding 0
-		Ref<Buffer> ObjectSSBO;                 // SSBO at binding 3
-		Ref<Buffer> DrawCommandSSBO;            // SSBO at binding 4
-		Ref<Buffer> DrawCountBuffer;            // SSBO at binding 6 (indirect count)
+		Ref<UniformBufferT> FrameConstantBuffer; // UBO at binding 0
+		StorageBuffer ObjectSSBO;                 // SSBO at binding 3
+		StorageBuffer DrawCommandSSBO;            // SSBO at binding 4
+		StorageBuffer DrawCountBuffer;            // SSBO at binding 6 (indirect count)
 
 		uint32_t MaxDrawCommands = 65536;
 		uint32_t MaxRenderObjects = 65536;
