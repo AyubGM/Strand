@@ -13,7 +13,7 @@ namespace Strand {
 	{
 	public:
 		VertexBufferT() = default;
-		~VertexBufferT() {}
+		~VertexBufferT();
 
 		VertexBufferT(const VertexBufferT&) = delete;
 		VertexBufferT& operator=(const VertexBufferT&) = delete;
